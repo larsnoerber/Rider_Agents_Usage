@@ -4,7 +4,7 @@ The plugin description in `src/main/resources/META-INF/plugin.xml` embeds the pu
 
 ![Illustrated usage overview](images/agents-usage-overview.png)
 
-- `images/agents-usage-overview.png`: 1280 × 800 image for the description and Marketplace Media gallery.
+- `images/agents-usage-overview.png`: 1280 × 980 image for the description and Marketplace Media gallery.
 - `images/agents-usage-overview.svg`: editable vector version.
 - `../tools/render_marketplace_preview.py`: reproducible renderer using Python and Pillow. Run it from any directory;
   its default font is Windows Segoe UI.

@@ -2,8 +2,11 @@
 
 Agents Usage is a plugin maintained by Lars Nörber for IntelliJ Platform IDEs, including IntelliJ IDEA and Rider.
 It displays Codex 5-hour and weekly usage, JetBrains AI credits, and GitHub Copilot quotas.
-The status bar displays `OpenAi D 78% - W 42%`, `JetbrainAi 70%`, and `Copilot 62%` (example balances).
+The status bar displays `OpenAi | D=78% - W=42%`, `JetBrainAi | 70%`, and `Copilot | 38%` (example balances).
+OpenAI and JetBrains AI show remaining quota. Copilot shows consumed quota: 0% unused, 100% exhausted.
+Each percentage uses its quota color directly; OpenAI D and W have independent colors, without dots.
 Click any provider widget to open **Agents Usage**.
+Visible widgets stay together in OpenAI, JetBrains AI, Copilot order when agents are toggled.
 
 For the source layout, read [Code structure](docs/ARCHITECTURE.md). Contributors and agents should start with
 [Project rules](AGENTS.md) and [Local development](docs/DEVELOPMENT.md).
@@ -13,12 +16,15 @@ For the source layout, read [Code structure](docs/ARCHITECTURE.md). Contributors
 ## Features
 
 - Separate status indicators for remaining 5-hour and weekly usage.
-- Additional JetBrains AI status indicator with remaining credits when AI Assistant is installed and enabled.
+- Additional JetBrains AI status indicator with the remaining credit percentage when AI Assistant is installed and
+  enabled.
 - JetBrains AI subscription and top-up credit details in the Tool Window.
 - Independent GitHub Copilot status indicator and quota details when the Copilot plugin is installed.
 - Subscription plan displayed in every provider view, with Unknown when the provider has not reported its plan.
-- Compact colored usage bars with remaining balances for all providers.
-- Single-line quota rows, compact provider headers, and reset/sync details available on hover.
+- Compact colored bars showing remaining OpenAI/JetBrains AI balances and consumed Copilot quota.
+- Compact agent cards with identity accents, subscription badges, and four visible quota/reset/report facts.
+- Expand **More details** per agent for category balances, full reset dates, refresh interval and availability status.
+- Agent checkboxes control visibility in both the overview and status bar; deselected quota reads pause.
 - Tool Window with quota, reset time, countdown, and progress details.
 - Manual refresh and configurable automatic refresh intervals.
 - Automatic discovery of `codex` from the system `PATH`.
@@ -50,8 +56,10 @@ Usage refreshes every 60 seconds by default. Open **Settings > Tools > Agents Us
 interval between 10 and 3600 seconds. Leave the path empty to discover Codex CLI automatically from `PATH`.
 
 The Tool Window also provides refresh presets of 30 seconds, 1 minute, and 5 minutes, plus a custom interval.
-The first provider section is labeled **OpenAI**. The **Agent settings** menu configures the shared refresh interval
-for OpenAI, JetBrains AI, and GitHub Copilot. Applying settings refreshes all installed providers.
+The toolbar stays visible above the agent cards. The **Agent settings** menu and IDE Settings both offer **Visible
+agents** checkboxes for OpenAI, JetBrains AI, and GitHub Copilot. Uncheck an agent to remove its overview card and
+status widget and pause its background quota reads. Optional providers appear only when their plugins are loaded.
+Applying settings updates visibility and refreshes selected providers. Zero quota remains visible.
 
 The same refresh interval applies to all providers. The plugin reads the running AI Assistant quota service and
 requests updates through AI Assistant. Sign in to JetBrains AI Assistant to see your balance. Click either status
@@ -72,6 +80,8 @@ directory. The plugin targets IntelliJ IDEA 2026.1.2 and compiles to Java 21 byt
 ```
 
 The installable ZIP is written to `build/distributions/agents-usage-<version>.zip`.
+Project identity and the release version are configured in `gradle.properties`.
+Both Gradle wrapper scripts are required for builds; see [Build files](docs/DEVELOPMENT.md#gradle-build-files).
 
 To launch a development IDE:
 

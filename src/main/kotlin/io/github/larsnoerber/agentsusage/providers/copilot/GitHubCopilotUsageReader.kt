@@ -24,6 +24,8 @@ internal class GitHubCopilotUsageReader {
         val response = getter(state, "getQuotaResponse")
             ?: return GitHubCopilotUsage(error = "Waiting for GitHub Copilot usage. Sign in to Copilot.")
         val tokenBilling = getter(response, "getTokenBasedBillingEnabled", required = false) == true
+        val plan = (getter(response, "getCopilotPlan", required = false) as? String)?.takeIf { it.isNotBlank() }
+        val freePlan = plan.equals("free", ignoreCase = true)
         fun quota(name: String, title: String, showCounts: Boolean = true): CopilotQuota? {
             val value = getter(response, name, required = false) ?: return null
             // Copilot uses an EMPTY sentinel for categories that have not been reported yet.
@@ -40,8 +42,10 @@ internal class GitHubCopilotUsageReader {
                 unlimited = unlimited
             )
         }
-        val premium = quota("getPremiumInteractions", if (tokenBilling) "AI credits" else "Premium requests", !tokenBilling)
-        val chat = quota("getChat", "Chat")
+        // Copilot's Free dialog uses chat as the included quota. Its premium field can contain an unused
+        // zero balance even while all Free credits are available, so it must not be the primary quota.
+        val premium = if (freePlan) null else quota("getPremiumInteractions", if (tokenBilling) "AI credits" else "Premium requests", !tokenBilling)
+        val chat = quota("getChat", if (freePlan && tokenBilling) "AI credits" else "Chat", !tokenBilling)
         val completions = quota("getCompletions", "Completions")
         val primary = premium ?: chat ?: completions
         val reset = (getter(response, "getResetDateUtc", required = false) as? String)?.takeIf { it.isNotBlank() }
@@ -50,7 +54,7 @@ internal class GitHubCopilotUsageReader {
             primary = primary,
             chat = chat,
             completions = completions,
-            plan = (getter(response, "getCopilotPlan", required = false) as? String)?.takeIf { it.isNotBlank() },
+            plan = plan,
             resetsAt = reset?.let(::parseReset),
             reportedAt = (getter(state, "getUpdatedAt", required = false) as? Instant)?.epochSecond,
             error = if (primary == null) "GitHub Copilot has not reported a usage quota yet" else null

@@ -16,7 +16,7 @@ import javax.swing.JComponent
 import javax.swing.JPanel
 import javax.swing.SwingUtilities
 
-internal data class StatusBarPart(val text: String, val color: Color)
+internal data class StatusBarPart(val text: String, val color: Color? = null)
 
 internal data class StatusBarPresentation(
     val parts: List<StatusBarPart>,
@@ -30,9 +30,10 @@ internal class UsageStatusBarWidget<T>(
     private val id: String,
     private val source: UsageSource<T>,
     private val presentation: (T) -> StatusBarPresentation
-) : JPanel(FlowLayout(FlowLayout.LEFT, 3, 0)), CustomStatusBarWidget {
-    private val labels = mutableListOf<Pair<JBLabel, JBLabel>>()
+) : JPanel(FlowLayout(FlowLayout.LEFT, 0, 0)), CustomStatusBarWidget {
+    private val labels = mutableListOf<JBLabel>()
     private var disposed = false
+    private var installedStatusBar: StatusBar? = null
     private val listener: (T) -> Unit = { if (!disposed) render(it) }
     private val mouseHandler = object : MouseAdapter() {
         override fun mouseClicked(event: MouseEvent) {
@@ -52,7 +53,10 @@ internal class UsageStatusBarWidget<T>(
 
     override fun ID(): String = id
     override fun getComponent(): JComponent = this
-    override fun install(statusBar: StatusBar) = Unit
+    override fun install(statusBar: StatusBar) {
+        installedStatusBar = statusBar
+        UsageStatusBarGroup.schedule(statusBar)
+    }
 
     private fun render(usage: T) {
         val view = presentation(usage)
@@ -60,21 +64,16 @@ internal class UsageStatusBarWidget<T>(
             removeAll()
             labels.clear()
             view.parts.forEach { _ ->
-                val indicator = JBLabel("●").apply { font = font.deriveFont(10f) }
-                val label = JBLabel()
-                listOf(indicator, label).forEach {
+                val label = JBLabel().also {
                     it.addMouseListener(mouseHandler)
                     add(it)
                 }
-                labels += indicator to label
+                labels += label
             }
         }
-        labels.zip(view.parts).forEach { (components, part) ->
-            val (indicator, label) = components
-            indicator.foreground = part.color
+        labels.zip(view.parts).forEach { (label, part) ->
             label.text = part.text
-            label.foreground = if (view.dimmed) JBColor.GRAY else null
-            indicator.toolTipText = view.tooltip
+            label.foreground = if (view.dimmed) JBColor.GRAY else part.color
             label.toolTipText = view.tooltip
         }
         toolTipText = view.tooltip
@@ -86,5 +85,7 @@ internal class UsageStatusBarWidget<T>(
         if (disposed) return
         disposed = true
         source.removeListener(listener)
+        installedStatusBar?.let(UsageStatusBarGroup::schedule)
+        installedStatusBar = null
     }
 }

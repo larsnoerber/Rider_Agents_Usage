@@ -13,6 +13,7 @@ internal class UsagePolling<T>(
     initial: T,
     private val read: (Boolean) -> T,
     private val refreshIntervalSeconds: () -> Int,
+    private val enabled: () -> Boolean = { true },
     private val failure: (Throwable) -> T
 ) : Disposable {
     private val listeners = CopyOnWriteArrayList<(T) -> Unit>()
@@ -30,12 +31,12 @@ internal class UsagePolling<T>(
     fun removeListener(listener: (T) -> Unit) { listeners -= listener }
 
     fun refresh() {
-        if (disposed || !forceRefresh.compareAndSet(false, true)) return
+        if (disposed || !enabled() || !forceRefresh.compareAndSet(false, true)) return
         ApplicationManager.getApplication().executeOnPooledThread { poll() }
     }
 
     private fun poll() {
-        if (disposed || !reading.compareAndSet(false, true)) return
+        if (disposed || !enabled() || !reading.compareAndSet(false, true)) return
         try {
             val now = System.nanoTime()
             val interval = TimeUnit.SECONDS.toNanos(refreshIntervalSeconds().toLong())

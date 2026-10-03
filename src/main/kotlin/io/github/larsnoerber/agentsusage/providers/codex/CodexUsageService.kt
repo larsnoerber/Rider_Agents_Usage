@@ -39,7 +39,7 @@ class CodexUsageService : UsageSource<CodexUsage>, Disposable {
     }
 
     override fun refresh() {
-        if (disposed || !reading.compareAndSet(false, true)) return
+        if (disposed || !AgentsUsageSettings.getInstance().state.showOpenAi || !reading.compareAndSet(false, true)) return
         ApplicationManager.getApplication().executeOnPooledThread {
             try {
                 if (!disposed) publish(reader.read(AgentsUsageSettings.getInstance().state.codexPath))

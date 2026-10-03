@@ -6,6 +6,7 @@ import com.intellij.openapi.wm.StatusBarWidgetFactory
 import io.github.larsnoerber.agentsusage.core.format.formatSubscriptionPlan
 import io.github.larsnoerber.agentsusage.providers.codex.CodexUsage
 import io.github.larsnoerber.agentsusage.providers.codex.CodexUsageService
+import io.github.larsnoerber.agentsusage.settings.AgentsUsageSettings
 import io.github.larsnoerber.agentsusage.ui.components.StatusBarPart
 import io.github.larsnoerber.agentsusage.ui.components.StatusBarPresentation
 import io.github.larsnoerber.agentsusage.ui.components.UsageStatusBarWidget
@@ -15,7 +16,7 @@ import io.github.larsnoerber.agentsusage.ui.components.usageTooltip
 class CodexUsageStatusBarWidgetFactory : StatusBarWidgetFactory {
     override fun getId(): String = "CodexUsageStatusBar"
     override fun getDisplayName(): String = "OpenAI Usage"
-    override fun isAvailable(project: Project): Boolean = true
+    override fun isAvailable(project: Project): Boolean = AgentsUsageSettings.getInstance().state.showOpenAi
     override fun createWidget(project: Project): StatusBarWidget =
         UsageStatusBarWidget(project, getId(), CodexUsageService.getInstance(), ::codexPresentation)
     override fun disposeWidget(widget: StatusBarWidget) = widget.dispose()
@@ -24,18 +25,16 @@ class CodexUsageStatusBarWidgetFactory : StatusBarWidgetFactory {
 private fun codexPresentation(usage: CodexUsage): StatusBarPresentation {
     val five = usage.fiveHourLeft
     val week = usage.weeklyLeft
-    val part = if (five == null || week == null) {
-        val unavailable = if (usage.error == null) "…" else "—"
-        StatusBarPart("OpenAi D $unavailable - W $unavailable", usageBarColor(null))
-    } else {
-        StatusBarPart(
-            "OpenAi D $five% - W $week%${if (usage.error == null) "" else " !"}",
-            usageBarColor(minOf(five, week))
-        )
-    }
+    val unavailable = if (usage.error == null) "…" else "—"
+    val parts = listOf(
+        StatusBarPart("OpenAi | D="),
+        StatusBarPart(five?.let { "$it%" } ?: unavailable, usageBarColor(five)),
+        StatusBarPart(" - W="),
+        StatusBarPart(week?.let { "$it%" } ?: unavailable, usageBarColor(week))
+    )
     return StatusBarPresentation(
-        parts = listOf(part),
-        dimmed = five == null || week == null,
+        parts = parts,
+        dimmed = usage.error != null,
         tooltip = usageTooltip("OpenAI Codex usage", listOf(
             "Subscription: ${formatSubscriptionPlan(usage.plan)}",
             "5h: remaining ${five ?: "—"}% · ${usage.fiveHourReset ?: "reset time unknown"}",

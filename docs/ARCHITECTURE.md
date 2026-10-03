@@ -14,9 +14,12 @@ Agents Usage/
 │   ├── MARKETPLACE.md                Listing preview and media upload instructions
 │   └── images/                       Illustrated listing assets (PNG and editable SVG)
 ├── tools/                           Documentation asset renderer
-├── build.gradle.kts                 Build and plugin release metadata
-├── settings.gradle.kts              Gradle project identity
-├── gradle/                          Gradle wrapper
+├── build.gradle.kts                 Build configuration and plugin release notes
+├── settings.gradle.kts              Repository configuration and project name lookup
+├── gradle.properties                Central project identity, version, and daemon settings
+├── gradlew / gradlew.bat             Gradle launchers for POSIX / Windows
+├── gradle/wrapper/                   Wrapper bootstrap and pinned distribution settings
+├── .gitattributes                   Wrapper and properties line endings
 └── src/main/
     ├── kotlin/io/github/larsnoerber/agentsusage/
     │   ├── application/             Coordinates actions across all providers
@@ -56,7 +59,7 @@ They are not part of the source architecture and remain ignored by Git.
 | `settings/AgentsUsageSettings`        | CLI path, interval bounds, persistence, and existing storage identifiers               | Starting services                           |
 | `providers/<provider>/ui`             | Provider labels, bars, subscription details, and UI listeners                          | Provider network/process operations         |
 | `ui/components/UsageStatusBarWidget`  | Shared status layout, clicks, tooltips, and subscription cleanup                       | Provider formatting                         |
-| `ui/toolwindow/AgentsUsagePanel`      | Composing installed provider panels and switching pages                                | Parsing snapshots or owning provider timers |
+| `ui/toolwindow/AgentsUsagePanel`      | Composing selected, installed provider panels and switching pages                      | Parsing snapshots or owning provider timers |
 
 ## Data flow
 
@@ -86,6 +89,30 @@ The interval lookup is supplied to `UsagePolling` by the provider services, keep
 
 Reader work runs on background threads. Services publish UI updates through the event dispatch thread.
 Each panel/widget removes its listener during disposal; the Codex panel additionally stops its countdown timer.
+
+`AgentSelectionPanel` shares the persisted OpenAI, JetBrains AI, and Copilot checkboxes between IDE Settings and
+the Tool Window configuration. `UsageRefreshCoordinator` applies changes, notifies overview listeners on the EDT,
+and asks the IDE to reevaluate the three status widget factories. The overview creates only selected, available
+provider panels and disposes old panels when selection changes. Its toolbar remains available with no providers.
+Deselected providers skip background reads; optional plugins must also be loaded before their panels are created.
+
+`AgentSection` provides compact bordered surfaces and provider identity accents. `ProviderHeader` shows subscription
+badges, and `UsageSummary` shows four compact key/value facts and an expandable list of further details. Expansion
+survives provider refreshes; provider panels supply all labels and values. HTML labels and tooltips escape provider
+text. The scrollable overview
+tracks the viewport width. Shared status widgets render neutral labels and quota-colored values without dots.
+
+`UsageStatusBarGroup` repositions the existing widgets after installation/removal on the EDT, keeping the visible
+agents adjacent in OpenAI, JetBrains AI, Copilot order without changing their IDs or context-menu settings.
+It uses the platform's status component layout and leaves unrelated widgets in their relative order. Extension
+loading orders also define the same sequence. A different status bar implementation falls back to extension order.
+
+`core/reflection/PluginClasses` first uses the loaded provider's class loader, then a specified loaded content
+module's loader. The JetBrains AI quota and subscription readers share this compatibility path; core has no
+provider-specific module names or service logic.
+The JetBrains subscription reader prefers registered application services and the manager's immutable activation
+snapshot. Its safe unavailable-reason field travels with the usage model to the provider's details/tooltips;
+it contains only API metadata and exception types, never provider object contents or exception messages.
 
 ## Adding or changing a provider
 

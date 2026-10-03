@@ -1,5 +1,53 @@
 # Changelog
 
+## 1.0.8
+
+- Expand agent summaries to four visible facts in a compact two-column grid, with further details on demand.
+- Show OpenAI credits, update time and both resets; JetBrains AI remaining, used and total credits; and Copilot used,
+  available, reset and report values. Expanded views include plan, category balances, refresh interval and status.
+- Prefer registered JetBrains AI application services and their published activation snapshot for subscription
+  lookup. Add active license-journey and product-code fallback paths; identify workspace access without inventing
+  a personal subscription tier.
+- Expose a safe subscription lookup explanation in details/tooltips when the plan remains unavailable. Diagnostics
+  contain only metadata getter/class names and exception types, without account data or credentials.
+
+## 1.0.7
+
+- Read Copilot Free's included quota from chat, matching Copilot's own dialog, instead of showing its unused premium
+  quota as exhausted. With 100% available, consumption is 0% and green.
+- Keep visible status widgets adjacent in OpenAI, JetBrains AI, Copilot order after enabling/disabling them.
+- Resolve JetBrains AI activation and subscription metadata through loaded content-module class loaders when they
+  are unavailable from the parent plugin loader. Share this compatibility lookup with the quota reader.
+
+## 1.0.6
+
+- Separate agents into compact cards with identity accents and subscription badges.
+- Add a small visible details line for credits, consumed/remaining quota, and reset times.
+- Keep the overview fitted to the Tool Window width and remove empty JetBrains AI quota rows.
+- Show status labels as `OpenAi | D=<percent>% - W=<percent>%`, `JetBrainAi | <percent>%`, and
+  `Copilot | <percent>%`; color each percentage directly and remove usage dots.
+- Add persisted agent checkboxes to IDE Settings and the Tool Window configuration. Deselected agents disappear
+  from both the overview and status bar, and their background quota reads pause.
+- Keep settings and refresh available when all agents are hidden, and omit unavailable optional providers.
+- Update the illustrated Marketplace preview and usage documentation.
+
+## 1.0.5
+
+- Centralize project identity/version in `gradle.properties`, regenerate the Gradle wrapper, and pin its distribution
+  checksum.
+- Keep platform-specific wrapper line endings and document all required Gradle build files.
+- Place usage color dots directly after percentages in all status widgets.
+- Give OpenAI D and W separate trailing dots colored by their respective balances.
+- Dim stale OpenAI values on refresh errors and preserve error details in the tooltip.
+- Update the illustrated Marketplace preview to match the new indicator positions.
+
+## 1.0.4
+
+- Show consumed GitHub Copilot quota in the status bar and overview: 0% unused, 100% exhausted.
+- Fill Copilot bars as consumption increases and warn as the remaining quota decreases.
+- Keep used and remaining counts in tooltips; show unlimited quotas without an exhaustion percentage.
+- Update usage documentation and the illustrated Marketplace preview.
+
 ## 1.0.3
 
 - Show OpenAI usage as `OpenAi D <percent>% - W <percent>%` with one indicator using the lower remaining balance.

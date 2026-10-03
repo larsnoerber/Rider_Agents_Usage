@@ -6,4 +6,4 @@ pluginManagement {
     }
 }
 
-rootProject.name = "agents-usage"
+rootProject.name = providers.gradleProperty("projectName").get()

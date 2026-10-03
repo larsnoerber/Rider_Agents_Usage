@@ -1,9 +1,9 @@
 package io.github.larsnoerber.agentsusage.providers.jetbrainsai
 
-import com.intellij.ide.plugins.PluginManagerCore
 import com.intellij.openapi.application.ApplicationManager
 import io.github.larsnoerber.agentsusage.core.reflection.PluginApi
 import io.github.larsnoerber.agentsusage.core.reflection.loadedPlugin
+import io.github.larsnoerber.agentsusage.core.reflection.loadPluginClass
 import java.math.BigDecimal
 import java.time.Instant
 
@@ -15,17 +15,19 @@ internal class JetBrainsAiUsageReader {
         val plugin = loadedPlugin(PLUGIN_ID)
             ?: return JetBrainsAiUsage(error = "JetBrains AI Assistant is not installed or enabled")
         val plan = subscriptionReader.read(plugin.pluginClassLoader)
-        val managerClass = loadManagerClass(plugin.pluginClassLoader)
+        val planUnavailableReason = subscriptionReader.unavailableReason
+        val managerClass = loadPluginClass("$QUOTA_PACKAGE.QuotaManager2", plugin.pluginClassLoader, "intellij.ml.llm.core")
         val manager = ApplicationManager.getApplication().getService(managerClass)
             ?: error("JetBrains AI quota service is unavailable")
         if (requestUpdate) getter(manager, "requestUpdateEverything")
         val info = flowValue(getter(manager, "getQuotaInfo") ?: error("JetBrains AI quota is unavailable"))
-            ?: return JetBrainsAiUsage(plan = plan, error = "Waiting for JetBrains AI quota. Sign in to AI Assistant.")
+            ?: return JetBrainsAiUsage(plan = plan, planUnavailableReason = planUnavailableReason,
+                error = "Waiting for JetBrains AI quota. Sign in to AI Assistant.")
         val refill = getter(manager, "getNextRefill")?.let(::flowValue)
         val reset = refill?.let { getter(it, "getNext", required = false) }?.toString()
             ?.let { runCatching { Instant.parse(it).epochSecond }.getOrNull() }
         return when (info.javaClass.simpleName) {
-            "Unlimited" -> JetBrainsAiUsage(unlimited = true, plan = plan)
+            "Unlimited" -> JetBrainsAiUsage(unlimited = true, plan = plan, planUnavailableReason = planUnavailableReason)
             "Available", "Reached" -> {
                 // `current` is consumed quota; `available` in the details is the remaining balance.
                 val maximum = amount(info, "getMaximum") ?: error("JetBrains AI quota format is unsupported")
@@ -49,28 +51,14 @@ internal class JetBrainsAiUsageReader {
                     subscription = details("getTariffQuota"),
                     topUp = details("getTopUpQuota"),
                     resetsAt = reset,
-                    plan = plan
+                    plan = plan,
+                    planUnavailableReason = planUnavailableReason
                 )
             }
-            "Error" -> JetBrainsAiUsage(plan = plan, error = "JetBrains AI could not refresh the credit balance. Check AI Assistant.")
-            else -> JetBrainsAiUsage(plan = plan, error = "Waiting for JetBrains AI quota. Sign in to AI Assistant.")
-        }
-    }
-
-    private fun loadManagerClass(pluginLoader: ClassLoader?): Class<*> {
-        val name = "$QUOTA_PACKAGE.QuotaManager2"
-        try {
-            return Class.forName(name, true, pluginLoader)
-        } catch (_: ClassNotFoundException) {
-            // New IDE versions give AI Assistant content modules their own class loaders.
-            val moduleIdClass = Class.forName("com.intellij.ide.plugins.PluginModuleId")
-            val moduleId = moduleIdClass.getMethod("getId", String::class.java, String::class.java)
-                .invoke(null, "intellij.ml.llm.core", moduleIdClass.getField("JETBRAINS_NAMESPACE").get(null))
-            val pluginSet = PluginManagerCore::class.java.getMethod("getPluginSet").invoke(null)
-            val module = pluginSet.javaClass.getMethod("findEnabledModule", moduleIdClass).invoke(pluginSet, moduleId)
-                ?: error("JetBrains AI quota module is unavailable")
-            val loader = module.javaClass.getMethod("getPluginClassLoader").invoke(module) as ClassLoader
-            return Class.forName(name, true, loader)
+            "Error" -> JetBrainsAiUsage(plan = plan, planUnavailableReason = planUnavailableReason,
+                error = "JetBrains AI could not refresh the credit balance. Check AI Assistant.")
+            else -> JetBrainsAiUsage(plan = plan, planUnavailableReason = planUnavailableReason,
+                error = "Waiting for JetBrains AI quota. Sign in to AI Assistant.")
         }
     }
 

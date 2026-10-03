@@ -8,6 +8,7 @@ import io.github.larsnoerber.agentsusage.core.format.formatSubscriptionPlan
 import io.github.larsnoerber.agentsusage.providers.jetbrainsai.JetBrainsAiUsage
 import io.github.larsnoerber.agentsusage.providers.jetbrainsai.JetBrainsAiUsageService
 import io.github.larsnoerber.agentsusage.providers.jetbrainsai.formatAiCredits
+import io.github.larsnoerber.agentsusage.settings.AgentsUsageSettings
 import io.github.larsnoerber.agentsusage.ui.components.StatusBarPart
 import io.github.larsnoerber.agentsusage.ui.components.StatusBarPresentation
 import io.github.larsnoerber.agentsusage.ui.components.UsageStatusBarWidget
@@ -18,7 +19,8 @@ import java.awt.Color
 class JetBrainsAiStatusBarWidgetFactory : StatusBarWidgetFactory {
     override fun getId(): String = "JetBrainsAiCreditsStatusBar"
     override fun getDisplayName(): String = "JetBrains AI Usage"
-    override fun isAvailable(project: Project): Boolean = JetBrainsAiUsageService.isAvailable()
+    override fun isAvailable(project: Project): Boolean =
+        AgentsUsageSettings.getInstance().state.showJetBrainsAi && JetBrainsAiUsageService.isAvailable()
     override fun createWidget(project: Project): StatusBarWidget =
         UsageStatusBarWidget(project, getId(), JetBrainsAiUsageService.getInstance(), ::jetBrainsPresentation)
     override fun disposeWidget(widget: StatusBarWidget) = widget.dispose()
@@ -27,13 +29,14 @@ class JetBrainsAiStatusBarWidgetFactory : StatusBarWidgetFactory {
 private fun jetBrainsPresentation(usage: JetBrainsAiUsage): StatusBarPresentation {
     val percent = usage.quota?.percentLeft
     val text = when {
-        usage.unlimited -> "JetbrainAi ∞"
-        percent != null -> "JetbrainAi $percent%"
-        usage.error != null || usage.quota != null -> "JetbrainAi —"
-        else -> "JetbrainAi …"
+        usage.unlimited -> "∞"
+        percent != null -> "$percent%"
+        usage.error != null || usage.quota != null -> "—"
+        else -> "…"
     }
     val lines = buildList {
         add("Subscription: ${formatSubscriptionPlan(usage.plan)}")
+        usage.planUnavailableReason?.let { add("Subscription lookup: $it") }
         usage.quota?.let { add("Remaining: ${formatAiCredits(it.remaining)} / ${formatAiCredits(it.total)} credits") }
         usage.subscription?.let { add("Subscription: ${formatAiCredits(it.remaining)} / ${formatAiCredits(it.total)} credits") }
         usage.topUp?.let { add("Top-up: ${formatAiCredits(it.remaining)} / ${formatAiCredits(it.total)} credits") }
@@ -42,7 +45,7 @@ private fun jetBrainsPresentation(usage: JetBrainsAiUsage): StatusBarPresentatio
         add(usage.error ?: "Click to open usage details")
     }
     return StatusBarPresentation(
-        listOf(StatusBarPart(text, aiCreditColor(usage))),
+        listOf(StatusBarPart("JetBrainAi | "), StatusBarPart(text, aiCreditColor(usage))),
         usageTooltip("JetBrains AI credits", lines),
         dimmed = usage.error != null
     )

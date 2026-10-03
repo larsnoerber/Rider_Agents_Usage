@@ -12,7 +12,9 @@ import io.github.larsnoerber.agentsusage.settings.AgentsUsageSettings
 class GitHubCopilotUsageService : UsageSource<GitHubCopilotUsage>, Disposable {
     private val reader = GitHubCopilotUsageReader()
     private val log = Logger.getInstance(GitHubCopilotUsageService::class.java)
-    private val polling = UsagePolling(GitHubCopilotUsage(), reader::read, { AgentsUsageSettings.getInstance().refreshIntervalSeconds }) { error ->
+    private val polling = UsagePolling(GitHubCopilotUsage(), reader::read,
+        { AgentsUsageSettings.getInstance().refreshIntervalSeconds },
+        { AgentsUsageSettings.getInstance().state.showCopilot }) { error ->
         log.debug("Unable to read GitHub Copilot usage", error)
         GitHubCopilotUsage(error = "GitHub Copilot usage is unavailable with this Copilot version")
     }

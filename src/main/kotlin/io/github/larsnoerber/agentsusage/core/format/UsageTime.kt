@@ -1,6 +1,7 @@
 package io.github.larsnoerber.agentsusage.core.format
 
 import java.time.Instant
+import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -9,6 +10,12 @@ private val resetFormatter = DateTimeFormatter.ofPattern("MMM d, HH:mm", Locale.
     .withZone(ZoneId.systemDefault())
 
 internal fun formatResetTime(epochSeconds: Long): String = resetFormatter.format(Instant.ofEpochSecond(epochSeconds))
+
+internal fun formatCompactTime(epochSeconds: Long): String {
+    val date = Instant.ofEpochSecond(epochSeconds).atZone(ZoneId.systemDefault())
+    val pattern = if (date.toLocalDate() == LocalDate.now()) "HH:mm" else "MMM d HH:mm"
+    return date.format(DateTimeFormatter.ofPattern(pattern, Locale.ENGLISH))
+}
 
 internal fun resetCountdown(epochSeconds: Long): String {
     val seconds = (epochSeconds - System.currentTimeMillis() / 1_000).coerceAtLeast(0)

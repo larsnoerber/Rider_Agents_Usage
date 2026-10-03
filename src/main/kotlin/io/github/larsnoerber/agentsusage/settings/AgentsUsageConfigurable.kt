@@ -8,6 +8,7 @@ import com.intellij.ui.components.JBTextField
 import com.intellij.util.ui.FormBuilder
 import io.github.larsnoerber.agentsusage.application.UsageRefreshCoordinator
 import io.github.larsnoerber.agentsusage.providers.codex.CodexUsageService
+import io.github.larsnoerber.agentsusage.ui.settings.AgentSelectionPanel
 import java.awt.BorderLayout
 import javax.swing.JButton
 import javax.swing.JComponent
@@ -18,6 +19,7 @@ class AgentsUsageConfigurable : Configurable {
     private val intervalField = JBTextField()
     private val panel = JPanel(BorderLayout())
     private val detectButton = JButton("Auto-detect")
+    private val agents = AgentSelectionPanel()
 
     init {
         val pathRow = JPanel(BorderLayout(6, 0))
@@ -25,6 +27,8 @@ class AgentsUsageConfigurable : Configurable {
         pathRow.add(detectButton, BorderLayout.EAST)
         val form = FormBuilder.createFormBuilder()
             .addComponent(JBLabel("Agent settings"))
+            .addComponent(JBLabel("Visible agents (overview and status bar):"))
+            .addComponent(agents)
             .addComponent(JBLabel("<html>Refresh settings apply to OpenAI, JetBrains AI, and GitHub Copilot.</html>"))
             .addLabeledComponent(JBLabel("Auto-refresh interval for all agents (seconds):"), intervalField)
             .addLabeledComponent(JBLabel("OpenAI (Codex) CLI path (leave empty for auto-detect):"), pathRow)
@@ -40,13 +44,14 @@ class AgentsUsageConfigurable : Configurable {
 
     override fun isModified(): Boolean {
         val settings = AgentsUsageSettings.getInstance().state
-        return pathField.text != settings.codexPath || intervalField.text.toIntOrNull() != settings.refreshSeconds
+        return pathField.text != settings.codexPath || intervalField.text.toIntOrNull() != settings.refreshSeconds || agents.isModified()
     }
 
     override fun reset() {
         val settings = AgentsUsageSettings.getInstance().state
         pathField.text = settings.codexPath
         intervalField.text = settings.refreshSeconds.toString()
+        agents.reset()
     }
 
     override fun apply() {
@@ -57,6 +62,7 @@ class AgentsUsageConfigurable : Configurable {
         }
         val settings = AgentsUsageSettings.getInstance().state
         settings.codexPath = pathField.text.trim()
+        agents.applySelection()
         UsageRefreshCoordinator.changeRefreshInterval(interval)
     }
 

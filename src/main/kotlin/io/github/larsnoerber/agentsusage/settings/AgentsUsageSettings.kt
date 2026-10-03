@@ -7,7 +7,10 @@ import com.intellij.openapi.components.Storage
 
 data class AgentsUsageState(
     @Volatile var codexPath: String = "",
-    @Volatile var refreshSeconds: Int = AgentsUsageSettings.DEFAULT_REFRESH_SECONDS
+    @Volatile var refreshSeconds: Int = AgentsUsageSettings.DEFAULT_REFRESH_SECONDS,
+    @Volatile var showOpenAi: Boolean = true,
+    @Volatile var showJetBrainsAi: Boolean = true,
+    @Volatile var showCopilot: Boolean = true
 )
 
 // Keep the original identifiers so saved paths and refresh intervals survive upgrades.

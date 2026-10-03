@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="800" viewBox="0 0 1280 800">
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="980" viewBox="0 0 1280 980">
 <title>Agents Usage illustrated overview with example balances</title>
 <desc>Compact usage bars for OpenAI, JetBrains AI and GitHub Copilot, plus status indicators. This is an illustration, not a live account screenshot.</desc>
-<rect x="0" y="0" width="1280" height="800" rx="0" fill="#1E1F22"/>
+<rect x="0" y="0" width="1280" height="980" rx="0" fill="#1E1F22"/>
 <rect x="100" y="64" width="62" height="62" rx="12" fill="#111827"/>
 <text x="114" y="74" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="30" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">AI</text>
 <rect x="114" y="113" width="10" height="3" rx="1" fill="#5EEAD4"/>
@@ -9,57 +9,92 @@
 <rect x="144" y="113" width="10" height="3" rx="1" fill="#A78BFA"/>
 <text x="182" y="64" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="42" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">Agents Usage</text>
 <text x="184" y="117" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="24" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Usage overview and status indicators</text>
-<rect x="100" y="180" width="1080" height="474" rx="8" fill="#2B2D30"/>
 <text x="132" y="197" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="23" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">Agents Usage</text>
-<rect x="100" y="240" width="1080" height="1" rx="0" fill="#3D4148"/>
-<text x="132" y="260" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="26" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">OpenAI</text>
-<text x="239" y="262" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="24" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Plus</text>
-<polyline points="1076.6602540378444,282.0 1075.6604444311897,283.4278760968654 1074.4278760968655,284.6604444311898 1073.0,285.66025403784437 1071.4202014332566,286.3969262078591 1069.7364817766693,286.84807753012205 1068.0,287.0 1066.2635182233307,286.84807753012205 1064.5797985667434,286.3969262078591 1063.0,285.66025403784437 1061.5721239031345,284.6604444311898 1060.3395555688103,283.4278760968654 1059.3397459621556,282.0 1058.603073792141,280.4202014332567 1058.151922469878,278.7364817766693 1058.0,277.0 1058.151922469878,275.2635182233307 1058.603073792141,273.5797985667433 1059.3397459621556,272.0 1060.3395555688103,270.57212390313464 1061.5721239031345,269.3395555688102 1063.0,268.33974596215563 1064.5797985667434,267.6030737921409 1066.2635182233307,267.15192246987795 1068.0,267.0 1069.7364817766693,267.15192246987795 1071.4202014332566,267.6030737921409 1073.0,268.33974596215563 1074.4278760968655,269.3395555688102 1075.6604444311897,270.5721239031346 1076.6602540378444,272.0" fill="none" stroke="#A6A9B1" stroke-width="2"/>
-<polyline points="1077,264 1077,273 1068,273" fill="none" stroke="#A6A9B1" stroke-width="2"/>
-<circle cx="1132" cy="277" r="8" fill="#A6A9B1"/>
-<circle cx="1132" cy="277" r="5" fill="#2B2D30"/>
-<polyline points="1139.0,277.0 1144.0,277.0" fill="none" stroke="#A6A9B1" stroke-width="3"/>
-<polyline points="1136.9497474683058,281.9497474683058 1140.4852813742386,285.4852813742386" fill="none" stroke="#A6A9B1" stroke-width="3"/>
-<polyline points="1132.0,284.0 1132.0,289.0" fill="none" stroke="#A6A9B1" stroke-width="3"/>
-<polyline points="1127.0502525316942,281.9497474683058 1123.5147186257614,285.4852813742386" fill="none" stroke="#A6A9B1" stroke-width="3"/>
-<polyline points="1125.0,277.0 1120.0,277.0" fill="none" stroke="#A6A9B1" stroke-width="3"/>
-<polyline points="1127.0502525316942,272.0502525316942 1123.5147186257614,268.5147186257614" fill="none" stroke="#A6A9B1" stroke-width="3"/>
-<polyline points="1132.0,270.0 1132.0,265.0" fill="none" stroke="#A6A9B1" stroke-width="3"/>
-<polyline points="1136.9497474683058,272.0502525316942 1140.4852813742386,268.5147186257614" fill="none" stroke="#A6A9B1" stroke-width="3"/>
-<text x="132" y="305" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="24" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">5 hours</text>
-<rect x="362" y="312" width="530" height="16" rx="0" fill="#3D4148"/>
-<rect x="362" y="312" width="413" height="16" rx="0" fill="#64CD87"/>
-<text x="1148" y="305" fill="#64CD87" font-family="Segoe UI, sans-serif" font-size="24" font-weight="700" dominant-baseline="text-before-edge" text-anchor="end">78%</text>
-<text x="132" y="341" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="24" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">This week</text>
-<rect x="362" y="348" width="530" height="16" rx="0" fill="#3D4148"/>
-<rect x="362" y="348" width="223" height="16" rx="0" fill="#FFB94B"/>
-<text x="1148" y="341" fill="#FFB94B" font-family="Segoe UI, sans-serif" font-size="24" font-weight="700" dominant-baseline="text-before-edge" text-anchor="end">42%</text>
-<text x="132" y="391" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="26" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">JetBrains AI</text>
-<text x="299" y="393" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="24" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">AI Pro</text>
-<text x="132" y="436" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="24" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Subscription</text>
-<rect x="362" y="443" width="530" height="16" rx="0" fill="#3D4148"/>
-<rect x="362" y="443" width="344" height="16" rx="0" fill="#64CD87"/>
-<text x="1148" y="436" fill="#64CD87" font-family="Segoe UI, sans-serif" font-size="24" font-weight="700" dominant-baseline="text-before-edge" text-anchor="end">6.5 / 10</text>
-<text x="132" y="472" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="24" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Top-up</text>
-<rect x="362" y="479" width="530" height="16" rx="0" fill="#3D4148"/>
-<rect x="362" y="479" width="424" height="16" rx="0" fill="#64CD87"/>
-<text x="1148" y="472" fill="#64CD87" font-family="Segoe UI, sans-serif" font-size="24" font-weight="700" dominant-baseline="text-before-edge" text-anchor="end">4 / 5</text>
-<text x="132" y="522" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="26" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">GitHub Copilot</text>
-<text x="333" y="524" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="24" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Pro</text>
-<text x="132" y="567" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="24" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Premium requests</text>
-<rect x="362" y="574" width="530" height="16" rx="0" fill="#3D4148"/>
-<rect x="362" y="574" width="329" height="16" rx="0" fill="#64CD87"/>
-<text x="1148" y="567" fill="#64CD87" font-family="Segoe UI, sans-serif" font-size="24" font-weight="700" dominant-baseline="text-before-edge" text-anchor="end">187 / 300</text>
-<text x="132" y="603" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="24" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Chat</text>
-<rect x="362" y="610" width="530" height="16" rx="0" fill="#3D4148"/>
-<rect x="362" y="610" width="530" height="16" rx="0" fill="#64CD87"/>
-<text x="1148" y="603" fill="#64CD87" font-family="Segoe UI, sans-serif" font-size="24" font-weight="700" dominant-baseline="text-before-edge" text-anchor="end">Unlimited</text>
-<rect x="100" y="672" width="1080" height="46" rx="6" fill="#2B2D30"/>
-<circle cx="124" cy="695" r="5" fill="#FFB94B"/>
-<text x="139" y="682" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="23" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">OpenAi D 78% - W 42%</text>
-<circle cx="568" cy="695" r="5" fill="#64CD87"/>
-<text x="583" y="682" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="23" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">JetbrainAi 70%</text>
-<circle cx="936" cy="695" r="5" fill="#64CD87"/>
-<text x="951" y="682" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="23" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Copilot 62%</text>
-<text x="100" y="749" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="20" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Illustrated preview · Example balances · Available quotas depend on your plan</text>
+<polyline points="1076.6602540378444,216.0 1075.6604444311897,217.4278760968654 1074.4278760968655,218.66044443118977 1073.0,219.6602540378444 1071.4202014332566,220.39692620785908 1069.7364817766693,220.84807753012208 1068.0,221.0 1066.2635182233307,220.84807753012208 1064.5797985667434,220.39692620785908 1063.0,219.6602540378444 1061.5721239031345,218.66044443118977 1060.3395555688103,217.4278760968654 1059.3397459621556,216.0 1058.603073792141,214.4202014332567 1058.151922469878,212.7364817766693 1058.0,211.0 1058.151922469878,209.2635182233307 1058.603073792141,207.5797985667433 1059.3397459621556,206.0 1060.3395555688103,204.5721239031346 1061.5721239031345,203.33955556881023 1063.0,202.3397459621556 1064.5797985667434,201.60307379214092 1066.2635182233307,201.15192246987792 1068.0,201.0 1069.7364817766693,201.15192246987792 1071.4202014332566,201.60307379214092 1073.0,202.3397459621556 1074.4278760968655,203.33955556881023 1075.6604444311897,204.5721239031346 1076.6602540378444,206.0" fill="none" stroke="#A6A9B1" stroke-width="2"/>
+<polyline points="1077,198 1077,207 1068,207" fill="none" stroke="#A6A9B1" stroke-width="2"/>
+<circle cx="1132" cy="211" r="8" fill="#A6A9B1"/>
+<circle cx="1132" cy="211" r="5" fill="#1E1F22"/>
+<polyline points="1139.0,211.0 1144.0,211.0" fill="none" stroke="#A6A9B1" stroke-width="3"/>
+<polyline points="1136.9497474683058,215.94974746830584 1140.4852813742386,219.48528137423858" fill="none" stroke="#A6A9B1" stroke-width="3"/>
+<polyline points="1132.0,218.0 1132.0,223.0" fill="none" stroke="#A6A9B1" stroke-width="3"/>
+<polyline points="1127.0502525316942,215.94974746830584 1123.5147186257614,219.48528137423858" fill="none" stroke="#A6A9B1" stroke-width="3"/>
+<polyline points="1125.0,211.0 1120.0,211.0" fill="none" stroke="#A6A9B1" stroke-width="3"/>
+<polyline points="1127.0502525316942,206.05025253169416 1123.5147186257614,202.51471862576142" fill="none" stroke="#A6A9B1" stroke-width="3"/>
+<polyline points="1132.0,204.0 1132.0,199.0" fill="none" stroke="#A6A9B1" stroke-width="3"/>
+<polyline points="1136.9497474683058,206.05025253169416 1140.4852813742386,202.51471862576142" fill="none" stroke="#A6A9B1" stroke-width="3"/>
+<rect x="100" y="245" width="1080" height="183" rx="8" fill="#2B2D30"/>
+<rect x="106" y="254" width="4" height="165" rx="2" fill="#39AE99"/>
+<text x="132" y="257" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="26" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">OpenAI</text>
+<rect x="1025" y="257" width="123" height="30" rx="4" fill="#3D4148"/>
+<text x="1087" y="259" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="20" font-weight="400" dominant-baseline="text-before-edge" text-anchor="end">Plus</text>
+<text x="132" y="288" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="24" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">5 hours</text>
+<rect x="362" y="295" width="530" height="16" rx="0" fill="#3D4148"/>
+<rect x="362" y="295" width="413" height="16" rx="0" fill="#64CD87"/>
+<text x="1148" y="288" fill="#64CD87" font-family="Segoe UI, sans-serif" font-size="24" font-weight="700" dominant-baseline="text-before-edge" text-anchor="end">78%</text>
+<text x="132" y="318" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="24" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">This week</text>
+<rect x="362" y="325" width="530" height="16" rx="0" fill="#3D4148"/>
+<rect x="362" y="325" width="223" height="16" rx="0" fill="#FFB94B"/>
+<text x="1148" y="318" fill="#FFB94B" font-family="Segoe UI, sans-serif" font-size="24" font-weight="700" dominant-baseline="text-before-edge" text-anchor="end">42%</text>
+<text x="132" y="349" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="18" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Credits:</text>
+<text x="200.5" y="349" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="18" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">120</text>
+<text x="680" y="349" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="18" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Updated:</text>
+<text x="761.5" y="349" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="18" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">09:00</text>
+<text x="132" y="375" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="18" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">5h reset:</text>
+<text x="208.5" y="375" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="18" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">16:30</text>
+<text x="680" y="375" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="18" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Week reset:</text>
+<text x="781.9921875" y="375" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="18" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">Oct 8 09:00</text>
+<text x="132" y="403" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="18" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">More details</text>
+<rect x="100" y="442" width="1080" height="183" rx="8" fill="#2B2D30"/>
+<rect x="106" y="451" width="4" height="165" rx="2" fill="#9D77DC"/>
+<text x="132" y="454" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="26" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">JetBrains AI</text>
+<rect x="1025" y="454" width="123" height="30" rx="4" fill="#3D4148"/>
+<text x="1087" y="456" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="20" font-weight="400" dominant-baseline="text-before-edge" text-anchor="end">AI Pro</text>
+<text x="132" y="485" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="24" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Subscription</text>
+<rect x="362" y="492" width="530" height="16" rx="0" fill="#3D4148"/>
+<rect x="362" y="492" width="344" height="16" rx="0" fill="#64CD87"/>
+<text x="1148" y="485" fill="#64CD87" font-family="Segoe UI, sans-serif" font-size="24" font-weight="700" dominant-baseline="text-before-edge" text-anchor="end">6.5 / 10</text>
+<text x="132" y="515" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="24" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Top-up</text>
+<rect x="362" y="522" width="530" height="16" rx="0" fill="#3D4148"/>
+<rect x="362" y="522" width="424" height="16" rx="0" fill="#64CD87"/>
+<text x="1148" y="515" fill="#64CD87" font-family="Segoe UI, sans-serif" font-size="24" font-weight="700" dominant-baseline="text-before-edge" text-anchor="end">4 / 5</text>
+<text x="132" y="546" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="18" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Credits left:</text>
+<text x="231.0078125" y="546" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="18" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">10.5</text>
+<text x="680" y="546" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="18" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Used:</text>
+<text x="733.0" y="546" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="18" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">4.5</text>
+<text x="132" y="572" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="18" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Total:</text>
+<text x="184.46875" y="572" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="18" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">15</text>
+<text x="680" y="572" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="18" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Reset:</text>
+<text x="736.4921875" y="572" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="18" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">Oct 20 09:00</text>
+<text x="132" y="600" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="18" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">More details</text>
+<rect x="100" y="639" width="1080" height="183" rx="8" fill="#2B2D30"/>
+<rect x="106" y="648" width="4" height="165" rx="2" fill="#5297E6"/>
+<text x="132" y="651" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="26" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">GitHub Copilot</text>
+<rect x="1025" y="651" width="123" height="30" rx="4" fill="#3D4148"/>
+<text x="1087" y="653" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="20" font-weight="400" dominant-baseline="text-before-edge" text-anchor="end">Pro</text>
+<text x="132" y="682" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="24" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Premium requests</text>
+<rect x="362" y="689" width="530" height="16" rx="0" fill="#3D4148"/>
+<rect x="362" y="689" width="201" height="16" rx="0" fill="#64CD87"/>
+<text x="1148" y="682" fill="#64CD87" font-family="Segoe UI, sans-serif" font-size="24" font-weight="700" dominant-baseline="text-before-edge" text-anchor="end">38%</text>
+<text x="132" y="712" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="24" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Chat</text>
+<rect x="362" y="719" width="530" height="16" rx="0" fill="#3D4148"/>
+<text x="1148" y="712" fill="#64CD87" font-family="Segoe UI, sans-serif" font-size="24" font-weight="700" dominant-baseline="text-before-edge" text-anchor="end">Unlimited</text>
+<text x="132" y="743" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="18" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Used:</text>
+<text x="185.0" y="743" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="18" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">114 / 300</text>
+<text x="680" y="743" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="18" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Available:</text>
+<text x="764.484375" y="743" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="18" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">186 / 300</text>
+<text x="132" y="769" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="18" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Reset:</text>
+<text x="188.4921875" y="769" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="18" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">Nov 1 00:00</text>
+<text x="680" y="769" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="18" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Reported:</text>
+<text x="767.0" y="769" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="18" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">09:00</text>
+<text x="132" y="797" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="18" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">More details</text>
+<rect x="100" y="844" width="1080" height="46" rx="6" fill="#2B2D30"/>
+<text x="124" y="854" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="23" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">OpenAi | D=</text>
+<text x="250.5" y="854" fill="#64CD87" font-family="Segoe UI, sans-serif" font-size="23" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">78%</text>
+<text x="294.5" y="854" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="23" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start"> - W=</text>
+<text x="353.5" y="854" fill="#FFB94B" font-family="Segoe UI, sans-serif" font-size="23" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">42%</text>
+<text x="600" y="854" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="23" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">JetBrainAi | </text>
+<text x="718.0" y="854" fill="#64CD87" font-family="Segoe UI, sans-serif" font-size="23" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">70%</text>
+<text x="948" y="854" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="23" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Copilot | </text>
+<text x="1040.0" y="854" fill="#64CD87" font-family="Segoe UI, sans-serif" font-size="23" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">38%</text>
+<text x="100" y="928" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="20" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Illustrated preview · Example balances · Copilot shows consumed quota</text>
 </svg>

@@ -12,7 +12,9 @@ import io.github.larsnoerber.agentsusage.settings.AgentsUsageSettings
 class JetBrainsAiUsageService : UsageSource<JetBrainsAiUsage>, Disposable {
     private val reader = JetBrainsAiUsageReader()
     private val log = Logger.getInstance(JetBrainsAiUsageService::class.java)
-    private val polling = UsagePolling(JetBrainsAiUsage(), reader::read, { AgentsUsageSettings.getInstance().refreshIntervalSeconds }) { error ->
+    private val polling = UsagePolling(JetBrainsAiUsage(), reader::read,
+        { AgentsUsageSettings.getInstance().refreshIntervalSeconds },
+        { AgentsUsageSettings.getInstance().state.showJetBrainsAi }) { error ->
         log.debug("Unable to read JetBrains AI credits", error)
         JetBrainsAiUsage(error = "JetBrains AI credits are unavailable with this AI Assistant version")
     }

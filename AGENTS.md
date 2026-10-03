@@ -23,8 +23,12 @@ before changing package boundaries and [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md
 - Read optional providers only when their plugins are loaded. Do not add a required AI Assistant or Copilot dependency.
 - Isolate internal provider API reflection in readers and `core/reflection/`. Handle unavailable APIs explicitly.
 - Preserve the plugin ID, widget IDs, Tool Window ID, and persisted settings identifiers unless migration is requested.
-- Keep the requested status format: `OpenAi D <percent>% - W <percent>%`, `JetbrainAi <percent>%`, and
-  `Copilot <percent>%`. Keep compact usage bars and visible subscription plans.
+- Keep the requested status format: `OpenAi | D=<percent>% - W=<percent>%`, `JetBrainAi | <percent>%`, and
+  `Copilot | <percent>%`. Keep compact usage bars and visible subscription plans.
+- Color percentage text directly with its quota color; do not show usage dots in status widgets.
+- Respect persisted agent checkboxes in both overview and status widgets, and pause deselected provider reads.
+- OpenAI and JetBrains AI show remaining quota; Copilot shows consumed quota (0% unused, 100% exhausted).
+  Copilot bars grow with consumption; warning colors reflect how close the quota is to exhaustion.
 - Use English product strings. Escape provider text in HTML tooltips. Do not read or log credentials.
 
 ## Working on changes

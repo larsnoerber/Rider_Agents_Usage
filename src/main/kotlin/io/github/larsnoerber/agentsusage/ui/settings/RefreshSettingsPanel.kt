@@ -25,6 +25,7 @@ import javax.swing.SpinnerNumberModel
 /** Edits the shared refresh interval without owning provider subscriptions or timers. */
 internal class RefreshSettingsPanel(private val onBack: () -> Unit) : JPanel(BorderLayout()) {
     private val settingsNotice = JBLabel(" ")
+    private val agents = AgentSelectionPanel()
     private lateinit var intervalSpinner: JSpinner
     private lateinit var presetButtons: List<RefreshChoice>
 
@@ -34,6 +35,7 @@ internal class RefreshSettingsPanel(private val onBack: () -> Unit) : JPanel(Bor
     }
 
     fun resetFromSettings() {
+        agents.reset()
         intervalSpinner.value = AgentsUsageSettings.getInstance().refreshIntervalSeconds
         settingsNotice.text = " "
         settingsNotice.foreground = usageBarColor(100)
@@ -41,6 +43,11 @@ internal class RefreshSettingsPanel(private val onBack: () -> Unit) : JPanel(Bor
 
     private fun createSettings(): JPanel = UsageSurface().apply {
         addRow(settingsHeader())
+        addRow(JBLabel("Visible agents").apply { font = font.deriveFont(Font.BOLD) }, top = 10)
+        addRow(agents, top = 4)
+        addRow(JBLabel("Overview and status bar · installed providers only").apply {
+            foreground = secondaryTextColor()
+        }, top = 4)
         addRow(JBLabel("Refresh rate for all agents").apply {
             font = font.deriveFont(Font.BOLD)
         }, top = 14)
@@ -139,8 +146,9 @@ internal class RefreshSettingsPanel(private val onBack: () -> Unit) : JPanel(Bor
         }
         settingsNotice.foreground = usageBarColor(100)
         val seconds = (intervalSpinner.value as Number).toInt().coerceIn(10, 3600)
+        agents.applySelection()
         UsageRefreshCoordinator.changeRefreshInterval(seconds)
-        settingsNotice.text = "All agents refresh every $seconds seconds"
+        settingsNotice.text = "Settings saved · refresh every $seconds seconds"
     }
 
 }

@@ -5,8 +5,8 @@ plugins {
     id("org.jetbrains.intellij.platform") version "2.18.1"
 }
 
-group = "io.github.larsnoerber.agentsusage"
-version = "1.0.3"
+group = providers.gradleProperty("pluginGroup").get()
+version = providers.gradleProperty("pluginVersion").get()
 
 repositories {
     mavenCentral()
@@ -34,17 +34,25 @@ intellijPlatform {
         }
         changeNotes = """
             <ul>
-              <li>Shows compact status labels: OpenAi D % - W %, JetbrainAi %, and Copilot %.</li>
+              <li>Shows four compact facts per agent, with expandable quota, reset, report, plan and status details.</li>
+              <li>Improves JetBrains subscription lookup through application services and activation snapshots, and exposes safe lookup diagnostics.</li>
+              <li>Corrects Copilot Free quota selection: 100% available means 0% consumed and green.</li>
+              <li>Keeps enabled status widgets adjacent in OpenAI, JetBrains AI, Copilot order.</li>
+              <li>Resolves active JetBrains AI subscription metadata across separate content-module class loaders.</li>
+              <li>Adds agent checkboxes for overview and status bar visibility, and pauses deselected provider reads.</li>
+              <li>Separates agents into compact accented cards with subscription badges and visible quota/reset details.</li>
+              <li>Colors percentage text directly and removes status dots: OpenAi | D=% - W=%, JetBrainAi | %, Copilot | %.</li>
+              <li>Shows GitHub Copilot consumption from 0% unused to 100% exhausted, with matching bars and warnings.</li>
               <li>Reads the active JetBrains AI license name instead of a generic auth tier.</li>
               <li>Adds an illustrated usage preview to the plugin description and README.</li>
               <li>Organizes provider code by feature and separates shared components, settings, and Tool Window composition.</li>
               <li>Shares status widget lifecycle and coordinates all provider refreshes centrally.</li>
               <li>Documents project rules, architecture, and local development.</li>
               <li>Compacts usage rows and headers while keeping colored bars and balances visible.</li>
-              <li>Moves reset and sync details into tooltips and labels OpenAI in the status bar.</li>
+              <li>Keeps complete reset and sync details in tooltips and labels OpenAI in the status bar.</li>
               <li>Adds an AI chip logo and matching Tool Window icon.</li>
               <li>Monitors OpenAI Codex, JetBrains AI, and GitHub Copilot usage in IntelliJ IDEA and Rider.</li>
-              <li>Displays independent status bar widgets with remaining usage and color indicators.</li>
+              <li>Displays independent status bar widgets with quota percentages and color indicators.</li>
               <li>Shows Codex 5-hour and weekly quotas, credits, reset times, and countdowns.</li>
               <li>Shows JetBrains AI subscription credits, top-up credits, and reset times.</li>
               <li>Shows GitHub Copilot premium request or AI credit usage, chat and completion quotas, and reset times.</li>

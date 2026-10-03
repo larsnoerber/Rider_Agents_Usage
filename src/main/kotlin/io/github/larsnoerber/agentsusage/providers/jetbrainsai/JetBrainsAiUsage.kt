@@ -17,7 +17,8 @@ data class JetBrainsAiUsage(
     val resetsAt: Long? = null,
     val unlimited: Boolean = false,
     val error: String? = null,
-    val plan: String? = null
+    val plan: String? = null,
+    val planUnavailableReason: String? = null
 )
 
 fun formatAiCredits(value: BigDecimal): String {
