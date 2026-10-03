@@ -15,6 +15,11 @@
           <li>Supports manual refresh and configurable automatic refresh intervals.</li>
           <li>Automatically discovers the local Codex CLI from the system PATH.</li>
         </ul>
+        <h3>Usage preview</h3>
+        <p><img src="https://raw.githubusercontent.com/larsnoerber/Rider_Agents_Usage/main/docs/images/agents-usage-overview.png"
+                alt="Illustrated Agents Usage overview with OpenAI, JetBrains AI, GitHub Copilot usage bars and status indicators"
+                width="760"/></p>
+        <p>Illustrated preview with example balances. Available quotas and subscription details depend on your plan and installed provider plugins.</p>
         <p><b>Requirement:</b> Codex CLI must be installed and signed in on the local machine.</p>
         <p>This plugin reads usage locally through Codex CLI. It does not upload usage data. Codex is a trademark of OpenAI; this independent plugin is not affiliated with or endorsed by OpenAI.</p>
     ]]></description>
@@ -22,17 +27,18 @@
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="io.github.larsnoerber.agentsusage.service.CodexUsageService"/>
+        <applicationService
+                serviceImplementation="io.github.larsnoerber.agentsusage.providers.codex.CodexUsageService"/>
         <applicationService serviceImplementation="io.github.larsnoerber.agentsusage.settings.AgentsUsageSettings"/>
-        <toolWindow id="Agents Usage" anchor="right"
-                    factoryClass="io.github.larsnoerber.agentsusage.ui.AgentsUsageToolWindowFactory"/>
+        <toolWindow id="Agents Usage" anchor="right" icon="/icons/agentsUsage.svg"
+                    factoryClass="io.github.larsnoerber.agentsusage.ui.toolwindow.AgentsUsageToolWindowFactory"/>
         <statusBarWidgetFactory id="CodexUsageStatusBar"
-                                implementation="io.github.larsnoerber.agentsusage.ui.CodexUsageStatusBarWidgetFactory"/>
+                                implementation="io.github.larsnoerber.agentsusage.providers.codex.ui.CodexUsageStatusBarWidgetFactory"/>
         <statusBarWidgetFactory id="JetBrainsAiCreditsStatusBar"
-                                implementation="io.github.larsnoerber.agentsusage.ui.JetBrainsAiStatusBarWidgetFactory"
+                                implementation="io.github.larsnoerber.agentsusage.providers.jetbrainsai.ui.JetBrainsAiStatusBarWidgetFactory"
                                 order="after CodexUsageStatusBar"/>
         <statusBarWidgetFactory id="GitHubCopilotUsageStatusBar"
-                                implementation="io.github.larsnoerber.agentsusage.ui.GitHubCopilotStatusBarWidgetFactory"
+                                implementation="io.github.larsnoerber.agentsusage.providers.copilot.ui.GitHubCopilotStatusBarWidgetFactory"
                                 order="after JetBrainsAiCreditsStatusBar"/>
         <applicationConfigurable parentId="tools"
                                  instance="io.github.larsnoerber.agentsusage.settings.AgentsUsageConfigurable"/>

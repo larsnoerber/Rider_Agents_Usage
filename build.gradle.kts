@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "io.github.larsnoerber.agentsusage"
-version = "1.0.0"
+version = "1.0.2"
 
 repositories {
     mavenCentral()
@@ -34,6 +34,14 @@ intellijPlatform {
         }
         changeNotes = """
             <ul>
+              <li>Reads the active JetBrains AI license name instead of a generic auth tier.</li>
+              <li>Adds an illustrated usage preview to the plugin description and README.</li>
+              <li>Organizes provider code by feature and separates shared components, settings, and Tool Window composition.</li>
+              <li>Shares status widget lifecycle and coordinates all provider refreshes centrally.</li>
+              <li>Documents project rules, architecture, and local development.</li>
+              <li>Compacts usage rows and headers while keeping colored bars and balances visible.</li>
+              <li>Moves reset and sync details into tooltips and labels OpenAI in the status bar.</li>
+              <li>Adds an AI chip logo and matching Tool Window icon.</li>
               <li>Monitors OpenAI Codex, JetBrains AI, and GitHub Copilot usage in IntelliJ IDEA and Rider.</li>
               <li>Displays independent status bar widgets with remaining usage and color indicators.</li>
               <li>Shows Codex 5-hour and weekly quotas, credits, reset times, and countdowns.</li>

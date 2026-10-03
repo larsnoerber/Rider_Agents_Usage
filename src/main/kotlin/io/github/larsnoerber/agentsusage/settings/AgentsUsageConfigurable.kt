@@ -1,12 +1,13 @@
 package io.github.larsnoerber.agentsusage.settings
 
-import io.github.larsnoerber.agentsusage.service.CodexUsageService
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.options.Configurable
 import com.intellij.openapi.ui.Messages
 import com.intellij.ui.components.JBLabel
 import com.intellij.ui.components.JBTextField
 import com.intellij.util.ui.FormBuilder
+import io.github.larsnoerber.agentsusage.application.UsageRefreshCoordinator
+import io.github.larsnoerber.agentsusage.providers.codex.CodexUsageService
 import java.awt.BorderLayout
 import javax.swing.JButton
 import javax.swing.JComponent
@@ -50,13 +51,13 @@ class AgentsUsageConfigurable : Configurable {
 
     override fun apply() {
         val interval = intervalField.text.toIntOrNull()
-        if (interval == null || interval !in 10..3600) {
+        if (interval == null || interval !in AgentsUsageSettings.MIN_REFRESH_SECONDS..AgentsUsageSettings.MAX_REFRESH_SECONDS) {
             Messages.showErrorDialog("Refresh interval must be an integer between 10 and 3600 seconds.", "Agents Usage")
             return
         }
         val settings = AgentsUsageSettings.getInstance().state
         settings.codexPath = pathField.text.trim()
-        AgentsUsageSettings.getInstance().applyRefreshInterval(interval)
+        UsageRefreshCoordinator.changeRefreshInterval(interval)
     }
 
     private fun detectCodexPath() {
