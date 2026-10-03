@@ -98,8 +98,17 @@ tasks {
 
     register("buildAllExtensions") {
         group = "build"
-        description = "Build the JetBrains plugin and package the Visual Studio Code extension."
+        description = "Build all editor packages supported on the current operating system."
         dependsOn("buildPlugin", "buildVsCodeExtension")
+        if (isWindows) dependsOn("buildVisualStudioExtension")
+    }
+
+    register<Exec>("buildVisualStudioExtension") {
+        group = "build"
+        description = "Build and package the Visual Studio 2022/2026 extension on Windows."
+        workingDir = layout.projectDirectory.asFile
+        commandLine("powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "visualstudio/build.ps1")
+        doFirst { check(isWindows) { "Visual Studio packaging requires Windows and Visual Studio MSBuild." } }
     }
 
     processResources {

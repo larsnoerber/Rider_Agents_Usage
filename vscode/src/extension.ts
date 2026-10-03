@@ -125,7 +125,7 @@ export function activate(context: vscode.ExtensionContext): void {
         vscode.commands.registerCommand("agentsUsage.refresh", refresh),
         vscode.commands.registerCommand("agentsUsage.signInCopilot", () => refresh(true)),
         vscode.commands.registerCommand("agentsUsage.openSettings", () =>
-            vscode.commands.executeCommand("workbench.action.openSettings", "@ext:larsnoerber.agents-usage-vscode")),
+            vscode.commands.executeCommand("workbench.action.openSettings", `@ext:${context.extension.id}`)),
         vscode.authentication.onDidChangeSessions((event) => {
             if (event.provider.id === "github") void refresh();
         }),

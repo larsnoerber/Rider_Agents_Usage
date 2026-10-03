@@ -11,6 +11,13 @@ vscode/node_modules/
 vscode/out/
 vscode/*.vsix
 
+# Visual Studio extension generated files
+visualstudio/bin/
+visualstudio/obj/
+visualstudio/.vs/
+visualstudio/dist/
+visualstudio/extension.vsixmanifest
+
 # IntelliJ IDEA project metadata
 .idea/
 *.iml

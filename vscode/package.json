@@ -2,8 +2,9 @@
   "name": "agents-usage-vscode",
   "displayName": "Agents Usage",
   "description": "View provider-reported OpenAI Codex and GitHub Copilot usage in Visual Studio Code.",
-  "version": "1.0.12",
-  "publisher": "larsnoerber",
+  "version": "1.0.13",
+  "publisher": "lanoerber",
+  "author": "nightevil",
   "icon": "resources/icon.png",
   "license": "MIT",
   "repository": {

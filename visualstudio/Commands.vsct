@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable">
+  <Extern href="stdidcmd.h" />
+  <Extern href="vsshlids.h" />
+  <Commands package="PackageGuid">
+    <Buttons>
+      <Button guid="CommandSet" id="OpenUsage" priority="0x0100" type="Button">
+        <Parent guid="guidSHLMainMenu" id="IDG_VS_WNDO_OTRWNDWS1" />
+        <Strings><ButtonText>Agents Usage</ButtonText></Strings>
+      </Button>
+    </Buttons>
+  </Commands>
+  <Symbols>
+    <GuidSymbol name="PackageGuid" value="{6f46d6f4-1fae-4901-ab01-c8c935061634}" />
+    <GuidSymbol name="CommandSet" value="{b2211322-785e-4478-a789-ae9b64034639}"><IDSymbol name="OpenUsage" value="0x0100" /></GuidSymbol>
+  </Symbols>
+</CommandTable>

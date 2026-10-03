@@ -1,0 +1,46 @@
+<Project>
+    <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk"/>
+    <PropertyGroup>
+        <TargetFramework>net472</TargetFramework>
+        <UseWPF>true</UseWPF>
+        <LangVersion>latest</LangVersion>
+        <RootNamespace>AgentsUsage.VisualStudio</RootNamespace>
+        <AssemblyName>AgentsUsage.VisualStudio</AssemblyName>
+        <Version>1.0.13</Version>
+        <GeneratePkgDefFile>true</GeneratePkgDefFile>
+        <IncludeAssemblyInVSIXContainer>true</IncludeAssemblyInVSIXContainer>
+        <IncludeCopyLocalReferencesInVSIXContainer>true</IncludeCopyLocalReferencesInVSIXContainer>
+        <IncludeDebugSymbolsInVSIXContainer>false</IncludeDebugSymbolsInVSIXContainer>
+        <CopyBuildOutputToOutputDirectory>true</CopyBuildOutputToOutputDirectory>
+        <CopyOutputSymbolsToOutputDirectory>false</CopyOutputSymbolsToOutputDirectory>
+        <UseCodebase>true</UseCodebase>
+        <DeployExtension>false</DeployExtension>
+        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.VisualStudio.SDK" Version="17.0.32112.339" ExcludeAssets="runtime"/>
+        <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="17.14.2142" PrivateAssets="all"/>
+        <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net472" Version="1.0.3" PrivateAssets="all"/>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.4" ForceIncludeInVSIX="true"/>
+        <Reference Include="System.Design"/>
+        <Reference Include="System.Windows.Forms"/>
+    </ItemGroup>
+    <ItemGroup>
+        <None Update="source.extension.vsixmanifest">
+            <SubType>Designer</SubType>
+        </None>
+        <VSCTCompile Include="Commands.vsct">
+            <ResourceName>Menus.ctmenu</ResourceName>
+        </VSCTCompile>
+        <Content Include="..\vscode\resources\icon.png" Link="Resources\icon.png">
+            <IncludeInVSIX>true</IncludeInVSIX>
+        </Content>
+        <Resource Include="..\vscode\resources\icon.png" Link="Resources\icon.png"/>
+        <Content Include="..\LICENSE" Link="LICENSE">
+            <IncludeInVSIX>true</IncludeInVSIX>
+        </Content>
+    </ItemGroup>
+    <!-- Import VSSDK after the .NET targets so VSIX packaging participates in Build. -->
+    <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk"/>
+    <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets"/>
+</Project>

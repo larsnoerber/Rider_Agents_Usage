@@ -43,9 +43,16 @@ Agents Usage/
     └── resources/
         ├── META-INF/               Plugin registrations and plugin logo
         └── icons/                  Small Tool Window icon
-└── vscode/                         VS Code extension (TypeScript, its own API and package)
+├── vscode/                         VS Code extension (TypeScript, its own API and package)
     ├── package.json                VS Code manifest and npm build scripts
     └── src/                        Extension activation, Codex and Copilot readers, and quota webview
+└── visualstudio/                   Visual Studio 2022/2026 extension (C#, stable VSSDK, WPF)
+    ├── AgentsUsagePackage.cs        Package registration and opening the usage window
+    ├── Providers/Codex/            CLI reader and provider-reported quota snapshot
+    ├── Core/Processes/             Process-tree lifetime through Windows job objects
+    ├── Settings/                   Visual Studio Options page and saved user choices
+    ├── UI/                         Native tool window, quota bars and refresh lifecycle
+    └── build.ps1                   Shared-version MSBuild packaging into dist/
 ```
 
 `build/`, `.gradle/`, `.intellijPlatform/`, `.kotlin/`, and `.idea/` are generated local directories.
@@ -62,6 +69,16 @@ Quota bars use native progress elements and CSS classes within the webview's non
 Bar uses a transparent, monochrome version of the Rider AI monogram; Marketplace artwork retains the colored logo.
 Copilot selects chat for Free plans, skips empty 0/0 snapshots, and keeps unlimited categories separate from finite
 consumption percentages. A missing premium balance is not inferred from unlimited basic chat or completions.
+
+The Visual Studio package uses the stable Visual Studio 2022 SDK, .NET Framework 4.7.2 and native WPF controls.
+Its VSIX manifest targets Community, Professional and Enterprise from API version 17.0 onward on Windows x64,
+including Visual Studio 2026. These are declared installation targets; runtime behavior needs IDE checks.
+The first package supports Codex. Copilot authentication and quota access need a separate Visual Studio integration;
+neither the VS Code authentication session nor JetBrains provider plugins are shared with it.
+The usage control owns its reader, timer and cancellation lifetime. CLI calls run in the background, WPF updates run
+on the dispatcher, and Windows job objects stop the entire CLI process tree on timeout or disposal. Closing the
+window pauses automatic polling; disabling Codex pauses provider reads. Settings notify the running control after
+Apply. No credentials or prompt history are read or logged.
 
 ## Responsibilities
 

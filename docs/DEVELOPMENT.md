@@ -28,16 +28,41 @@ npm run package
 
 The installable VS Code package is `vscode/agents-usage-vscode-<version>.vsix`. Install it using **Extensions: Install
 from VSIX...**. `npm run package` compiles the TypeScript extension and creates the VSIX.
+The VS Code Marketplace publisher ID is `lanoerber`, so the extension ID is `lanoerber.agents-usage-vscode`.
+The manifest author is `nightevil`, matching the publisher's Marketplace display name.
+The GitHub repository remains `larsnoerber/Rider_Agents_Usage`.
 
-To build both editor packages from the repository root after installing the npm dependencies, run:
+To build all editor packages supported on the current operating system from the repository root, run:
 
 ```powershell
 .\gradlew.bat buildAllExtensions
 ```
 
 This produces the JetBrains plugin ZIP under `build/distributions/` and the VS Code VSIX under `vscode/`.
-The two extensions use the same version from `gradle.properties`; keep `vscode/package.json` synchronized when
+On Windows it also builds the Visual Studio VSIX, requiring Visual Studio MSBuild as described below.
+The extensions use the same version from `gradle.properties`; keep `vscode/package.json` synchronized when
 preparing a release.
+
+## Visual Studio extension
+
+Use Windows with Visual Studio 2022 or 2026 MSBuild and a compatible .NET SDK. The package uses .NET Framework
+4.7.2, stable Visual Studio 2022 SDK APIs and NuGet-provided reference assemblies and VSIX build tools.
+The project explicitly imports the VSSDK targets after the .NET SDK targets to generate the VSIX during Build.
+Newtonsoft.Json is explicitly included in the package because the VSSDK normally excludes this assembly.
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\visualstudio\build.ps1
+```
+
+The script reads `pluginVersion` from `gradle.properties`, builds without installing, and writes
+`visualstudio/dist/agents-usage-visualstudio-<version>.vsix`. A custom MSBuild path can be passed with `-MSBuildPath`.
+The corresponding Gradle task is `buildVisualStudioExtension`. Open the package with Visual Studio's VSIX Installer,
+then use **View > Other Windows > Agents Usage**. See [../visualstudio/README.md](../visualstudio/README.md).
+The manifest targets 2022/2026 Community, Professional and Enterprise on x64. Other versions and architectures are
+not claimed. The first package supports Codex, not Copilot. No live account or cross-version IDE check is implied by
+a successful build.
+The Visual Studio VSIX `Identity.Publisher` is `nightevil`, matching the Marketplace publisher display name.
+The Marketplace publisher ID remains `lanoerber`; the VSIX ID remains `lanoerber.AgentsUsage.VisualStudio`.
 
 To launch the isolated development IDE with the current plugin:
 

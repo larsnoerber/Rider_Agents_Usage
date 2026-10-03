@@ -1,11 +1,13 @@
 """Render VS Code listing illustrations with example data. Requires Pillow; reads no account data."""
 
+import json
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
 
 
 ROOT = Path(__file__).resolve().parents[1]
+MANIFEST = json.loads((ROOT / "vscode" / "package.json").read_text(encoding="utf-8"))
 OUTPUT = ROOT / "vscode" / "resources" / "previews"
 SCALE = 2
 TEXT, MUTED = "#CCCCCC", "#A0A0A0"
@@ -78,7 +80,7 @@ def render(name):
     else:
         text(132, 205, "Settings", 24, bold=True)
         box(132, 253, 1060, 41, "#313131", 3, "#515151")
-        text(150, 258, "@ext:larsnoerber.agents-usage-vscode", 20)
+        text(150, 258, f"@ext:{MANIFEST['publisher']}.{MANIFEST['name']}", 20)
         text(132, 322, "Agents Usage", 27, bold=True)
 
         def setting(y, title, description, checked=None, value=None):

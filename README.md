@@ -2,7 +2,8 @@
 
 Agents Usage, maintained by Lars Nörber, is available for JetBrains IDEs, including IntelliJ IDEA and Rider, and as an
 extension for Visual Studio Code. It displays Codex 5-hour and weekly usage, JetBrains AI credits, and GitHub Copilot
-quotas in JetBrains IDEs. The VS Code extension displays Codex and GitHub Copilot quota.
+quotas in JetBrains IDEs. The VS Code extension displays Codex and GitHub Copilot quota. A native Visual Studio
+2022/2026 extension also provides Codex quota in Community, Professional and Enterprise on Windows x64.
 The status bar displays `OpenAi | D=78% - W=42%`, `JetBrainAi | 70%`, and `Copilot | 38%` (example balances).
 OpenAI and JetBrains AI show remaining quota. Copilot shows consumed quota: 0% unused, 100% exhausted.
 Each percentage uses its quota color directly; OpenAI D and W have independent colors, without dots.
@@ -62,6 +63,14 @@ Agents Usage displays quota only; install
 the [OpenAI Codex extension](https://marketplace.visualstudio.com/items?itemName=openai.chatgpt)
 separately to use Codex as a coding agent in VS Code.
 
+### Visual Studio Community, Professional and Enterprise
+
+Build or download `agents-usage-visualstudio-<version>.vsix`, close Visual Studio and open the package with
+Visual Studio's VSIX Installer. Then choose **View > Other Windows > Agents Usage**.
+Use **Settings** in the window to configure Codex visibility, CLI path and refresh interval.
+The first Visual Studio package supports Codex; Copilot requires a separate Visual Studio integration.
+See [Visual Studio setup](visualstudio/README.md).
+
 ## Settings
 
 Usage refreshes every 60 seconds by default. Open **Settings > Tools > Agents Usage** to set the CLI path or a refresh
@@ -98,7 +107,8 @@ Both Gradle wrapper scripts are required for builds; see [Build files](docs/DEVE
 
 To build the VS Code extension, install Node.js 22 or later and run `npm install` from `vscode/`. Then run
 `npm run package` in that directory to create `agents-usage-vscode-<version>.vsix`. After installing these npm
-dependencies, `.\gradlew.bat buildAllExtensions` builds both packages.
+dependencies, `.\gradlew.bat buildAllExtensions` builds the JetBrains and VS Code packages. On Windows it also builds
+the Visual Studio package when Visual Studio MSBuild is installed.
 See [VS Code development](docs/DEVELOPMENT.md#visual-studio-code-extension).
 
 To launch a development IDE:

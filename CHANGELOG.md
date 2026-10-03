@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.0.13
+
+- Add a native Visual Studio extension targeting Visual Studio 2022/2026 Community, Professional and Enterprise
+  on Windows x64, with Codex quota bars, plans, resets, provider settings, an AI logo and repository link.
+- Add a Visual Studio VSIX build alongside the JetBrains and VS Code packages. Stop CLI process trees on timeout
+  or disposal; pause automatic reads when the usage window is closed or Codex is disabled.
+- Fix Visual Studio VSIX packaging by importing the VSSDK build targets and bundling the required JSON library.
+- Correct the VS Code Marketplace publisher ID to `lanoerber` and derive the settings filter from the installed
+  extension ID. Update the configuration preview to match the publisher.
+- Set the VS Code extension author to `nightevil` to match the Marketplace publisher's display name.
+- Set the Visual Studio VSIX author (`Identity.Publisher`) to the Marketplace display name `nightevil`.
+
 ## 1.0.12
 
 - Add a Visual Studio Code extension with Codex and Copilot quota views and status indicators, packaged alongside
