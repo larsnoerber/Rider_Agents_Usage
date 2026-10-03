@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.10
+
+- Avoid restarting Codex when visibility changes affect only other agents.
+- Skip Codex UI notifications when the published usage has not changed.
+
 ## 1.0.9
 
 - Verify Rider 2026.2.3.1 compatibility while retaining the build 261 minimum platform requirement.

@@ -21,12 +21,13 @@ internal object UsageRefreshCoordinator {
 
     fun changeVisibleAgents(openAi: Boolean, jetBrainsAi: Boolean, copilot: Boolean) {
         val settings = AgentsUsageSettings.getInstance().state
+        val openAiWasEnabled = settings.showOpenAi
         val changed = settings.showOpenAi != openAi || settings.showJetBrainsAi != jetBrainsAi || settings.showCopilot != copilot
         settings.showOpenAi = openAi
         settings.showJetBrainsAi = jetBrainsAi
         settings.showCopilot = copilot
         if (!changed) return
-        if (openAi) CodexUsageService.getInstance().restartTimer()
+        if (openAi && !openAiWasEnabled) CodexUsageService.getInstance().restartTimer()
         ApplicationManager.getApplication().invokeLater {
             visibilityListeners.forEach { it() }
             ProjectManager.getInstance().openProjects.filterNot { it.isDisposed }.forEach { project ->

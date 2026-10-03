@@ -66,6 +66,7 @@ class CodexUsageService : UsageSource<CodexUsage>, Disposable {
         val published = if (usage.error != null && (current.fiveHourLeft != null || current.weeklyLeft != null)) {
             current.copy(error = usage.error, plan = usage.plan ?: current.plan)
         } else usage
+        if (current == published) return
         current = published
         ApplicationManager.getApplication().invokeLater {
             if (!disposed) listeners.forEach { listener ->
