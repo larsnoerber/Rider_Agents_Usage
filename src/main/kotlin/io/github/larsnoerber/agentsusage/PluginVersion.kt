@@ -1,12 +1,13 @@
 package io.github.larsnoerber.agentsusage
 
-import java.util.jar.Manifest
+import com.intellij.ide.plugins.PluginManagerCore
+import com.intellij.openapi.extensions.PluginId
 
-/** Reads the version Gradle writes into the packaged plugin JAR manifest. */
+/** Reads this plugin's version from the descriptor registered by the running IDE. */
 object PluginVersion {
     val current: String by lazy {
-        PluginVersion::class.java.getResourceAsStream("/META-INF/MANIFEST.MF")?.use { stream ->
-            Manifest(stream).mainAttributes.getValue("Version")
-        } ?: "Unknown"
+        PluginManagerCore.getPlugin(PluginId.getId(PLUGIN_ID))?.version ?: "Unknown"
     }
+
+    private const val PLUGIN_ID = "io.github.larsnoerber.agentsusage"
 }

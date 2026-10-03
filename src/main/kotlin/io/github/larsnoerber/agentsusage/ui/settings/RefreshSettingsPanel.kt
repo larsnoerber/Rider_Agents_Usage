@@ -1,5 +1,6 @@
 package io.github.larsnoerber.agentsusage.ui.settings
 
+import com.intellij.ide.BrowserUtil
 import com.intellij.ui.JBColor
 import com.intellij.ui.components.JBLabel
 import com.intellij.util.ui.JBUI
@@ -11,6 +12,7 @@ import io.github.larsnoerber.agentsusage.ui.components.usageBarColor
 import io.github.larsnoerber.agentsusage.ui.components.warningColor
 import java.awt.BorderLayout
 import java.awt.Color
+import java.awt.Cursor
 import java.awt.Dimension
 import java.awt.FlowLayout
 import java.awt.Font
@@ -85,6 +87,15 @@ internal class RefreshSettingsPanel(private val onBack: () -> Unit) : JPanel(Bor
         addRow(settingsNotice.apply {
             foreground = usageBarColor(100)
         }, top = 6)
+        addRow(JButton("GitHub repository").apply {
+            isBorderPainted = false
+            isContentAreaFilled = false
+            isFocusPainted = false
+            horizontalAlignment = JButton.LEFT
+            foreground = JBColor.BLUE
+            cursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)
+            addActionListener { BrowserUtil.browse(REPOSITORY_URL) }
+        }, top = 8)
         selectPresetIfMatched()
     }
 
@@ -149,6 +160,10 @@ internal class RefreshSettingsPanel(private val onBack: () -> Unit) : JPanel(Bor
         agents.applySelection()
         UsageRefreshCoordinator.changeRefreshInterval(seconds)
         settingsNotice.text = "Settings saved · refresh every $seconds seconds"
+    }
+
+    private companion object {
+        const val REPOSITORY_URL = "https://github.com/larsnoerber/Rider_Agents_Usage"
     }
 
 }
