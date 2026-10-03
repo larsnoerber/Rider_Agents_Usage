@@ -42,6 +42,9 @@ intellijPlatform {
         }
         changeNotes = """
             <ul>
+              <li>Organizes Tool Window settings into agent selection, refresh interval, and action sections.</li>
+              <li>Opens the usage overview when a provider status widget is clicked.</li>
+              <li>Shows the plugin version and provides a GitHub repository link in configuration.</li>
               <li>Shows four compact facts per agent, with expandable quota, reset, report, plan and status details.</li>
               <li>Improves JetBrains subscription lookup through application services and activation snapshots, and exposes safe lookup diagnostics.</li>
               <li>Corrects Copilot Free quota selection: 100% available means 0% consumed and green.</li>
@@ -80,6 +83,25 @@ kotlin {
 }
 
 tasks {
+    val isWindows = System.getProperty("os.name").startsWith("Windows", ignoreCase = true)
+
+    register<Exec>("buildVsCodeExtension") {
+        group = "build"
+        description = "Compile and package the Visual Studio Code extension."
+        workingDir = layout.projectDirectory.dir("vscode").asFile
+        if (isWindows) {
+            commandLine("cmd.exe", "/d", "/c", "npm run package")
+        } else {
+            commandLine("npm", "run", "package")
+        }
+    }
+
+    register("buildAllExtensions") {
+        group = "build"
+        description = "Build the JetBrains plugin and package the Visual Studio Code extension."
+        dependsOn("buildPlugin", "buildVsCodeExtension")
+    }
+
     processResources {
         from(listOf("LICENSE", "EULA.md")) {
             into("META-INF")

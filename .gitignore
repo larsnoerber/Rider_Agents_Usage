@@ -6,6 +6,11 @@
 build/
 out/
 
+# VS Code extension generated files
+vscode/node_modules/
+vscode/out/
+vscode/*.vsix
+
 # IntelliJ IDEA project metadata
 .idea/
 *.iml

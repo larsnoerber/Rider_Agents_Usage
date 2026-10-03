@@ -3,10 +3,10 @@ package io.github.larsnoerber.agentsusage.ui.components
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.CustomStatusBarWidget
 import com.intellij.openapi.wm.StatusBar
-import com.intellij.openapi.wm.ToolWindowManager
 import com.intellij.ui.JBColor
 import com.intellij.ui.components.JBLabel
 import io.github.larsnoerber.agentsusage.core.UsageSource
+import io.github.larsnoerber.agentsusage.ui.toolwindow.showUsageOverview
 import java.awt.Color
 import java.awt.Cursor
 import java.awt.FlowLayout
@@ -38,7 +38,7 @@ internal class UsageStatusBarWidget<T>(
     private val mouseHandler = object : MouseAdapter() {
         override fun mouseClicked(event: MouseEvent) {
             if (SwingUtilities.isLeftMouseButton(event)) {
-                ToolWindowManager.getInstance(project).getToolWindow("Agents Usage")?.show()
+                showUsageOverview(project)
             }
         }
     }

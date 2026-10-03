@@ -14,13 +14,13 @@ Agents Usage/
 │   ├── MARKETPLACE.md                Listing preview and media upload instructions
 │   └── images/                       Illustrated listing assets (PNG and editable SVG)
 ├── tools/                           Documentation asset renderer
-├── build.gradle.kts                 Build configuration and plugin release notes
+├── build.gradle.kts                 JetBrains build and aggregate multi-extension build
 ├── settings.gradle.kts              Repository configuration and project name lookup
 ├── gradle.properties                Central project identity, version, and daemon settings
 ├── gradlew / gradlew.bat             Gradle launchers for POSIX / Windows
 ├── gradle/wrapper/                   Wrapper bootstrap and pinned distribution settings
 ├── .gitattributes                   Wrapper and properties line endings
-└── src/main/
+├── src/main/
     ├── kotlin/io/github/larsnoerber/agentsusage/
     │   ├── application/             Coordinates actions across all providers
     │   ├── core/
@@ -43,10 +43,25 @@ Agents Usage/
     └── resources/
         ├── META-INF/               Plugin registrations and plugin logo
         └── icons/                  Small Tool Window icon
+└── vscode/                         VS Code extension (TypeScript, its own API and package)
+    ├── package.json                VS Code manifest and npm build scripts
+    └── src/                        Extension activation, Codex and Copilot readers, and quota webview
 ```
 
 `build/`, `.gradle/`, `.intellijPlatform/`, `.kotlin/`, and `.idea/` are generated local directories.
 They are not part of the source architecture and remain ignored by Git.
+
+The VS Code extension shares the repository, release version, provider definitions, and product documentation with
+the JetBrains plugin. Its editor integration and provider readers live under `vscode/` because the VS Code Extension
+API and Node.js process model differ from the IntelliJ Platform APIs. Codex reads reported quota through the local
+Codex CLI app-server. Copilot reads GitHub's internal quota endpoint using VS Code's GitHub authentication. Neither
+provider estimates usage from local activity; the Copilot endpoint is not a supported public API and can change.
+The sidebar renders provider-reported values in a themed WebviewView so quota percentages and bars can use quota
+colors; provider selection and refresh settings remain in VS Code's native Settings UI.
+Quota bars use native progress elements and CSS classes within the webview's nonce-authorized stylesheet. The Activity
+Bar uses a transparent, monochrome version of the Rider AI monogram; Marketplace artwork retains the colored logo.
+Copilot selects chat for Free plans, skips empty 0/0 snapshots, and keeps unlimited categories separate from finite
+consumption percentages. A missing premium balance is not inferred from unlimited basic chat or completions.
 
 ## Responsibilities
 

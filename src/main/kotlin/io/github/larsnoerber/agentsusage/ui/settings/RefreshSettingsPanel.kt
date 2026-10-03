@@ -16,6 +16,8 @@ import java.awt.Cursor
 import java.awt.Dimension
 import java.awt.FlowLayout
 import java.awt.Font
+import java.awt.GridBagConstraints
+import java.awt.GridBagLayout
 import java.awt.GridLayout
 import java.awt.Insets
 import java.text.ParseException
@@ -43,20 +45,36 @@ internal class RefreshSettingsPanel(private val onBack: () -> Unit) : JPanel(Bor
         settingsNotice.foreground = usageBarColor(100)
     }
 
-    private fun createSettings(): JPanel = UsageSurface().apply {
-        addRow(settingsHeader())
-        addRow(JBLabel("Visible agents").apply { font = font.deriveFont(Font.BOLD) }, top = 10)
-        addRow(agents, top = 4)
-        addRow(JBLabel("Overview and status bar · installed providers only").apply {
-            foreground = secondaryTextColor()
-        }, top = 4)
-        addRow(JBLabel("Refresh rate for all agents").apply {
-            font = font.deriveFont(Font.BOLD)
-        }, top = 14)
-        addRow(JBLabel("<html>These settings apply to OpenAI, JetBrains AI, and GitHub Copilot.<br>Usage refreshes automatically in the background.<br>You can also refresh all agents manually at any time.</html>").apply {
-            foreground = secondaryTextColor()
-        }, top = 4)
+    private fun createSettings(): JPanel = JPanel(GridBagLayout()).apply {
+        isOpaque = false
+        add(settingsHeader(), GridBagConstraints().apply {
+            gridx = 0
+            gridy = 0
+            weightx = 1.0
+            fill = GridBagConstraints.HORIZONTAL
+            anchor = GridBagConstraints.NORTHWEST
+        })
+        add(agentSettings(), sectionConstraints(1, 8))
+        add(refreshSettings(), sectionConstraints(2, 8))
+        add(settingsActions(), sectionConstraints(3, 8))
+    }
 
+    private fun agentSettings(): UsageSurface = UsageSurface().apply {
+        addRow(JBLabel("Agents").apply { font = font.deriveFont(Font.BOLD, 14f) })
+        addRow(JBLabel("Choose which providers appear in the overview and status bar.").apply {
+            foreground = secondaryTextColor()
+        }, top = 4)
+        addRow(agents, top = 8)
+        addRow(JBLabel("Optional providers appear when their IDE plugins are installed.").apply {
+            foreground = secondaryTextColor()
+        }, top = 4)
+    }
+
+    private fun refreshSettings(): UsageSurface = UsageSurface().apply {
+        addRow(JBLabel("Refresh interval").apply { font = font.deriveFont(Font.BOLD, 14f) })
+        addRow(JBLabel("Choose how often Agents Usage refreshes all selected providers.").apply {
+            foreground = secondaryTextColor()
+        }, top = 4)
         presetButtons = listOf(
             presetButton("30 sec", "Frequent updates", 30),
             presetButton("1 min", "Recommended", 60),
@@ -65,7 +83,7 @@ internal class RefreshSettingsPanel(private val onBack: () -> Unit) : JPanel(Bor
         addRow(JPanel(GridLayout(0, 1, 0, 4)).apply {
             isOpaque = false
             presetButtons.forEach(::add)
-        }, top = 10)
+        }, top = 8)
 
         val currentSeconds = AgentsUsageSettings.getInstance().refreshIntervalSeconds
         intervalSpinner = JSpinner(SpinnerNumberModel(currentSeconds, 10, 3600, 10)).apply {
@@ -77,16 +95,21 @@ internal class RefreshSettingsPanel(private val onBack: () -> Unit) : JPanel(Bor
             add(JBLabel("Custom"))
             add(intervalSpinner)
             add(JBLabel("sec"))
-        }, top = 10)
+        }, top = 8)
+        selectPresetIfMatched()
+    }
+
+    private fun settingsActions(): UsageSurface = UsageSurface().apply {
+        addRow(JBLabel("Save and links").apply { font = font.deriveFont(Font.BOLD, 14f) })
         addRow(JButton("Apply settings").apply {
             border = JBUI.Borders.empty(7, 10)
             background = JBColor(Color(59, 112, 209), Color(59, 112, 209))
             foreground = Color.WHITE
             addActionListener { saveInterval() }
-        }, top = 10)
+        }, top = 8)
         addRow(settingsNotice.apply {
             foreground = usageBarColor(100)
-        }, top = 6)
+        }, top = 4)
         addRow(JButton("GitHub repository").apply {
             isBorderPainted = false
             isContentAreaFilled = false
@@ -95,8 +118,16 @@ internal class RefreshSettingsPanel(private val onBack: () -> Unit) : JPanel(Bor
             foreground = JBColor.BLUE
             cursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)
             addActionListener { BrowserUtil.browse(REPOSITORY_URL) }
-        }, top = 8)
-        selectPresetIfMatched()
+        }, top = 4)
+    }
+
+    private fun sectionConstraints(row: Int, top: Int) = GridBagConstraints().apply {
+        gridx = 0
+        gridy = row
+        weightx = 1.0
+        fill = GridBagConstraints.HORIZONTAL
+        anchor = GridBagConstraints.NORTHWEST
+        insets = Insets(JBUI.scale(top), 0, 0, 0)
     }
 
     private fun settingsHeader(): JPanel = JPanel(FlowLayout(FlowLayout.LEFT, 4, 0)).apply {

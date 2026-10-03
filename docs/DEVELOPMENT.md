@@ -15,6 +15,30 @@ Run `.\gradlew.bat verifyPlugin` to check binary compatibility with the configur
 The installable archive is `build/distributions/agents-usage-<version>.zip`.
 Install it through **Settings > Plugins > Install Plugin from Disk**.
 
+## Visual Studio Code extension
+
+Install Node.js 22 or later, then run these commands from the repository root:
+
+```powershell
+Set-Location vscode
+npm install
+npm run compile
+npm run package
+```
+
+The installable VS Code package is `vscode/agents-usage-vscode-<version>.vsix`. Install it using **Extensions: Install
+from VSIX...**. `npm run package` compiles the TypeScript extension and creates the VSIX.
+
+To build both editor packages from the repository root after installing the npm dependencies, run:
+
+```powershell
+.\gradlew.bat buildAllExtensions
+```
+
+This produces the JetBrains plugin ZIP under `build/distributions/` and the VS Code VSIX under `vscode/`.
+The two extensions use the same version from `gradle.properties`; keep `vscode/package.json` synchronized when
+preparing a release.
+
 To launch the isolated development IDE with the current plugin:
 
 ```powershell
@@ -102,6 +126,14 @@ tooltips, colors warn as the balance decreases, and unlimited quotas are not giv
 AI Assistant and Copilot APIs are internal and may change with provider updates.
 `core/reflection/` caches getter lookup and discovers only loaded provider plugins.
 These integrations use the installed plugins' existing connections; no additional usage-reporting server is introduced.
+
+### Visual Studio Code providers
+
+The VS Code package reads Codex quota through the local Codex CLI app-server and reads Copilot quota from
+`https://api.github.com/copilot_internal/user` using the VS Code GitHub authentication session. This Copilot endpoint
+is internal, not a supported public extension API. The extension shows only provider-reported quota, with no local
+activity estimate. Its quota sidebar is a `WebviewView` to allow theme-aware colored percentages and bars; provider
+selection, CLI path, refresh interval, and status-bar visibility are managed through contributed VS Code settings.
 
 ## Checks and delivery
 

@@ -1,7 +1,8 @@
 # Agents Usage
 
-Agents Usage is a plugin maintained by Lars Nörber for IntelliJ Platform IDEs, including IntelliJ IDEA and Rider.
-It displays Codex 5-hour and weekly usage, JetBrains AI credits, and GitHub Copilot quotas.
+Agents Usage, maintained by Lars Nörber, is available for JetBrains IDEs, including IntelliJ IDEA and Rider, and as an
+extension for Visual Studio Code. It displays Codex 5-hour and weekly usage, JetBrains AI credits, and GitHub Copilot
+quotas in JetBrains IDEs. The VS Code extension displays Codex and GitHub Copilot quota.
 The status bar displays `OpenAi | D=78% - W=42%`, `JetBrainAi | 70%`, and `Copilot | 38%` (example balances).
 OpenAI and JetBrains AI show remaining quota. Copilot shows consumed quota: 0% unused, 100% exhausted.
 Each percentage uses its quota color directly; OpenAI D and W have independent colors, without dots.
@@ -39,6 +40,8 @@ See [Marketplace media](docs/MARKETPLACE.md) for the image files and listing ins
 
 ## Install
 
+### JetBrains IDEs
+
 1. Download the plugin ZIP from [GitHub Releases](https://github.com/larsnoerber/Rider_Agents_Usage/releases/latest).
 2. In your IDE, open **Settings > Plugins**, click the gear icon, and choose **Install Plugin from Disk**.
 3. Select the ZIP and restart the IDE if prompted.
@@ -49,6 +52,15 @@ Codex Usage Monitor before installing Agents Usage to avoid duplicate widgets.
 
 The current CLI integration requires Windows and an IntelliJ Platform IDE version 2026.1 or later. Codex CLI must
 already be installed and signed in locally.
+
+### Visual Studio Code
+
+Download `agents-usage-vscode-<version>.vsix` from GitHub Releases, then run **Extensions: Install from VSIX...** in
+VS Code. The extension requires Codex CLI to be installed and signed in. Open the **Agents Usage** Activity Bar view,
+or click its status bar item to see the reported 5-hour and weekly quotas.
+Agents Usage displays quota only; install
+the [OpenAI Codex extension](https://marketplace.visualstudio.com/items?itemName=openai.chatgpt)
+separately to use Codex as a coding agent in VS Code.
 
 ## Settings
 
@@ -83,6 +95,11 @@ at build 261 and has no upper bound; the build verifies against Rider 2026.2.3.1
 The installable ZIP is written to `build/distributions/agents-usage-<version>.zip`.
 Project identity and the release version are configured in `gradle.properties`.
 Both Gradle wrapper scripts are required for builds; see [Build files](docs/DEVELOPMENT.md#gradle-build-files).
+
+To build the VS Code extension, install Node.js 22 or later and run `npm install` from `vscode/`. Then run
+`npm run package` in that directory to create `agents-usage-vscode-<version>.vsix`. After installing these npm
+dependencies, `.\gradlew.bat buildAllExtensions` builds both packages.
+See [VS Code development](docs/DEVELOPMENT.md#visual-studio-code-extension).
 
 To launch a development IDE:
 

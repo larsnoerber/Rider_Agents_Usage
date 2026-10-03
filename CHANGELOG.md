@@ -1,8 +1,26 @@
 # Changelog
 
-## Unreleased
+## 1.0.12
 
+- Add a Visual Studio Code extension with Codex and Copilot quota views and status indicators, packaged alongside
+  the JetBrains plugin; include illustrated usage and configuration previews in its Marketplace description.
+- Organize JetBrains Tool Window settings into agent selection, refresh interval, and action sections.
+- Open the usage overview when a provider status bar widget is clicked.
 - Show the plugin version in the Agents Usage overview and add a direct GitHub repository link to configuration.
+- Fix VS Code Copilot quota selection: use chat for Free plans, ignore empty 0/0 snapshots, and display unlimited quotas
+  explicitly.
+- Show Copilot's quota category and reported reset date; avoid request counts for AI credit billing.
+- Request Copilot account quota using the API version used by the official VS Code Copilot extension.
+- Restore visible, colored quota bars using native progress elements that work with the webview security policy.
+- Use a transparent AI monogram adapted from the Rider Tool Window icon for the VS Code Activity Bar.
+
+## 1.0.11
+
+- Reuse the existing AI usage logo as the VS Code Marketplace package icon.
+- Use the AI icon in the VS Code Activity Bar, add color-coded Copilot quota and status indicators, and organize
+  provider selection and refresh settings.
+- Add GitHub Copilot quota reporting to the VS Code extension through VS Code GitHub authentication and GitHub's
+  internal quota endpoint.
 
 ## 1.0.10
 

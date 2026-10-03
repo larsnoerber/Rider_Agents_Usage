@@ -1,0 +1,129 @@
+{
+  "name": "agents-usage-vscode",
+  "displayName": "Agents Usage",
+  "description": "View provider-reported OpenAI Codex and GitHub Copilot usage in Visual Studio Code.",
+  "version": "1.0.12",
+  "publisher": "larsnoerber",
+  "icon": "resources/icon.png",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/larsnoerber/Rider_Agents_Usage.git"
+  },
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "agentsUsage.openUsage",
+        "title": "Agents Usage: Open Usage"
+      },
+      {
+        "command": "agentsUsage.refresh",
+        "title": "Agents Usage: Refresh Usage"
+      },
+      {
+        "command": "agentsUsage.openSettings",
+        "title": "Agents Usage: Open Settings"
+      },
+      {
+        "command": "agentsUsage.signInCopilot",
+        "title": "Agents Usage: Sign in to GitHub for Copilot usage"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "agentsUsage",
+          "title": "Agents Usage",
+          "icon": "resources/activity-icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "agentsUsage": [
+        {
+          "id": "agentsUsage.usage",
+          "name": "Usage",
+          "type": "webview",
+          "visibility": "visible"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "agentsUsage.refresh",
+          "when": "view == agentsUsage.usage",
+          "group": "navigation"
+        },
+        {
+          "command": "agentsUsage.openSettings",
+          "when": "view == agentsUsage.usage",
+          "group": "navigation"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Agents Usage",
+      "properties": {
+        "agentsUsage.providers.codex.enabled": {
+          "type": "boolean",
+          "default": true,
+          "order": 1,
+          "description": "Show OpenAI Codex usage in the overview and status bar."
+        },
+        "agentsUsage.providers.copilot.enabled": {
+          "type": "boolean",
+          "default": true,
+          "order": 2,
+          "description": "Show GitHub Copilot usage in the overview and status bar."
+        },
+        "agentsUsage.codexPath": {
+          "type": "string",
+          "default": "",
+          "order": 3,
+          "description": "Path to the Codex CLI executable. Leave empty to find codex on PATH."
+        },
+        "agentsUsage.refreshIntervalSeconds": {
+          "type": "number",
+          "default": 60,
+          "minimum": 10,
+          "maximum": 3600,
+          "order": 4,
+          "description": "How often to refresh provider-reported usage, in seconds."
+        },
+        "agentsUsage.showStatusBar": {
+          "type": "boolean",
+          "default": true,
+          "order": 5,
+          "description": "Show OpenAI Codex and GitHub Copilot usage in the status bar."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "vscode:prepublish": "npm run compile",
+    "package": "npm run compile && node ./scripts/package.mjs"
+  },
+  "dependencies": {
+    "cross-spawn": "^7.0.6"
+  },
+  "devDependencies": {
+    "@types/cross-spawn": "^6.0.6",
+    "@types/node": "^22.0.0",
+    "@types/vscode": "^1.90.0",
+    "@vscode/vsce": "^4.0.0",
+    "typescript": "^5.8.0"
+  }
+}

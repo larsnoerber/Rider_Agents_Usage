@@ -1,5 +1,14 @@
 # Marketplace media
 
+## Visual Studio Code
+
+The VS Code extension's `vscode/README.md` embeds `vscode/resources/previews/usage.png` and `settings.png` in its
+Marketplace description. These are VS Code illustrations with example balances, not live account screenshots.
+Regenerate them with `python tools/render_vscode_preview.py` (Pillow and Windows Segoe UI required).
+Packaging includes both PNGs and links the description images to the matching GitHub release tag.
+
+## JetBrains IDEs
+
 The plugin description in `src/main/resources/META-INF/plugin.xml` embeds the public PNG:
 
 ![Illustrated usage overview](images/agents-usage-overview.png)

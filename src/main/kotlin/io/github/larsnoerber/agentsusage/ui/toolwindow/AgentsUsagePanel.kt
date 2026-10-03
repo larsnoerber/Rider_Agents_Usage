@@ -119,6 +119,10 @@ internal class AgentsUsagePanel : JPanel(BorderLayout()), Disposable {
         showPage(SETTINGS)
     }
 
+    internal fun showUsageOverview() {
+        showPage(OVERVIEW)
+    }
+
     private fun showPage(name: String) {
         pageLayout.show(pages, name)
         pages.revalidate()
