@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Show the plugin version in the Agents Usage overview and add a direct GitHub repository link to configuration.
+
 ## 1.0.10
 
 - Avoid restarting Codex when visibility changes affect only other agents.

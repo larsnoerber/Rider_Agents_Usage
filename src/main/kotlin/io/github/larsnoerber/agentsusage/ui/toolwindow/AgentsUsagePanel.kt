@@ -5,6 +5,7 @@ import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.components.JBLabel
 import com.intellij.util.ui.JBUI
 import io.github.larsnoerber.agentsusage.application.UsageRefreshCoordinator
+import io.github.larsnoerber.agentsusage.PluginVersion
 import io.github.larsnoerber.agentsusage.providers.codex.ui.CodexUsagePanel
 import io.github.larsnoerber.agentsusage.providers.copilot.GitHubCopilotUsageService
 import io.github.larsnoerber.agentsusage.providers.copilot.ui.GitHubCopilotUsagePanel
@@ -57,6 +58,10 @@ internal class AgentsUsagePanel : JPanel(BorderLayout()), Disposable {
             add(UsageToolbar(UsageRefreshCoordinator::refreshAll, ::showSettings), BorderLayout.EAST)
         }, BorderLayout.NORTH)
         overview.add(sections, BorderLayout.CENTER)
+        overview.add(JBLabel("Version ${PluginVersion.current}").apply {
+            foreground = JBUI.CurrentTheme.Label.disabledForeground()
+            font = font.deriveFont(font.size2D - 1f)
+        }, BorderLayout.SOUTH)
         pages.add(overview, OVERVIEW)
         pages.add(settings, SETTINGS)
         add(JBScrollPane(object : JPanel(BorderLayout()), Scrollable {

@@ -1,8 +1,10 @@
 package io.github.larsnoerber.agentsusage.settings
 
+import com.intellij.ide.BrowserUtil
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.options.Configurable
 import com.intellij.openapi.ui.Messages
+import com.intellij.ui.JBColor
 import com.intellij.ui.components.JBLabel
 import com.intellij.ui.components.JBTextField
 import com.intellij.util.ui.FormBuilder
@@ -10,6 +12,8 @@ import io.github.larsnoerber.agentsusage.application.UsageRefreshCoordinator
 import io.github.larsnoerber.agentsusage.providers.codex.CodexUsageService
 import io.github.larsnoerber.agentsusage.ui.settings.AgentSelectionPanel
 import java.awt.BorderLayout
+import java.awt.Cursor
+import java.awt.Font
 import javax.swing.JButton
 import javax.swing.JComponent
 import javax.swing.JPanel
@@ -33,6 +37,16 @@ class AgentsUsageConfigurable : Configurable {
             .addLabeledComponent(JBLabel("Auto-refresh interval for all agents (seconds):"), intervalField)
             .addLabeledComponent(JBLabel("OpenAI (Codex) CLI path (leave empty for auto-detect):"), pathRow)
             .addComponent(JBLabel("If empty, the system PATH will be used to find codex automatically."))
+            .addComponent(JButton("GitHub repository").apply {
+                isBorderPainted = false
+                isContentAreaFilled = false
+                isFocusPainted = false
+                horizontalAlignment = JButton.LEFT
+                cursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)
+                foreground = JBColor.BLUE
+                font = font.deriveFont(Font.PLAIN)
+                addActionListener { BrowserUtil.browse(REPOSITORY_URL) }
+            })
             .panel
         panel.add(form, BorderLayout.NORTH)
         detectButton.addActionListener { detectCodexPath() }
@@ -82,5 +96,9 @@ class AgentsUsageConfigurable : Configurable {
                 }
             }
         }
+    }
+
+    private companion object {
+        const val REPOSITORY_URL = "https://github.com/larsnoerber/Rider_Agents_Usage"
     }
 }
