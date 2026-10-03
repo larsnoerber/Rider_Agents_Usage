@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+<title>Agents Usage status bar</title>
+<desc>Colored quota percentages, adjacent agent widgets and an example with JetBrains AI hidden. This is an illustration with example balances, not a live account screenshot.</desc>
+<rect x="100" y="64" width="62" height="62" rx="12" fill="#111827"/>
+<text x="114" y="74" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="30" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">AI</text>
+<rect x="114" y="113" width="10" height="3" rx="1" fill="#5EEAD4"/>
+<rect x="129" y="113" width="10" height="3" rx="1" fill="#60A5FA"/>
+<rect x="144" y="113" width="10" height="3" rx="1" fill="#A78BFA"/>
+<text x="182" y="64" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="42" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">Agents Usage</text>
+<text x="184" y="117" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="24" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Status bar · Colored percentages and adjacent agent widgets</text>
+<text x="100" y="208" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="23" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">All selected agents</text>
+<rect x="100" y="252" width="1080" height="68" rx="6" fill="#2B2D30"/>
+<text x="124" y="269" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="28" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">OpenAi | D=</text>
+<text x="277.0" y="269" fill="#64CD87" font-family="Segoe UI, sans-serif" font-size="28" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">78%</text>
+<text x="330.0" y="269" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="28" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start"> - W=</text>
+<text x="401.0" y="269" fill="#FFB94B" font-family="Segoe UI, sans-serif" font-size="28" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">42%</text>
+<text x="480.0" y="269" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="28" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">JetBrainAi | </text>
+<text x="623.5" y="269" fill="#64CD87" font-family="Segoe UI, sans-serif" font-size="28" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">70%</text>
+<text x="702.5" y="269" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="28" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Copilot | </text>
+<text x="814.5" y="269" fill="#64CD87" font-family="Segoe UI, sans-serif" font-size="28" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">38%</text>
+<text x="100" y="346" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="22" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">OpenAI / JetBrains AI: remaining quota · Copilot: consumed quota</text>
+<text x="100" y="436" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="23" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">JetBrains AI hidden — remaining agents stay together</text>
+<rect x="100" y="480" width="1080" height="68" rx="6" fill="#2B2D30"/>
+<text x="124" y="497" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="28" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">OpenAi | D=</text>
+<text x="277.0" y="497" fill="#64CD87" font-family="Segoe UI, sans-serif" font-size="28" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">78%</text>
+<text x="330.0" y="497" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="28" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start"> - W=</text>
+<text x="401.0" y="497" fill="#FFB94B" font-family="Segoe UI, sans-serif" font-size="28" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">42%</text>
+<text x="480.0" y="497" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="28" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Copilot | </text>
+<text x="592.0" y="497" fill="#64CD87" font-family="Segoe UI, sans-serif" font-size="28" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">38%</text>
+<text x="100" y="652" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="20" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Illustrated preview · Example balances · No usage dots</text>
+</svg>

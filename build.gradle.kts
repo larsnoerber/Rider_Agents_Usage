@@ -1,4 +1,6 @@
 
+import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
+
 plugins {
     id("java")
     id("org.jetbrains.kotlin.jvm") version "2.3.20"
@@ -23,6 +25,12 @@ dependencies {
 
 intellijPlatform {
     instrumentCode = false
+
+    pluginVerification {
+        ides {
+            create(IntelliJPlatformType.Rider, "2026.2.3.1")
+        }
+    }
 
     pluginConfiguration {
         ideaVersion {

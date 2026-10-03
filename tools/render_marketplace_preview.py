@@ -1,4 +1,4 @@
-"""Render the illustrated Marketplace preview. Requires Pillow; no account data is read."""
+"""Render illustrated overview, details and status bar media. Requires Pillow; no account data is read."""
 
 from html import escape
 from math import cos, pi, sin
@@ -86,6 +86,76 @@ def facts(y, entries):
     label(132, y + 54, "More details", size=18, color=MUTED)
 
 
+def start_preview(width, height, title, description):
+    global WIDTH, HEIGHT, image, draw, svg
+    WIDTH, HEIGHT = width, height
+    image = Image.new("RGB", (WIDTH * SCALE, HEIGHT * SCALE), BACKGROUND)
+    draw = ImageDraw.Draw(image)
+    svg = [
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{WIDTH}" height="{HEIGHT}" viewBox="0 0 {WIDTH} {HEIGHT}">',
+        f'<title>{escape(title)}</title>',
+        f'<desc>{escape(description)} This is an illustration with example balances, not a live account screenshot.</desc>',
+    ]
+
+
+def save_preview(name):
+    OUTPUT.mkdir(parents=True, exist_ok=True)
+    (OUTPUT / f"{name}.svg").write_text("\n".join(svg + ["</svg>"]) + "\n", encoding="utf-8")
+    image.resize((WIDTH, HEIGHT), Image.Resampling.LANCZOS).save(OUTPUT / f"{name}.png", optimize=True)
+    print(f"Preview written: {name}.png / .svg")
+
+
+def preview_heading(subtitle):
+    rectangle(100, 64, 62, 62, "#111827", radius=12)
+    label(114, 74, "AI", size=30, bold=True)
+    for x, color in ((114, "#5EEAD4"), (129, "#60A5FA"), (144, "#A78BFA")):
+        rectangle(x, 113, 10, 3, color, radius=1)
+    label(182, 64, "Agents Usage", size=42, bold=True)
+    label(184, 117, subtitle, size=24, color=MUTED)
+
+
+def text_width(value, size=18, bold=False):
+    filename = "segoeuib.ttf" if bold else "segoeui.ttf"
+    return ImageFont.truetype(str(Path("C:/Windows/Fonts") / filename), size * SCALE).getlength(value) / SCALE
+
+
+def detail_card(x, name, plan, accent, bars, summary, details):
+    rectangle(x, 210, 450, 764, PANEL, radius=8)
+    rectangle(x + 5, 223, 4, 738, accent, radius=2)
+    label(x + 18, 232, name, size=26, bold=True)
+    rectangle(x + 344, 233, 88, 28, TRACK, radius=4)
+    label(x + 388 + text_width(plan) / 2, 236, plan, size=18, color=MUTED, right=True)
+    for index, (title, percent, value, consumed) in enumerate(bars):
+        y = 280 + index * 32
+        balance = 100 - percent if consumed else percent
+        color = GREEN if balance >= 50 else AMBER if balance >= 20 else "#FF6E6E"
+        label(x + 18, y, title, size=18, color=MUTED)
+        rectangle(x + 180, y + 5, 126, 12, TRACK)
+        if percent:
+            rectangle(x + 180, y + 5, round(126 * percent / 100), 12, color)
+        label(x + 432, y, value, size=18, color=color, bold=True, right=True)
+    for index, (key, value) in enumerate(summary):
+        cell_x = x + (18 if index % 2 == 0 else 232)
+        y = 368 + index // 2 * 28
+        label(cell_x, y, key + ":", size=17, color=MUTED)
+        label(cell_x + text_width(key + ":", size=17) + 7, y, value, size=17, bold=True)
+    for index, (key, value) in enumerate(details):
+        y = 452 + index * 34
+        label(x + 18, y, key + ":", size=18, color=MUTED)
+        label(x + 18 + text_width(key + ":") + 7, y, value, size=18, bold=True)
+    label(x + 18, 452 + len(details) * 34 + 12, "Fewer details", size=18, color=MUTED)
+
+
+def status_bar(y, groups):
+    rectangle(100, y, 1080, 68, PANEL, radius=6)
+    x = 124
+    for parts in groups:
+        for value, color in parts:
+            label(x, y + 17, value, size=28, color=color)
+            x += text_width(value, size=28)
+        x += 26
+
+
 rectangle(0, 0, WIDTH, HEIGHT, BACKGROUND)
 rectangle(100, 64, 62, 62, "#111827", radius=12)
 label(114, 74, "AI", size=30, bold=True)
@@ -131,9 +201,43 @@ for x, parts in (
         x += font.getlength(text) / SCALE
 
 label(100, 928, "Illustrated preview · Example balances · Copilot shows consumed quota", size=20, color=MUTED)
-svg.append("</svg>")
+save_preview("agents-usage-overview")
 
-OUTPUT.mkdir(parents=True, exist_ok=True)
-(OUTPUT / "agents-usage-overview.svg").write_text("\n".join(svg) + "\n", encoding="utf-8")
-image.resize((WIDTH, HEIGHT), Image.Resampling.LANCZOS).save(OUTPUT / "agents-usage-overview.png", optimize=True)
-print(f"Preview written to {OUTPUT}")
+start_preview(1600, 1080, "Agents Usage expanded agent details",
+              "OpenAI, JetBrains AI and GitHub Copilot details shown side by side for readability.")
+preview_heading("Expanded agent details · Quotas, reset dates and refresh status")
+detail_card(100, "OpenAI", "Plus", "#39AE99",
+            [("5 hours", 78, "78%", False), ("This week", 42, "42%", False)],
+            [("Credits", "120"), ("Updated", "09:00"), ("5h reset", "16:30"), ("Week reset", "Oct 8 09:00")],
+            [("Subscription", "Plus"), ("5h left", "78%"), ("Week left", "42%"),
+             ("5h resets at", "Oct 3, 16:30"), ("Week resets at", "Oct 8, 09:00"),
+             ("Refresh", "Every 60 seconds"), ("Status", "Usage available")])
+detail_card(575, "JetBrains AI", "AI Pro", "#9D77DC",
+            [("Subscription", 65, "6.5 / 10", False), ("Top-up", 80, "4 / 5", False)],
+            [("Credits left", "10.5"), ("Used", "4.5"), ("Total", "15"), ("Reset", "Oct 20 09:00")],
+            [("Subscription", "AI Pro"), ("Subscription left", "6.5 / 10 credits"),
+             ("Top-up left", "4 / 5 credits"), ("Available", "70%"), ("Resets at", "Oct 20, 09:00"),
+             ("Refresh", "Every 60 seconds"), ("Status", "Balance available")])
+detail_card(1050, "GitHub Copilot", "Pro", "#5297E6",
+            [("Premium requests", 38, "38%", True), ("Chat", 0, "Unlimited", True)],
+            [("Used", "114 / 300"), ("Available", "186 / 300"), ("Reset", "Nov 1 00:00"), ("Reported", "09:00")],
+            [("Subscription", "Pro"), ("Premium requests used", "114 / 300"),
+             ("Premium requests left", "186 / 300"), ("Chat used", "Unlimited"), ("Chat left", "Unlimited"),
+             ("Resets at", "Nov 1, 00:00"), ("Last report", "Oct 3, 09:00"),
+             ("Refresh", "Every 60 seconds"), ("Status", "Report available")])
+label(100, 1022, "Illustrated preview · Example balances · Expanded views arranged side by side", size=20, color=MUTED)
+save_preview("agents-usage-details")
+
+start_preview(1280, 720, "Agents Usage status bar",
+              "Colored quota percentages, adjacent agent widgets and an example with JetBrains AI hidden.")
+preview_heading("Status bar · Colored percentages and adjacent agent widgets")
+openai_parts = [("OpenAi | D=", TEXT), ("78%", GREEN), (" - W=", TEXT), ("42%", AMBER)]
+jetbrains_parts = [("JetBrainAi | ", TEXT), ("70%", GREEN)]
+copilot_parts = [("Copilot | ", TEXT), ("38%", GREEN)]
+label(100, 208, "All selected agents", size=23, bold=True)
+status_bar(252, [openai_parts, jetbrains_parts, copilot_parts])
+label(100, 346, "OpenAI / JetBrains AI: remaining quota · Copilot: consumed quota", size=22, color=MUTED)
+label(100, 436, "JetBrains AI hidden — remaining agents stay together", size=23, bold=True)
+status_bar(480, [openai_parts, copilot_parts])
+label(100, 652, "Illustrated preview · Example balances · No usage dots", size=20, color=MUTED)
+save_preview("agents-usage-statusbar")

@@ -73,7 +73,8 @@ an explanation instead of a credit amount.
 ## Build
 
 Use a JDK 25 installation, such as the JetBrains Runtime bundled with a compatible IDE, and set `JAVA_HOME` to its
-directory. The plugin targets IntelliJ IDEA 2026.1.2 and compiles to Java 21 bytecode.
+directory. The plugin targets IntelliJ IDEA 2026.1.2 and compiles to Java 21 bytecode. Its compatibility range starts
+at build 261 and has no upper bound; the build verifies against Rider 2026.2.3.1.
 
 ```powershell
 .\gradlew.bat buildPlugin

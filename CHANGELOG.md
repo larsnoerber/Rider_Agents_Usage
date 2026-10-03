@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.0.9
+
+- Verify Rider 2026.2.3.1 compatibility while retaining the build 261 minimum platform requirement.
+- Keep provider services, Tool Window panels, and status widgets disposable for dynamic plugin unload and reload.
+- Replace internal status bar and plugin registry calls with public APIs, and use JVM default methods to reduce
+  compatibility warnings.
+- Add illustrated Marketplace images for expanded agent details and the status bar, with editable SVG versions.
+- Extend the media renderer to generate all three PNG/SVG pairs and document their gallery captions.
+
 ## 1.0.8
 
 - Expand agent summaries to four visible facts in a compact two-column grid, with further details on demand.

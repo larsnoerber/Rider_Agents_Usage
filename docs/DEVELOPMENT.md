@@ -1,13 +1,16 @@
 # Local development
 
 Use JDK 25. The JetBrains Runtime bundled with a compatible IDE can provide it.
-The project targets IntelliJ IDEA 2026.1.2 and produces Java 21 bytecode.
+The project targets IntelliJ IDEA 2026.1.2 and produces Java 21 bytecode. Plugin verification also checks Rider
+2026.2.3.1.
 Commands below are run from the repository root; replace the sample JDK path with your own installation.
 
 ```powershell
 $env:JAVA_HOME = 'C:/path/to/jdk-25'
 .\gradlew.bat buildPlugin
 ```
+
+Run `.\gradlew.bat verifyPlugin` to check binary compatibility with the configured Rider build.
 
 The installable archive is `build/distributions/agents-usage-<version>.zip`.
 Install it through **Settings > Plugins > Install Plugin from Disk**.

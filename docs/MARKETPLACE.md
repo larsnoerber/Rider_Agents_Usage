@@ -6,12 +6,23 @@ The plugin description in `src/main/resources/META-INF/plugin.xml` embeds the pu
 
 - `images/agents-usage-overview.png`: 1280 × 980 image for the description and Marketplace Media gallery.
 - `images/agents-usage-overview.svg`: editable vector version.
+- `images/agents-usage-details.png`: 1600 × 1080 illustration of all three expanded agent detail views,
+  arranged side by side for readability.
+- `images/agents-usage-statusbar.png`: 1280 × 720 illustration of colored status percentages and agent visibility.
+- `images/agents-usage-details.svg` / `images/agents-usage-statusbar.svg`: matching editable vector versions.
 - `../tools/render_marketplace_preview.py`: reproducible renderer using Python and Pillow. Run it from any directory;
   its default font is Windows Segoe UI.
 
 This is an **illustrated preview with example balances**, not a screenshot of a live account. The provider labels,
 plans, compact bars, and status text follow the current UI. Account-specific categories can differ.
-Keep that caption when using the image, and replace both assets when changing the illustrated UI.
+Keep that caption when using the images, and regenerate the PNG/SVG pairs when changing the illustrated UI.
+
+Run `python tools/render_marketplace_preview.py` to regenerate all three image pairs.
+For the Media gallery, use the PNG files. Suggested captions:
+
+- **Usage overview — illustrated example**
+- **Expanded agent details — illustrated example**
+- **Status bar and agent visibility — illustrated example**
 
 ## Showing the image on Marketplace
 
