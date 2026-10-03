@@ -21,6 +21,8 @@ import java.util.concurrent.CopyOnWriteArrayList
 
 class UsageInsightsState {
     var days: MutableList<UsageInsightsDay> = mutableListOf()
+    var bossDamageWeek: String = ""
+    var bossDamage: Int = 0
 }
 
 data class UsageInsightsDay(
@@ -111,6 +113,7 @@ internal class UsageInsightsService : PersistentStateComponent<UsageInsightsStat
         this.state.days = state.days.filter {
             it.date.toLocalDateOrNull()?.let { date -> !date.isBefore(LocalDate.now().minusDays(6)) } == true
         }.toMutableList()
+        synchronizeBossDamage()
     }
 
     fun addListener(listener: (UsageInsightsSnapshot) -> Unit) {
@@ -122,12 +125,8 @@ internal class UsageInsightsService : PersistentStateComponent<UsageInsightsStat
 
     @Synchronized
     fun overviewOpened() {
-        val current = LocalDate.now()
-        val weekStart = current.with(WeekFields.ISO.dayOfWeek(), DayOfWeek.MONDAY.value.toLong())
-        val week = state.days.filter {
-            it.date.toLocalDateOrNull()?.let { date -> !date.isBefore(weekStart) && !date.isAfter(current) } == true
-        }
-        val damage = week.sumOf { day -> maxOf(day.codexDrop(), day.jetBrainsDrop(), day.copilotDrop()) }.coerceIn(0, 100)
+        val weekStart = weekStart()
+        val damage = persistedBossDamage(weekStart)
         if (damage > 0) {
             val boss = bossFor(weekStart)
             addBattleEvent("${boss.name} · your agents used quota; the boss has taken $damage% damage this week")
@@ -142,6 +141,8 @@ internal class UsageInsightsService : PersistentStateComponent<UsageInsightsStat
     @Synchronized
     fun clearHistory() {
         state.days.clear()
+        state.bossDamageWeek = weekStart().toString()
+        state.bossDamage = 0
         battleLog.clear()
         aggregatedHitPoints.clear()
         lastHitAt.clear()
@@ -254,15 +255,16 @@ internal class UsageInsightsService : PersistentStateComponent<UsageInsightsStat
             "jetBrains" -> day.update(remaining, resetObserved, { day.jetBrainsStart }, { day.jetBrainsStart = it }, { day.jetBrainsLow }, { day.jetBrainsLow = it }, { day.jetBrainsStartAt }, { day.jetBrainsStartAt = it })
             "copilot" -> day.update(remaining, resetObserved, { day.copilotStart }, { day.copilotStart = it }, { day.copilotLow }, { day.copilotLow = it }, { day.copilotStartAt }, { day.copilotStartAt = it })
         }
+        synchronizeBossDamage()
     }
 
     @Synchronized
     private fun snapshot(): UsageInsightsSnapshot {
         val settings = AgentsUsageSettings.getInstance().state
         val current = LocalDate.now()
-        val weekStart = current.with(WeekFields.ISO.dayOfWeek(), DayOfWeek.MONDAY.value.toLong())
+        val weekStart = weekStart(current)
         val week = state.days.filter { it.date.toLocalDateOrNull()?.let { date -> !date.isBefore(weekStart) && !date.isAfter(current) } == true }
-        val damage = week.sumOf { day -> maxOf(day.codexDrop(), day.jetBrainsDrop(), day.copilotDrop()) }.coerceIn(0, 100)
+        val damage = persistedBossDamage(weekStart)
         val boss = bossFor(weekStart)
         val phaseIndex = when {
             damage >= 100 -> 4
@@ -348,6 +350,27 @@ internal class UsageInsightsService : PersistentStateComponent<UsageInsightsStat
             ApplicationManager.getApplication().invokeLater { if (!disposed) listener(value) }
         }
     }
+
+    private fun persistedBossDamage(weekStart: LocalDate): Int {
+        synchronizeBossDamage(weekStart)
+        return state.bossDamage.coerceIn(0, 100)
+    }
+
+    private fun synchronizeBossDamage(weekStart: LocalDate = weekStart()) {
+        if (state.bossDamageWeek == weekStart.toString()) {
+            state.bossDamage = state.bossDamage.coerceIn(0, 100)
+            return
+        }
+        val end = minOf(LocalDate.now(), weekStart.plusDays(6))
+        state.bossDamage = state.days.asSequence()
+            .filter { it.date.toLocalDateOrNull()?.let { date -> !date.isBefore(weekStart) && !date.isAfter(end) } == true }
+            .sumOf { day -> maxOf(day.codexDrop(), day.jetBrainsDrop(), day.copilotDrop()) }
+            .coerceIn(0, 100)
+        state.bossDamageWeek = weekStart.toString()
+    }
+
+    private fun weekStart(date: LocalDate = LocalDate.now()): LocalDate =
+        date.with(WeekFields.ISO.dayOfWeek(), DayOfWeek.MONDAY.value.toLong())
 
     override fun dispose() {
         disposed = true

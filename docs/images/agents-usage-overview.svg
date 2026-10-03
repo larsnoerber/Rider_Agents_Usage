@@ -96,11 +96,15 @@
 <text x="500" y="908" fill="#5297E6" font-family="Segoe UI, sans-serif" font-size="17" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">● Copilot  38%</text>
 <text x="124" y="934" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="17" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Forecast  ·  Copilot may reach 20% in about 3 days</text>
 <rect x="116" y="963" width="1048" height="78" rx="6" fill="#34303B"/>
-<text x="132" y="973" fill="#C397FA" font-family="Segoe UI, sans-serif" font-size="16" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">THE QUOTA WRAITH  ·  SHIELD CRACKED</text>
-<text x="1148" y="973" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="16" font-weight="700" dominant-baseline="text-before-edge" text-anchor="end">82% HP</text>
-<rect x="132" y="1000" width="1016" height="10" rx="5" fill="#3D4148"/>
-<rect x="132" y="1000" width="833" height="10" rx="5" fill="#9D77DC"/>
-<text x="132" y="1017" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="15" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">&quot;The Wraith gathers at the edge of the portal.&quot;</text>
+<path d="M5 11 C4 5 9 2 15 3 L11 .5 L20 4 L28 .5 L25 7 C30 12 29 21 28 26 L22 23 L16 29 L10 24 L4 28 C2 22 2 15 5 11 Z" fill="#C397FA" transform="translate(128 985) scale(0.875)"/>
+<g transform="translate(128 985) scale(0.875)" fill="#FFFFFF"><ellipse cx="11" cy="14" rx="3" ry="4"/><ellipse cx="22" cy="14" rx="3" ry="4"/></g>
+<g transform="translate(128 985) scale(0.875)" fill="#37284C"><ellipse cx="11.5" cy="15" rx="1.5" ry="2"/><ellipse cx="20.5" cy="15" rx="1.5" ry="2"/></g>
+<path d="M15 18 L12 22 L17 25" fill="none" stroke="#FFE782" stroke-width="2" transform="translate(128 985) scale(0.875)"/>
+<text x="166" y="973" fill="#C397FA" font-family="Segoe UI, sans-serif" font-size="16" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">THE QUOTA WRAITH  ·  SHIELD CRACKED</text>
+<text x="1148" y="973" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="16" font-weight="700" dominant-baseline="text-before-edge" text-anchor="end">70% HP</text>
+<rect x="166" y="1000" width="982" height="10" rx="5" fill="#3D4148"/>
+<rect x="166" y="1000" width="687" height="10" rx="5" fill="#9D77DC"/>
+<text x="166" y="1017" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="15" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">&quot;The Wraith gathers at the edge of the portal.&quot;</text>
 <text x="124" y="1053" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="14" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">LATEST BATTLE EVENTS</text>
 <circle cx="132" cy="1084" r="4" fill="#C397FA"/>
 <text x="145" y="1075" fill="#C397FA" font-family="Segoe UI, sans-serif" font-size="16" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">The Wraith · your agents used quota; the boss has taken</text>

@@ -42,6 +42,8 @@ intellijPlatform {
         }
         changeNotes = """
             <ul>
+              <li>Add a collapsible weekly recap with a provider party, local quota forecast, and weekly boss battle.</li>
+              <li>Preserve weekly boss damage across plugin updates and refresh selected providers when the overview opens.</li>
               <li>Organizes Tool Window settings into agent selection, refresh interval, and action sections.</li>
               <li>Opens the usage overview when a provider status widget is clicked.</li>
               <li>Shows the plugin version and provides a GitHub repository link in configuration.</li>

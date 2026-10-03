@@ -4,14 +4,17 @@
     <vendor url="https://github.com/larsnoerber/Rider_Agents_Usage">Lars Nörber</vendor>
 
     <description><![CDATA[
+        <div style="max-width:100%; white-space:normal; overflow-wrap:anywhere; word-wrap:break-word;">
         <p><img src="https://raw.githubusercontent.com/larsnoerber/Rider_Agents_Usage/main/docs/images/agents-usage-logo.png"
-                alt="Agents Usage Quota Portal logo" width="180"/></p>
+                alt="Agents Usage Quota Portal logo" width="180" style="max-width:100%; height:auto;"/></p>
         <h2>Agents Usage</h2>
         <p>Monitor Codex, JetBrains AI, and GitHub Copilot usage directly in IntelliJ Platform IDEs, including IntelliJ IDEA and Rider. Maintained by Lars Nörber.</p>
         <ul>
           <li>Displays remaining 5-hour and weekly quotas in the status bar.</li>
           <li>Displays remaining JetBrains AI subscription and top-up credits when AI Assistant is installed.</li>
           <li>Displays consumed GitHub Copilot quota from 0% unused to 100% exhausted when the Copilot plugin is installed.</li>
+          <li>Shows a collapsible weekly recap with your provider party, a local quota forecast, and a quota-driven boss battle.</li>
+          <li>Preserves weekly boss damage across plugin updates and refreshes selected providers when the overview opens.</li>
           <li>Groups agents into compact accented cards with subscription badges, colored bars, and credit/reset details.</li>
           <li>Colors status percentages directly and lets you choose visible agents with checkboxes.</li>
           <li>Shows four compact facts per agent, with further quota, reset, subscription, and status details on demand.</li>
@@ -20,11 +23,12 @@
         </ul>
         <h3>Usage preview</h3>
         <p><img src="https://raw.githubusercontent.com/larsnoerber/Rider_Agents_Usage/main/docs/images/agents-usage-overview.png"
-                alt="Illustrated Agents Usage overview with OpenAI, JetBrains AI, GitHub Copilot usage bars and status indicators"
-                width="760"/></p>
+                alt="Illustrated Agents Usage overview with provider usage bars, weekly party, boss health and status indicators"
+                width="100%" style="max-width:760px; height:auto;"/></p>
         <p>Illustrated preview with example balances. Available quotas and subscription details depend on your plan and installed provider plugins.</p>
         <p><b>OpenAI requirement:</b> Codex CLI must be installed and signed in on the local machine. You can deselect OpenAI when monitoring only other agents.</p>
         <p>This plugin reads usage locally through Codex CLI. It does not upload usage data. Codex is a trademark of OpenAI; this independent plugin is not affiliated with or endorsed by OpenAI.</p>
+        </div>
     ]]></description>
 
     <depends>com.intellij.modules.platform</depends>

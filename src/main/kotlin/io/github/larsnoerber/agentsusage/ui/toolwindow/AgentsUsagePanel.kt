@@ -25,6 +25,7 @@ import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import java.awt.Insets
 import java.awt.Rectangle
+import java.awt.event.HierarchyEvent
 import javax.swing.BorderFactory
 import javax.swing.JPanel
 import javax.swing.Scrollable
@@ -82,6 +83,11 @@ internal class AgentsUsagePanel : JPanel(BorderLayout()), Disposable {
             border = BorderFactory.createEmptyBorder()
             horizontalScrollBarPolicy = ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER
         }, BorderLayout.CENTER)
+        addHierarchyListener { event ->
+            if (event.changeFlags and HierarchyEvent.SHOWING_CHANGED.toLong() != 0L && isShowing && !disposed) {
+                UsageRefreshCoordinator.refreshAll()
+            }
+        }
         UsageRefreshCoordinator.addVisibilityListener(visibilityListener)
         updateVisibleAgents()
     }

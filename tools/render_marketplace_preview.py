@@ -51,6 +51,39 @@ def circle(x, y, radius, color):
     svg.append(f'<circle cx="{x}" cy="{y}" r="{radius}" fill="{color}"/>')
 
 
+def quota_wraith_icon(x, y, size=28, accent="#C397FA", cracked=True):
+    shape = [(5, 11), (4.2, 8), (4.8, 5.7), (7, 3.7), (11, 2.8), (15, 3),
+             (11, 0.5), (20, 4), (28, 0.5), (25, 7), (27.5, 9.5), (29, 14),
+             (29, 20), (28, 26), (22, 23), (16, 29), (10, 24), (4, 28),
+             (2.5, 22), (3.5, 16)]
+    factor = size / 32
+    points = [(round((x + px * factor) * SCALE), round((y + py * factor) * SCALE)) for px, py in shape]
+    draw.polygon(points, fill=accent)
+    svg.append(f'<path d="M5 11 C4 5 9 2 15 3 L11 .5 L20 4 L28 .5 L25 7 '
+               f'C30 12 29 21 28 26 L22 23 L16 29 L10 24 L4 28 C2 22 2 15 5 11 Z" '
+               f'fill="{accent}" transform="translate({x} {y}) scale({factor})"/>')
+    for eye_x in (11, 22):
+        eye = (x + (eye_x - 3) * factor, y + 10 * factor,
+               x + (eye_x + 3) * factor, y + 18 * factor)
+        draw.ellipse(tuple(round(value * SCALE) for value in eye), fill="#FFFFFF")
+    svg.append(f'<g transform="translate({x} {y}) scale({factor})" fill="#FFFFFF">'
+               '<ellipse cx="11" cy="14" rx="3" ry="4"/><ellipse cx="22" cy="14" rx="3" ry="4"/></g>')
+    for eye_x in (11, 22):
+        pupil = (x + (eye_x - 1.5) * factor, y + 13 * factor,
+                 x + (eye_x + 1.5) * factor, y + 17 * factor)
+        draw.ellipse(tuple(round(value * SCALE) for value in pupil), fill="#37284C")
+    svg.append(f'<g transform="translate({x} {y}) scale({factor})" fill="#37284C">'
+               '<ellipse cx="11.5" cy="15" rx="1.5" ry="2"/>'
+               '<ellipse cx="20.5" cy="15" rx="1.5" ry="2"/></g>')
+    if cracked:
+        crack = [(x + 15 * factor, y + 18 * factor), (x + 12 * factor, y + 22 * factor),
+                 (x + 17 * factor, y + 25 * factor)]
+        draw.line([(round(px * SCALE), round(py * SCALE)) for px, py in crack],
+                  fill="#FFE782", width=max(1, round(2 * factor * SCALE)))
+        svg.append(f'<path d="M15 18 L12 22 L17 25" fill="none" stroke="#FFE782" '
+                   f'stroke-width="2" transform="translate({x} {y}) scale({factor})"/>')
+
+
 def line(points, color=MUTED, width=2):
     draw.line([(round(x * SCALE), round(y * SCALE)) for x, y in points], fill=color, width=width * SCALE)
     svg.append(f'<polyline points="{" ".join(f"{x},{y}" for x, y in points)}" '
@@ -199,11 +232,12 @@ for x, text, color in ((124, "● OpenAI  78%", "#39AE99"), (290, "● JetBrains
 label(124, 934, "Forecast  ·  Copilot may reach 20% in about 3 days", size=17, color=MUTED)
 
 rectangle(116, 963, 1048, 78, "#34303B", radius=6)
-label(132, 973, "THE QUOTA WRAITH  ·  SHIELD CRACKED", size=16, color="#C397FA", bold=True)
-label(1148, 973, "82% HP", size=16, color=MUTED, bold=True, right=True)
-rectangle(132, 1000, 1016, 10, TRACK, radius=5)
-rectangle(132, 1000, 833, 10, "#9D77DC", radius=5)
-label(132, 1017, '"The Wraith gathers at the edge of the portal."', size=15, color=MUTED)
+quota_wraith_icon(128, 985)
+label(166, 973, "THE QUOTA WRAITH  ·  SHIELD CRACKED", size=16, color="#C397FA", bold=True)
+label(1148, 973, "70% HP", size=16, color=MUTED, bold=True, right=True)
+rectangle(166, 1000, 982, 10, TRACK, radius=5)
+rectangle(166, 1000, 687, 10, "#9D77DC", radius=5)
+label(166, 1017, '"The Wraith gathers at the edge of the portal."', size=15, color=MUTED)
 
 label(124, 1053, "LATEST BATTLE EVENTS", size=14, color=MUTED, bold=True)
 circle(132, 1084, 4, "#C397FA")

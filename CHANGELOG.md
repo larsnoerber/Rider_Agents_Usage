@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.17
+
+- Persist weekly boss damage directly so the current battle progress survives plugin updates and restarts.
+- Refresh selected providers when the usage window opens so newly consumed quota updates the boss health immediately.
+- Update the JetBrains Marketplace overview and release notes to describe the weekly recap and persistent boss progress.
+- Make the JetBrains Marketplace text wrap in narrow views and scale its images to the available width.
+- Add the illustrated weekly boss icon and current health percentage to the usage preview.
+
 ## 1.0.16
 
 - Add a collapsible weekly quest recap with a provider party, local forecast, and boss battle to the Rider overview.
