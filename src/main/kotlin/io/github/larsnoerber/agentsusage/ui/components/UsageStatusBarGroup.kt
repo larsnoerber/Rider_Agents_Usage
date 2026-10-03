@@ -1,8 +1,8 @@
 package io.github.larsnoerber.agentsusage.ui.components
 
 import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.wm.CustomStatusBarWidget
 import com.intellij.openapi.wm.StatusBar
-import com.intellij.openapi.wm.impl.status.IdeStatusBarImpl
 import java.awt.GridBagLayout
 
 /** Keep the existing independent widget IDs while placing visible agents in one contiguous group. */
@@ -12,9 +12,10 @@ internal object UsageStatusBarGroup {
     fun schedule(statusBar: StatusBar) {
         // Widget installation/removal and the IDE's own sorting finish before we adjust the layout.
         ApplicationManager.getApplication().invokeLater {
-            val bar = statusBar as? IdeStatusBarImpl ?: return@invokeLater
-            if (bar.project?.isDisposed == true) return@invokeLater
-            val agents = ids.mapNotNull { bar.getWidgetComponent(it) }
+            if (statusBar.project?.isDisposed == true) return@invokeLater
+            val agents = ids.mapNotNull { id ->
+                (statusBar.getWidget(id) as? CustomStatusBarWidget)?.component
+            }
             if (agents.size < 2) return@invokeLater
             val parent = agents.first().parent ?: return@invokeLater
             if (agents.any { it.parent !== parent }) return@invokeLater

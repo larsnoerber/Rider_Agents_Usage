@@ -84,5 +84,6 @@ tasks {
     }
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         compilerOptions.jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21)
+        compilerOptions.freeCompilerArgs.add("-jvm-default=no-compatibility")
     }
 }
