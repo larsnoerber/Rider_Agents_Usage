@@ -17,7 +17,7 @@ import java.awt.Color
 
 class JetBrainsAiStatusBarWidgetFactory : StatusBarWidgetFactory {
     override fun getId(): String = "JetBrainsAiCreditsStatusBar"
-    override fun getDisplayName(): String = "JetBrains AI Credits"
+    override fun getDisplayName(): String = "JetBrains AI Usage"
     override fun isAvailable(project: Project): Boolean = JetBrainsAiUsageService.isAvailable()
     override fun createWidget(project: Project): StatusBarWidget =
         UsageStatusBarWidget(project, getId(), JetBrainsAiUsageService.getInstance(), ::jetBrainsPresentation)
@@ -25,11 +25,12 @@ class JetBrainsAiStatusBarWidgetFactory : StatusBarWidgetFactory {
 }
 
 private fun jetBrainsPresentation(usage: JetBrainsAiUsage): StatusBarPresentation {
+    val percent = usage.quota?.percentLeft
     val text = when {
-        usage.unlimited -> "JB AI ∞"
-        usage.quota != null -> "JB AI ${formatAiCredits(usage.quota.remaining)} cr"
-        usage.error != null -> "JB AI —"
-        else -> "JB AI …"
+        usage.unlimited -> "JetbrainAi ∞"
+        percent != null -> "JetbrainAi $percent%"
+        usage.error != null || usage.quota != null -> "JetbrainAi —"
+        else -> "JetbrainAi …"
     }
     val lines = buildList {
         add("Subscription: ${formatSubscriptionPlan(usage.plan)}")

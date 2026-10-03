@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "io.github.larsnoerber.agentsusage"
-version = "1.0.2"
+version = "1.0.3"
 
 repositories {
     mavenCentral()
@@ -34,6 +34,7 @@ intellijPlatform {
         }
         changeNotes = """
             <ul>
+              <li>Shows compact status labels: OpenAi D % - W %, JetbrainAi %, and Copilot %.</li>
               <li>Reads the active JetBrains AI license name instead of a generic auth tier.</li>
               <li>Adds an illustrated usage preview to the plugin description and README.</li>
               <li>Organizes provider code by feature and separates shared components, settings, and Tool Window composition.</li>

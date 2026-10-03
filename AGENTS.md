@@ -23,7 +23,8 @@ before changing package boundaries and [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md
 - Read optional providers only when their plugins are loaded. Do not add a required AI Assistant or Copilot dependency.
 - Isolate internal provider API reflection in readers and `core/reflection/`. Handle unavailable APIs explicitly.
 - Preserve the plugin ID, widget IDs, Tool Window ID, and persisted settings identifiers unless migration is requested.
-- Keep `OpenAI`, `JB AI`, and `Copilot` status labels, compact usage bars, and visible subscription plans.
+- Keep the requested status format: `OpenAi D <percent>% - W <percent>%`, `JetbrainAi <percent>%`, and
+  `Copilot <percent>%`. Keep compact usage bars and visible subscription plans.
 - Use English product strings. Escape provider text in HTML tooltips. Do not read or log credentials.
 
 ## Working on changes

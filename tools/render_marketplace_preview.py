@@ -104,10 +104,9 @@ row(603, "Chat", 100, "Unlimited")
 
 rectangle(100, 672, 1080, 46, PANEL, radius=6)
 for x, text, color in (
-    (124, "OpenAI 5h 78%", GREEN),
-    (378, "W 42%", AMBER),
-    (550, "JB AI 10.5 cr", GREEN),
-    (836, "Copilot 62%", GREEN),
+    (124, "OpenAi D 78% - W 42%", AMBER),
+    (568, "JetbrainAi 70%", GREEN),
+    (936, "Copilot 62%", GREEN),
 ):
     circle(x, 695, 5, color)
     label(x + 15, 682, text, size=23)

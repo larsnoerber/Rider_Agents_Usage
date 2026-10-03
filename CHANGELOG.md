@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.3
+
+- Show OpenAI usage as `OpenAi D <percent>% - W <percent>%` with one indicator using the lower remaining balance.
+- Show remaining JetBrains AI usage as `JetbrainAi <percent>%` instead of a credit amount; retain credit details in
+  tooltips.
+- Keep `Copilot <percent>%` and update the illustrated Marketplace preview to match the status bar.
+
 ## 1.0.2
 
 - Read JetBrains AI's selected license name for the new AI Access activation, with legacy tier fallback.

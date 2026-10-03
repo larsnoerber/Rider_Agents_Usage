@@ -24,16 +24,17 @@ class CodexUsageStatusBarWidgetFactory : StatusBarWidgetFactory {
 private fun codexPresentation(usage: CodexUsage): StatusBarPresentation {
     val five = usage.fiveHourLeft
     val week = usage.weeklyLeft
-    val parts = if (five == null || week == null) {
-        listOf(StatusBarPart(if (usage.error == null) "OpenAI …" else "OpenAI —", usageBarColor(null)))
+    val part = if (five == null || week == null) {
+        val unavailable = if (usage.error == null) "…" else "—"
+        StatusBarPart("OpenAi D $unavailable - W $unavailable", usageBarColor(null))
     } else {
-        listOf(
-            StatusBarPart("OpenAI 5h $five%", usageBarColor(five)),
-            StatusBarPart("W $week%${if (usage.error == null) "" else " !"}", usageBarColor(week))
+        StatusBarPart(
+            "OpenAi D $five% - W $week%${if (usage.error == null) "" else " !"}",
+            usageBarColor(minOf(five, week))
         )
     }
     return StatusBarPresentation(
-        parts = parts,
+        parts = listOf(part),
         dimmed = five == null || week == null,
         tooltip = usageTooltip("OpenAI Codex usage", listOf(
             "Subscription: ${formatSubscriptionPlan(usage.plan)}",

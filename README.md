@@ -2,7 +2,8 @@
 
 Agents Usage is a plugin maintained by Lars Nörber for IntelliJ Platform IDEs, including IntelliJ IDEA and Rider.
 It displays Codex 5-hour and weekly usage, JetBrains AI credits, and GitHub Copilot quotas.
-The Codex status bar widget displays `OpenAI`; click any provider widget to open **Agents Usage**.
+The status bar displays `OpenAi D 78% - W 42%`, `JetbrainAi 70%`, and `Copilot 62%` (example balances).
+Click any provider widget to open **Agents Usage**.
 
 For the source layout, read [Code structure](docs/ARCHITECTURE.md). Contributors and agents should start with
 [Project rules](AGENTS.md) and [Local development](docs/DEVELOPMENT.md).
@@ -35,7 +36,7 @@ See [Marketplace media](docs/MARKETPLACE.md) for the image files and listing ins
 1. Download the plugin ZIP from [GitHub Releases](https://github.com/larsnoerber/Rider_Agents_Usage/releases/latest).
 2. In your IDE, open **Settings > Plugins**, click the gear icon, and choose **Install Plugin from Disk**.
 3. Select the ZIP and restart the IDE if prompted.
-4. Open **View > Tool Windows > Agents Usage**, or click the `OpenAI` status bar widget.
+4. Open **View > Tool Windows > Agents Usage**, or click the `OpenAi` status bar widget.
 
 Agents Usage uses the plugin ID `io.github.larsnoerber.agentsusage`. Disable or uninstall an earlier installation of
 Codex Usage Monitor before installing Agents Usage to avoid duplicate widgets.

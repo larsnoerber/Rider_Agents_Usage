@@ -55,13 +55,11 @@
 <rect x="362" y="610" width="530" height="16" rx="0" fill="#64CD87"/>
 <text x="1148" y="603" fill="#64CD87" font-family="Segoe UI, sans-serif" font-size="24" font-weight="700" dominant-baseline="text-before-edge" text-anchor="end">Unlimited</text>
 <rect x="100" y="672" width="1080" height="46" rx="6" fill="#2B2D30"/>
-<circle cx="124" cy="695" r="5" fill="#64CD87"/>
-<text x="139" y="682" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="23" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">OpenAI 5h 78%</text>
-<circle cx="378" cy="695" r="5" fill="#FFB94B"/>
-<text x="393" y="682" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="23" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">W 42%</text>
-<circle cx="550" cy="695" r="5" fill="#64CD87"/>
-<text x="565" y="682" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="23" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">JB AI 10.5 cr</text>
-<circle cx="836" cy="695" r="5" fill="#64CD87"/>
-<text x="851" y="682" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="23" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Copilot 62%</text>
+<circle cx="124" cy="695" r="5" fill="#FFB94B"/>
+<text x="139" y="682" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="23" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">OpenAi D 78% - W 42%</text>
+<circle cx="568" cy="695" r="5" fill="#64CD87"/>
+<text x="583" y="682" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="23" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">JetbrainAi 70%</text>
+<circle cx="936" cy="695" r="5" fill="#64CD87"/>
+<text x="951" y="682" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="23" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Copilot 62%</text>
 <text x="100" y="749" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="20" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Illustrated preview · Example balances · Available quotas depend on your plan</text>
 </svg>
