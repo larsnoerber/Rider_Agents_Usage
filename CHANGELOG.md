@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.18
+
+- Wrap weekly forecast, battle log, and help text to the available Tool Window width without clipping words.
+- Shorten quota hit, reset, and daily battle messages.
+
 ## 1.0.17
 
 - Persist weekly boss damage directly so the current battle progress survives plugin updates and restarts.

@@ -129,7 +129,7 @@ internal class UsageInsightsService : PersistentStateComponent<UsageInsightsStat
         val damage = persistedBossDamage(weekStart)
         if (damage > 0) {
             val boss = bossFor(weekStart)
-            addBattleEvent("${boss.name} · your agents used quota; the boss has taken $damage% damage this week")
+            addBattleEvent("${boss.name}: $damage% damage this week")
         }
         publish()
     }
@@ -163,7 +163,7 @@ internal class UsageInsightsService : PersistentStateComponent<UsageInsightsStat
         val after = usage.takeIf { it.error == null }?.let(::codexRemaining)
         if (didReset) {
             celebrate("Codex")
-            addBattleEvent("Codex recharged · the Wraith braces for another round")
+            addBattleEvent("Codex reset")
         } else recordHit("Codex", before, after)
         previousCodex = usage
         recordCodex(usage, didReset)
@@ -179,7 +179,7 @@ internal class UsageInsightsService : PersistentStateComponent<UsageInsightsStat
         val after = usage.takeIf { it.error == null }?.quota?.percentLeft
         if (didReset) {
             celebrate("JetBrains AI")
-            addBattleEvent("JetBrains AI recharged · the Wraith braces for another round")
+            addBattleEvent("JetBrains AI reset")
         } else recordHit("JetBrains AI", before, after)
         previousJetBrains = usage
         recordJetBrains(usage, didReset)
@@ -195,7 +195,7 @@ internal class UsageInsightsService : PersistentStateComponent<UsageInsightsStat
         val after = usage.takeIf { it.error == null }?.primary?.percentLeft
         if (didReset) {
             celebrate("Copilot")
-            addBattleEvent("Copilot recharged · the Wraith braces for another round")
+            addBattleEvent("Copilot reset")
         } else recordHit("Copilot", before, after)
         previousCopilot = usage
         recordCopilot(usage, didReset)
@@ -220,7 +220,7 @@ internal class UsageInsightsService : PersistentStateComponent<UsageInsightsStat
         aggregatedHitPoints[provider] = total
         lastHitAt[provider] = now
         if (recent) battleLog.removeAll { it.startsWith("$provider hit for ") }
-        addBattleEvent("$provider hit for $total quota points${if (recent) " combined" else ""}")
+        addBattleEvent("$provider hit for $total")
     }
 
     private fun addBattleEvent(message: String) {
@@ -286,12 +286,12 @@ internal class UsageInsightsService : PersistentStateComponent<UsageInsightsStat
             ?: 0
         if (loggedBattleDay != current) {
             loggedBattleDay = current
-            if (week.isNotEmpty()) addBattleEvent("${boss.name} · a new daily round begins")
+            if (week.isNotEmpty()) addBattleEvent("New daily round")
         }
         val currentHour = LocalDateTime.now().withMinute(0).withSecond(0).withNano(0)
         if (loggedBattleHour != currentHour) {
             loggedBattleHour = currentHour
-            if (dailyDamage > 0) addBattleEvent("${boss.name} · hourly update: $dailyDamage% quota use recorded today")
+            if (dailyDamage > 0) addBattleEvent("Today: $dailyDamage% quota use")
         }
         val party = buildList {
             if (settings.showOpenAi) previousCodex?.takeIf { it.error == null }?.let { usage ->

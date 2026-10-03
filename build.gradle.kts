@@ -42,6 +42,7 @@ intellijPlatform {
         }
         changeNotes = """
             <ul>
+              <li>Wrap weekly recap text to the available Tool Window width and shorten battle messages.</li>
               <li>Add a collapsible weekly recap with a provider party, local quota forecast, and weekly boss battle.</li>
               <li>Preserve weekly boss damage across plugin updates and refresh selected providers when the overview opens.</li>
               <li>Organizes Tool Window settings into agent selection, refresh interval, and action sections.</li>

@@ -47,6 +47,11 @@ internal class WeeklyUsageInsightsPanel : JPanel(BorderLayout(0, 4)), Disposable
         maximumSize = Dimension(Int.MAX_VALUE, Int.MAX_VALUE)
     }
     private val forecast = JBLabel().apply { setAllowAutoWrapping(true) }
+    private val footer = JBLabel().apply {
+        setAllowAutoWrapping(true)
+        foreground = secondaryTextColor()
+        font = font.deriveFont(font.size2D - 1f)
+    }
     private val combatLog = JPanel().apply {
         layout = BoxLayout(this, BoxLayout.Y_AXIS)
         isOpaque = false
@@ -108,6 +113,8 @@ internal class WeeklyUsageInsightsPanel : JPanel(BorderLayout(0, 4)), Disposable
     private var resetGlowProvider: String? = null
     private var resetGlowUntil = 0L
     private var lastSnapshot: UsageInsightsSnapshot? = null
+    private var forecastMessage = ""
+    private val footerMessage = "Quota changes weaken the boss. New challenger each week."
     private var battleEvents = emptyList<String>()
     private val battleEventLabels = mutableListOf<JBLabel>()
     private var battleEventWidth = -1
@@ -148,11 +155,7 @@ internal class WeeklyUsageInsightsPanel : JPanel(BorderLayout(0, 4)), Disposable
         addBodyRow(bossBattle, bottomGap = 5)
         addBodyRow(JBLabel("LATEST BATTLE EVENTS").apply { setSectionHeadingStyle() })
         addBodyRow(combatLog, bottomGap = 5)
-        addBodyRow(JBLabel("Quota changes weaken the Wraith. A new challenger arrives each week.").apply {
-            setAllowAutoWrapping(true)
-            foreground = secondaryTextColor()
-            font = font.deriveFont(font.size2D - 1f)
-        }, bottomGap = 0)
+        addBodyRow(footer, bottomGap = 0)
         add(body, BorderLayout.CENTER)
         setExpanded(expanded)
         var lastLayoutWidth = -1
@@ -163,6 +166,7 @@ internal class WeeklyUsageInsightsPanel : JPanel(BorderLayout(0, 4)), Disposable
                     body.revalidate()
                     party.revalidate()
                     combatLog.revalidate()
+                    updateWrappedText()
                 }
             }
         })
@@ -222,10 +226,11 @@ internal class WeeklyUsageInsightsPanel : JPanel(BorderLayout(0, 4)), Disposable
         }
 
         val estimate = snapshot.forecast
-        forecast.text = estimate?.let {
-            if (it.hoursUntilLow <= 0.0) "Forecast  ·  ${it.provider} is already near its warning level"
-            else "Forecast  ·  ${it.provider} may reach 20% in about ${formatDuration(it.hoursUntilLow)}"
-        } ?: "Forecast  ·  Learning today's pace; more observation needed"
+        forecastMessage = estimate?.let {
+            if (it.hoursUntilLow <= 0.0) "Forecast  ·  ${it.provider} near warning level"
+            else "Forecast  ·  ${it.provider} may reach 20% in ${formatDuration(it.hoursUntilLow)}"
+        } ?: "Forecast  ·  Learning quota use"
+        updateWrappedText()
         forecast.foreground = secondaryTextColor()
         forecast.toolTipText = "Local estimate from observed quota changes. Shown after at least one hour and 3 percentage points of change; resets before the estimate are excluded."
 
@@ -273,13 +278,45 @@ internal class WeeklyUsageInsightsPanel : JPanel(BorderLayout(0, 4)), Disposable
         val width = combatLog.width.takeIf { it > 0 } ?: return
         if (width == battleEventWidth) return
         battleEventWidth = width
-        val textWidth = (width - JBUI.scale(4)).coerceAtLeast(JBUI.scale(40))
         battleEventLabels.forEachIndexed { index, label ->
-            val marker = if (index == 0) "✦" else "·"
-            val text = "$marker  ${battleEvents[index]}"
-            label.text = "<html><div style=\"width: ${textWidth}px\">${StringUtil.escapeXmlEntities(text)}</div></html>"
+            val marker = if (index == 0) "\u2726" else "\u00B7"
+            setWrappedText(label, "$marker  ${battleEvents[index]}", width)
         }
         combatLog.revalidate()
+        body.revalidate()
+    }
+
+    private fun updateWrappedText() {
+        setWrappedText(forecast, forecastMessage)
+        setWrappedText(footer, footerMessage)
+        updateBattleEventWidths()
+    }
+
+    private fun setWrappedText(label: JBLabel, text: String, availableWidth: Int? = null) {
+        if (text.isEmpty()) {
+            label.text = ""
+            return
+        }
+        val labelWidth = label.width.takeIf { it > 0 } ?: label.parent?.width ?: 0
+        val width = (availableWidth ?: labelWidth) - JBUI.scale(6)
+        if (width <= 0) {
+            label.text = "<html>${StringUtil.escapeXmlEntities(text)}</html>"
+            return
+        }
+        val metrics = label.getFontMetrics(label.font)
+        val lines = mutableListOf<String>()
+        var line = ""
+        text.split(Regex("\\s+")).forEach { word ->
+            val candidate = if (line.isEmpty()) word else "$line $word"
+            if (line.isNotEmpty() && metrics.stringWidth(candidate) > width) {
+                lines += line
+                line = word
+            } else line = candidate
+        }
+        if (line.isNotEmpty()) lines += line
+        label.text = lines.joinToString("<br>", "<html>", "</html>") {
+            StringUtil.escapeXmlEntities(it)
+        }
     }
 
     private fun partyChip(member: UsagePartyMember): JPanel {
