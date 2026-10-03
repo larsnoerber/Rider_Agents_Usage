@@ -73,12 +73,23 @@ consumption percentages. A missing premium balance is not inferred from unlimite
 The Visual Studio package uses the stable Visual Studio 2022 SDK, .NET Framework 4.7.2 and native WPF controls.
 Its VSIX manifest targets Community, Professional and Enterprise from API version 17.0 onward on Windows x64,
 including Visual Studio 2026. These are declared installation targets; runtime behavior needs IDE checks.
-The first package supports Codex. Copilot authentication and quota access need a separate Visual Studio integration;
-neither the VS Code authentication session nor JetBrains provider plugins are shared with it.
-The usage control owns its reader, timer and cancellation lifetime. CLI calls run in the background, WPF updates run
-on the dispatcher, and Windows job objects stop the entire CLI process tree on timeout or disposal. Closing the
-window pauses automatic polling; disabling Codex pauses provider reads. Settings notify the running control after
-Apply. No credentials or prompt history are read or logged.
+Visual Studio provider readers, models and UI live in `visualstudio/Providers/<Provider>/`. Copilot reflects only the
+loaded optional `Microsoft.VisualStudio.Copilot` quota contract and gets a disposable proxy from the shell's brokered
+service container. It reads `GetQuotasAsync`, matching Visual Studio's own quota UI; it never queries token/account
+services. No required Copilot dependency is registered. Free plans select included chat; paid plans select premium
+quota. Empty 0/0 placeholders are skipped, unlimited categories stay separate, and absent quotas are unavailable.
+`visualstudio/Application/UsageRefreshCoordinator` owns readers, snapshots, cancellation and a single dispatcher timer.
+Both the usage view and status indicator subscribe to it. Reads run off the UI thread; listener delivery and WPF
+updates run on the dispatcher. Windows job objects stop Codex process trees on timeout/disposal. Settings changes
+cancel obsolete reads and pause deselected providers. Closing the window pauses polling when the status indicator
+is disabled. Light background package autoload makes the indicator available without first opening the tool window.
+`UI/StatusBarHost` isolates insertion into the shell's WPF `StatusBarPanel`; this is a version-dependent UI attachment,
+not an official generic status-widget API. It leaves shell status text alone, detaches on disposal/disable, and stays
+absent if the insertion point is missing. Standard toolbar/menu commands use a custom AI image moniker. These shell
+and Copilot integrations need live IDE checks across versions. No credentials or prompt history are read or logged.
+`visualstudio/Marketplace/` stores descriptions, publishing metadata and explicitly illustrated example images.
+The Visual Studio build creates a versioned, self-contained Marketplace upload folder/archive beside its VSIX.
+HTML image links target the release tag; Markdown uses publish-manifest image assets. No publishing occurs in Build.
 
 ## Responsibilities
 

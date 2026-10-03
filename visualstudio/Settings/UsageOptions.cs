@@ -9,6 +9,12 @@ namespace AgentsUsage.VisualStudio.Settings
         [Category("Agents"), DisplayName("Show OpenAI Codex"), Description("Display Codex quota and refresh it in the background.")]
         public bool CodexEnabled { get; set; } = true;
 
+        [Category("Agents"), DisplayName("Show GitHub Copilot"), Description("Display reported quota from the signed-in Copilot service in Visual Studio.")]
+        public bool CopilotEnabled { get; set; } = true;
+
+        [Category("Display"), DisplayName("Show status bar"), Description("Show the clickable AI icon and quota percentages. Refreshes continue while this is enabled.")]
+        public bool ShowStatusBar { get; set; } = true;
+
         [Category("Refresh"), DisplayName("Codex CLI path"), Description("Leave empty to discover codex on PATH.")]
         public string CodexPath { get; set; } = "";
 

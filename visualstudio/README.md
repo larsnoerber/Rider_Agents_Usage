@@ -9,14 +9,20 @@ checking the extension in each IDE version.
 
 - OpenAI Codex remaining 5-hour and weekly quotas with colored bars.
 - Provider-reported subscription plan, credits and local reset times.
-- Manual refresh and automatic refresh while the usage window is open.
+- GitHub Copilot consumed quota, plans, reset times and colored bars through Visual Studio's own quota service.
+- Manual refresh and automatic refresh while the view is open or the status indicator is enabled.
 - Provider visibility, CLI path and refresh interval under **Tools > Options > Agents Usage > General**.
-- AI logo, visible package version and GitHub repository link.
+- Colored AI logo in the Standard toolbar, tool window and clickable quota status indicator.
+- Visible package version, GitHub repository link, and ready-to-upload Marketplace descriptions and images.
 
 The Codex CLI must already be installed and signed in (`codex login`). This extension reads only provider-reported
 quota from the local app-server; it does not read credentials or estimate usage from local activity.
-Copilot quota integration is not included in this first Visual Studio package. Its VS Code authentication cannot
-be reused in Visual Studio. JetBrains AI is specific to the JetBrains package.
+Copilot must already be signed in in Visual Studio. The reader uses the installed integration's optional quota
+service, without a separate GitHub token. Open Copilot once if its service is not loaded; older versions may not
+expose quotas. Free plans use chat and paid plans use premium allowance when reported. No quota is invented from
+an empty placeholder; unlimited categories are labeled explicitly. Copilot shows consumption (0% unused,
+100% exhausted). JetBrains AI is specific to the JetBrains package.
+The optional colored status indicator uses Visual Studio's WPF shell layout; check it manually after IDE updates.
 
 ## Build
 
@@ -30,6 +36,10 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\visualstudio\build.ps1
 For a custom Visual Studio installation, add `-MSBuildPath 'C:\path\to\MSBuild.exe'`.
 The script reads the shared version from `gradle.properties` and writes
 `visualstudio/dist/agents-usage-visualstudio-<version>.vsix`. It does not install the extension.
+The same build prepares `visualstudio/dist/marketplace-<version>/` and a Marketplace ZIP with the VSIX, logo,
+Markdown/HTML description, two illustrated images, upload details and `publishManifest.json`.
+See [Marketplace upload instructions](Marketplace/README.md). Web uploads require pasting the overview separately;
+the publishing manifest can supply it and image assets to Microsoft's command-line publisher.
 
 ## Install and open
 

@@ -2,6 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Windows.Controls;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Imaging.Interop;
 
 namespace AgentsUsage.VisualStudio.UI
 {
@@ -11,14 +12,19 @@ namespace AgentsUsage.VisualStudio.UI
         private UsageControl control;
         private readonly ContentControl host = new ContentControl();
 
-        public UsageToolWindow() : base(null) { Caption = "Agents Usage"; Content = host; }
+        public UsageToolWindow() : base(null)
+        {
+            Caption = "Agents Usage";
+            Content = host;
+            BitmapImageMoniker = new ImageMoniker { Guid = new Guid("988815e6-cdbc-44b5-a9ae-b81ee39b3975"), Id = 1 };
+        }
 
         public override void OnToolWindowCreated()
         {
             base.OnToolWindowCreated();
             if (control != null) return;
             var package = (AgentsUsagePackage)Package;
-            control = new UsageControl(package.Options, package.OpenSettings);
+            control = new UsageControl(package.Options, package.Coordinator, package.OpenSettings);
             host.Content = control;
         }
 

@@ -64,3 +64,40 @@ New-Item -ItemType Directory -Path $distribution -Force | Out-Null
 $artifact = Join-Path $distribution "agents-usage-visualstudio-$releaseVersion.vsix"
 Copy-Item -LiteralPath $package -Destination $artifact -Force
 Write-Output "Visual Studio package: $artifact"
+
+# Prepare a self-contained upload folder; publishing remains an explicit user action.
+$uploadFolder = Join-Path $distribution "marketplace-$releaseVersion"
+New-Item -ItemType Directory -Path $uploadFolder -Force | Out-Null
+Copy-Item -Path (Join-Path $PSScriptRoot 'Marketplace\*') -Destination $uploadFolder -Recurse -Force
+Copy-Item -LiteralPath $artifact -Destination $uploadFolder -Force
+Copy-Item -LiteralPath (Join-Path $repositoryRoot 'vscode\resources\icon.png') -Destination (Join-Path $uploadFolder 'logo.png') -Force
+$htmlPath = Join-Path $uploadFolder 'overview.html'
+$html = [System.IO.File]::ReadAllText($htmlPath).Replace('@VERSION@', $releaseVersion)
+[System.IO.File]::WriteAllText($htmlPath, $html, [System.Text.UTF8Encoding]::new($false))
+$details = @"
+Display name: Agents Usage
+Version: $releaseVersion
+Publisher ID: lanoerber
+Publisher display name / VSIX author: nightevil
+VSIX ID: lanoerber.AgentsUsage.VisualStudio
+Internal name: keep the existing listing name (publishManifest default: AgentsUsage)
+Short description: Track OpenAI Codex and GitHub Copilot quotas in Visual Studio with colored bars, subscription plans, reset times and clickable AI status indicators.
+Versions: Visual Studio 2022 and 2026
+Editions: Community, Professional, Enterprise
+Architecture: Windows x64
+Type: Tools
+Categories: Coding, Other
+Pricing: Free
+Tags: AI, OpenAI, Codex, GitHub, Copilot, usage, quota, credits, status bar
+Repository: https://github.com/larsnoerber/Rider_Agents_Usage
+Release notes: https://github.com/larsnoerber/Rider_Agents_Usage/blob/v$releaseVersion/CHANGELOG.md
+Logo: logo.png
+Overview: paste overview.html in the web editor, or use overview.md with VsixPublisher
+Screenshot 1: images/usage.png - Usage overview and clickable AI status indicators (illustrated example)
+Screenshot 2: images/settings.png - Provider selection and refresh/display settings (illustrated example)
+Enable Q&A: Yes
+"@
+[System.IO.File]::WriteAllText((Join-Path $uploadFolder 'upload-details.txt'), $details, [System.Text.UTF8Encoding]::new($false))
+$uploadArchive = Join-Path $distribution "agents-usage-visualstudio-marketplace-$releaseVersion.zip"
+Compress-Archive -Path (Join-Path $uploadFolder '*') -DestinationPath $uploadArchive -Force
+Write-Output "Marketplace upload materials: $uploadArchive"

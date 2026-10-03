@@ -56,6 +56,11 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\visualstudio\build.ps1
 
 The script reads `pluginVersion` from `gradle.properties`, builds without installing, and writes
 `visualstudio/dist/agents-usage-visualstudio-<version>.vsix`. A custom MSBuild path can be passed with `-MSBuildPath`.
+It also creates `visualstudio/dist/marketplace-<version>/` and
+`agents-usage-visualstudio-marketplace-<version>.zip`, containing the VSIX, logo, Markdown/HTML overview, illustrated
+images, publish manifest and ready-to-copy web upload fields. See `visualstudio/Marketplace/README.md` for web/CLI
+publishing. The web uploader does not automatically replace the full overview from a VSIX.
+Regenerate illustrated images with `python tools/render_visualstudio_preview.py` (Pillow required).
 The corresponding Gradle task is `buildVisualStudioExtension`. Open the package with Visual Studio's VSIX Installer,
 then use **View > Other Windows > Agents Usage**. See [../visualstudio/README.md](../visualstudio/README.md).
 The manifest targets 2022/2026 Community, Professional and Enterprise on x64. Other versions and architectures are
@@ -161,6 +166,16 @@ activity estimate. Its quota sidebar is a `WebviewView` to allow theme-aware col
 selection, CLI path, refresh interval, and status-bar visibility are managed through contributed VS Code settings.
 
 ## Checks and delivery
+
+### Visual Studio providers and status UI
+
+Copilot uses the optional installed brokered quota service via reflection against loaded contracts. Missing or
+changed APIs return an unavailable state. No authentication/token properties are read. Known paid plans use premium
+quota without substituting unlimited basic chat for a missing premium balance. AI credit billing suppresses counts.
+The application coordinator refreshes selected providers while the view is open or status display is enabled.
+The colored status control uses a shell WPF insertion point isolated in `UI/StatusBarHost`, and requires a manual IDE
+check. If the insertion point changes it does not replace the shell's normal status text. Toolbar/toolwindow images
+use `AgentsUsage.imagemanifest` and stable image GUID/ID values.
 
 Use the Gradle task appropriate to the requested work and report its actual result.
 Do not add or run tests unless requested. There is currently no repository test suite.

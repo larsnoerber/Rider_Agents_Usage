@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json.schemastore.org/vsix-publish",
+  "categories": [
+    "coding",
+    "other"
+  ],
+  "identity": {
+    "internalName": "AgentsUsage"
+  },
+  "overview": "overview.md",
+  "priceCategory": "free",
+  "publisher": "lanoerber",
+  "private": false,
+  "qna": true,
+  "repo": "https://github.com/larsnoerber/Rider_Agents_Usage",
+  "assetFiles": [
+    {
+      "pathOnDisk": "images/usage.png",
+      "targetPath": "images/usage.png"
+    },
+    {
+      "pathOnDisk": "images/settings.png",
+      "targetPath": "images/settings.png"
+    }
+  ]
+}

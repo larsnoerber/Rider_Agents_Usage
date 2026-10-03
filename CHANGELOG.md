@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.0.14
+
+- Add optional GitHub Copilot quota reporting to Visual Studio through its existing brokered quota service, with
+  plans, consumption bars, resets, explicit unlimited categories and unavailable states.
+- Add the colored AI icon to Visual Studio's Standard toolbar, tool window and clickable quota status indicator.
+- Share polling between the Visual Studio usage view and status indicator. Pause disabled providers and cancel
+  obsolete reads when settings change or the extension is disposed.
+- Prepare Visual Studio Marketplace Markdown/HTML descriptions, illustrated usage/settings images and a publishing
+  manifest. Include a separate Marketplace upload archive in the Visual Studio build and GitHub release.
+
 ## 1.0.13
 
 - Add a native Visual Studio extension targeting Visual Studio 2022/2026 Community, Professional and Enterprise

@@ -67,8 +67,10 @@ separately to use Codex as a coding agent in VS Code.
 
 Build or download `agents-usage-visualstudio-<version>.vsix`, close Visual Studio and open the package with
 Visual Studio's VSIX Installer. Then choose **View > Other Windows > Agents Usage**.
-Use **Settings** in the window to configure Codex visibility, CLI path and refresh interval.
-The first Visual Studio package supports Codex; Copilot requires a separate Visual Studio integration.
+Use **Settings** in the window to configure Codex/Copilot visibility, status display, CLI path and refresh interval.
+Codex reports remaining quota; GitHub Copilot reports consumption through Visual Studio's existing quota service.
+Click the AI icon in the Standard toolbar or status bar to open Usage. Older Copilot builds may not expose quotas.
+The build includes [Visual Studio Marketplace upload materials](visualstudio/Marketplace/README.md).
 See [Visual Studio setup](visualstudio/README.md).
 
 ## Settings

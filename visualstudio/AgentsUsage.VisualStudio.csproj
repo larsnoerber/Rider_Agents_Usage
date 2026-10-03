@@ -6,7 +6,7 @@
         <LangVersion>latest</LangVersion>
         <RootNamespace>AgentsUsage.VisualStudio</RootNamespace>
         <AssemblyName>AgentsUsage.VisualStudio</AssemblyName>
-        <Version>1.0.13</Version>
+        <Version>1.0.14</Version>
         <GeneratePkgDefFile>true</GeneratePkgDefFile>
         <IncludeAssemblyInVSIXContainer>true</IncludeAssemblyInVSIXContainer>
         <IncludeCopyLocalReferencesInVSIXContainer>true</IncludeCopyLocalReferencesInVSIXContainer>
@@ -36,6 +36,12 @@
             <IncludeInVSIX>true</IncludeInVSIX>
         </Content>
         <Resource Include="..\vscode\resources\icon.png" Link="Resources\icon.png"/>
+        <Content Include="AgentsUsage.imagemanifest">
+            <IncludeInVSIX>true</IncludeInVSIX>
+        </Content>
+        <Content Include="Marketplace\**\*">
+            <IncludeInVSIX>true</IncludeInVSIX>
+        </Content>
         <Content Include="..\LICENSE" Link="LICENSE">
             <IncludeInVSIX>true</IncludeInVSIX>
         </Content>

@@ -1,0 +1,30 @@
+<h1>Agents Usage for Visual Studio</h1>
+<p>See provider-reported OpenAI Codex and GitHub Copilot quotas in a native Visual Studio tool window and the status bar.</p>
+<p><img src="https://raw.githubusercontent.com/larsnoerber/Rider_Agents_Usage/v@VERSION@/visualstudio/Marketplace/images/usage.png" alt="Agents Usage overview and AI status indicators" width="1280" /></p>
+<p><em>Illustrated preview with example balances. Actual values depend on the signed-in provider account.</em></p>
+<h2>Features</h2>
+<ul>
+  <li><strong>OpenAI Codex:</strong> remaining 5-hour and weekly allowance, colored quota bars, subscription plan, credits and reset times.</li>
+  <li><strong>GitHub Copilot:</strong> consumed allowance, plan and resets from Visual Studio's existing Copilot quota service. Free plans use included chat; paid plans use premium allowance when reported. AI credit billing and unlimited categories are identified explicitly.</li>
+  <li><strong>AI icon:</strong> toolbar button, tool window icon and clickable status indicator opening the Usage overview.</li>
+  <li><strong>Clear quota direction:</strong> OpenAI shows the remaining balance; Copilot shows consumption, from 0% unused to 100% exhausted. Missing quotas are unavailable, not estimated.</li>
+  <li><strong>Refresh:</strong> manual refresh, background refresh and independent provider selection. Disabled providers are not read.</li>
+  <li><strong>Configuration:</strong> provider selection, status display, Codex CLI path and refresh interval under Tools &gt; Options &gt; Agents Usage &gt; General.</li>
+  <li><strong>Project information:</strong> visible package version and GitHub repository link.</li>
+</ul>
+<h2>Compatibility and setup</h2>
+<p>For Visual Studio 2022 and 2026 Community, Professional and Enterprise on Windows x64.</p>
+<ol>
+  <li>Install the Visual Studio VSIX and complete the installer's instructions.</li>
+  <li>Open View &gt; Other Windows &gt; Agents Usage, or click the AI button on the Standard toolbar.</li>
+  <li>Use Settings to choose providers and configure refresh.</li>
+  <li>Codex requires an installed CLI signed in with <code>codex login</code>. An empty CLI path uses PATH.</li>
+  <li>Copilot requires a signed-in Visual Studio Copilot integration exposing quota data. Open Copilot once if the service is not loaded, then refresh. Older IDE/Copilot versions may not expose quotas.</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/larsnoerber/Rider_Agents_Usage/v@VERSION@/visualstudio/Marketplace/images/settings.png" alt="Agents Usage provider and display configuration" width="1280" /></p>
+<p><em>Illustrated configuration preview. Settings use Visual Studio's native Options dialog.</em></p>
+<p>Automatic refresh continues while the status indicator is enabled. With the status indicator disabled, automatic reads run only while the Usage window is visible. Copilot uses its existing connection without requesting a separate GitHub token. Credentials and prompt history are not read or logged, and usage is not estimated from local activity.</p>
+<p>Provider APIs can change. The optional colored status indicator depends on Visual Studio's WPF shell layout. JetBrains AI is available in the JetBrains package. Choose the download containing <strong>visualstudio</strong> for Visual Studio; the <strong>vscode</strong> package is for Visual Studio Code.</p>
+<h2>Source and support</h2>
+<p><a href="https://github.com/larsnoerber/Rider_Agents_Usage">Source code</a> &bull; <a href="https://github.com/larsnoerber/Rider_Agents_Usage/issues">Report an issue</a> &bull; <a href="https://github.com/larsnoerber/Rider_Agents_Usage/blob/v@VERSION@/CHANGELOG.md">Release notes</a></p>
+<p>This free, independent extension is not affiliated with or endorsed by OpenAI, GitHub, Microsoft or JetBrains. Provider subscriptions and allowances are determined by each provider.</p>

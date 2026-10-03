@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ImageManifest xmlns="http://schemas.microsoft.com/VisualStudio/ImageManifestSchema/2014">
+  <Symbols>
+    <String Name="Resources" Value="/AgentsUsage.VisualStudio;Component/Resources" />
+    <Guid Name="ImageGuid" Value="{988815e6-cdbc-44b5-a9ae-b81ee39b3975}" />
+    <ID Name="AI" Value="1" />
+  </Symbols>
+  <Images>
+    <Image Guid="$(ImageGuid)" ID="$(AI)">
+      <Source Uri="$(Resources)/icon.png" />
+    </Image>
+  </Images>
+</ImageManifest>
