@@ -43,6 +43,11 @@ the publishing manifest can supply it and image assets to Microsoft's command-li
 
 ## Install and open
 
+**Migration in 1.0.15:** the Visual Studio VSIX uses a new identity after deletion of the previous Marketplace entry.
+Uninstall Agents Usage 1.0.14 or earlier and complete its uninstall before installing this package. This is a new
+extension identity; existing installations do not receive it as an automatic update. Keep only the new identity
+installed.
+
 1. Close Visual Studio and open the Visual Studio VSIX package with Visual Studio's VSIX Installer.
 2. Select your Visual Studio installation and install the extension.
 3. Open Visual Studio and choose **View > Other Windows > Agents Usage**.

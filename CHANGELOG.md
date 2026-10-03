@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.15
+
+- Migrate the Visual Studio VSIX to a fresh GUID-suffixed identity and the Marketplace internal name
+  `agents-usage-visualstudio`, after the previous listing was deleted and its old VSIX ID remained rejected.
+  Uninstall Visual Studio Agents Usage 1.0.14 or earlier before installing this new extension identity.
+- Update Marketplace upload instructions for the new listing and derive upload identifiers from the package and
+  publishing manifests to keep them consistent.
+
 ## 1.0.14
 
 - Add optional GitHub Copilot quota reporting to Visual Studio through its existing brokered quota service, with

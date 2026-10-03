@@ -90,6 +90,12 @@ and Copilot integrations need live IDE checks across versions. No credentials or
 `visualstudio/Marketplace/` stores descriptions, publishing metadata and explicitly illustrated example images.
 The Visual Studio build creates a versioned, self-contained Marketplace upload folder/archive beside its VSIX.
 HTML image links target the release tag; Markdown uses publish-manifest image assets. No publishing occurs in Build.
+Visual Studio 1.0.15 intentionally migrates the legacy VSIX identity `lanoerber.AgentsUsage.VisualStudio` to
+`lanoerber.AgentsUsage.VisualStudio.82441438-356a-4f3a-a82f-47bc9e090b7e`, following explicit user approval after
+deletion
+of the old listing. The new Marketplace internal name is `agents-usage-visualstudio`. Package, command, window and
+settings identifiers remain stable; remove the old VSIX before installing the new identity to avoid duplicate package
+registration. Future updates must retain the new VSIX ID. Upload details derive identity from the manifest.
 
 ## Responsibilities
 

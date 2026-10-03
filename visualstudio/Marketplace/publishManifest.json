@@ -5,7 +5,7 @@
     "other"
   ],
   "identity": {
-    "internalName": "AgentsUsage"
+    "internalName": "agents-usage-visualstudio"
   },
   "overview": "overview.md",
   "priceCategory": "free",

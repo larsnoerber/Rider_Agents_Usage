@@ -36,6 +36,9 @@ for OpenAI Codex and GitHub Copilot in a native Visual Studio tool window and th
 
 ## Getting started
 
+**Migrating from Agents Usage 1.0.14 or earlier?** Uninstall that Visual Studio extension before installing 1.0.15.
+The deleted Marketplace listing's identity has been replaced; this package is a new extension, not an automatic update.
+
 1. Install **Agents Usage** for Visual Studio and complete the VSIX Installer's instructions.
 2. Open **View > Other Windows > Agents Usage**, or click the AI button on the Standard toolbar.
 3. Use **Settings** or **Tools > Options > Agents Usage > General** to choose providers and refresh settings.

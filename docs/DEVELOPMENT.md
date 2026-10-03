@@ -64,10 +64,14 @@ Regenerate illustrated images with `python tools/render_visualstudio_preview.py`
 The corresponding Gradle task is `buildVisualStudioExtension`. Open the package with Visual Studio's VSIX Installer,
 then use **View > Other Windows > Agents Usage**. See [../visualstudio/README.md](../visualstudio/README.md).
 The manifest targets 2022/2026 Community, Professional and Enterprise on x64. Other versions and architectures are
-not claimed. The first package supports Codex, not Copilot. No live account or cross-version IDE check is implied by
-a successful build.
+not claimed. Codex and optional Copilot quota reporting are supported. No live account or cross-version IDE check is
+implied by a successful build.
 The Visual Studio VSIX `Identity.Publisher` is `nightevil`, matching the Marketplace publisher display name.
-The Marketplace publisher ID remains `lanoerber`; the VSIX ID remains `lanoerber.AgentsUsage.VisualStudio`.
+The Marketplace publisher ID remains `lanoerber`. Starting with 1.0.15, the VSIX ID is
+`lanoerber.AgentsUsage.VisualStudio.82441438-356a-4f3a-a82f-47bc9e090b7e` and the listing internal name is
+`agents-usage-visualstudio`. This migration was explicitly approved after deletion of the old listing and rejection
+of its legacy ID. Old installations must be uninstalled before installing the new identity. Preserve the new ID and
+listing name for future updates. The build derives upload identifiers from the actual source/publishing manifests.
 
 To launch the isolated development IDE with the current plugin:
 
