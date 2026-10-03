@@ -1,0 +1,15 @@
+# Gradle / IntelliJ generated files
+.gradle/
+.gradle-user-home/
+.intellijPlatform/
+.kotlin/
+build/
+out/
+
+# IntelliJ IDEA project metadata
+.idea/
+*.iml
+
+# OS files
+Thumbs.db
+.DS_Store
