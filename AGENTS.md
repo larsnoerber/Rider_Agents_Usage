@@ -38,5 +38,8 @@ before changing package boundaries and [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md
   imports, package paths, and plugin registrations together and explain the fallback.
 - Use `rg` to find files and references. Keep generated IDE/Gradle directories out of source edits.
 - Build the plugin for requested build work and report the resulting artifact. Add/run tests only when requested.
+- Default build requests to the Rider plugin only (`buildPlugin`). Build Visual Studio Code or Visual Studio
+  packages only when explicitly requested; run `buildAllExtensions` only when all editor packages are explicitly
+  requested.
 - Document structural changes in `docs/ARCHITECTURE.md` and user-facing changes in `CHANGELOG.md`.
 - Report changes, the checks actually performed, and any unresolved limitations clearly.

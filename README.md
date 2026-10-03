@@ -1,5 +1,7 @@
 # Agents Usage
 
+<p><img src="docs/images/agents-usage-logo.png" alt="Agents Usage Quota Portal logo" width="180"/></p>
+
 Agents Usage, maintained by Lars Nörber, is available for JetBrains IDEs, including IntelliJ IDEA and Rider, and as an
 extension for Visual Studio Code. It displays Codex 5-hour and weekly usage, JetBrains AI credits, and GitHub Copilot
 quotas in JetBrains IDEs. The VS Code extension displays Codex and GitHub Copilot quota. A native Visual Studio
@@ -28,6 +30,8 @@ For the source layout, read [Code structure](docs/ARCHITECTURE.md). Contributors
 - Expand **More details** per agent for category balances, full reset dates, refresh interval and availability status.
 - Agent checkboxes control visibility in both the overview and status bar; deselected quota reads pause.
 - Tool Window with quota, reset time, countdown, and progress details.
+- Collapsible weekly quest recap with a provider party, quota forecast, and boss battle; it adapts to the Tool Window
+  width and remembers its open or closed state.
 - Manual refresh and configurable automatic refresh intervals.
 - Automatic discovery of `codex` from the system `PATH`.
 - English interface, tooltips, settings, and error messages.

@@ -4,6 +4,8 @@
     <vendor url="https://github.com/larsnoerber/Rider_Agents_Usage">Lars Nörber</vendor>
 
     <description><![CDATA[
+        <p><img src="https://raw.githubusercontent.com/larsnoerber/Rider_Agents_Usage/main/docs/images/agents-usage-logo.png"
+                alt="Agents Usage Quota Portal logo" width="180"/></p>
         <h2>Agents Usage</h2>
         <p>Monitor Codex, JetBrains AI, and GitHub Copilot usage directly in IntelliJ Platform IDEs, including IntelliJ IDEA and Rider. Maintained by Lars Nörber.</p>
         <ul>

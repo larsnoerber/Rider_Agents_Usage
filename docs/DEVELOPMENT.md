@@ -5,6 +5,9 @@ The project targets IntelliJ IDEA 2026.1.2 and produces Java 21 bytecode. Plugin
 2026.2.3.1.
 Commands below are run from the repository root; replace the sample JDK path with your own installation.
 
+Build requests default to the Rider plugin only (`buildPlugin`). Build Visual Studio Code and Visual Studio
+packages only on explicit request. Use `buildAllExtensions` only when all editor packages are explicitly requested.
+
 ```powershell
 $env:JAVA_HOME = 'C:/path/to/jdk-25'
 .\gradlew.bat buildPlugin

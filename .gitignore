@@ -5,6 +5,7 @@
 .kotlin/
 build/
 out/
+verification-*/
 
 # VS Code extension generated files
 vscode/node_modules/

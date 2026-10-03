@@ -9,11 +9,17 @@ Packaging includes both PNGs and links the description images to the matching Gi
 
 ## JetBrains IDEs
 
+The Quota Portal logo is `images/agents-usage-logo.png`. It is used near the start of the GitHub README and plugin
+description, and can also be uploaded as Marketplace media. The Tool Window uses a compact portal glyph for the
+sidebar.
+
 The plugin description in `src/main/resources/META-INF/plugin.xml` embeds the public PNG:
 
 ![Illustrated usage overview](images/agents-usage-overview.png)
 
-- `images/agents-usage-overview.png`: 1280 × 980 image for the description and Marketplace Media gallery.
+- `images/agents-usage-overview.png`: 1280 × 1320 image for the description and Marketplace Media gallery. It includes
+  the provider cards, weekly quest recap without the removed Flow Compass, dynamically wrapped battle event example,
+  and status bar.
 - `images/agents-usage-overview.svg`: editable vector version.
 - `images/agents-usage-details.png`: 1600 × 1080 illustration of all three expanded agent detail views,
   arranged side by side for readability.

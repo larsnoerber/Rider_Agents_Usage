@@ -22,7 +22,7 @@ Agents Usage/
 ├── .gitattributes                   Wrapper and properties line endings
 ├── src/main/
     ├── kotlin/io/github/larsnoerber/agentsusage/
-    │   ├── application/             Coordinates actions across all providers
+    │   ├── application/             Coordinates actions across all providers, including local weekly insights
     │   ├── core/
     │   │   ├── UsageSource.kt        UI-facing snapshot/listener contract
     │   │   ├── format/              Subscription labels, dates, and countdowns
@@ -150,6 +150,16 @@ badges, and `UsageSummary` shows four compact key/value facts and an expandable 
 survives provider refreshes; provider panels supply all labels and values. HTML labels and tooltips escape provider
 text. The scrollable overview
 tracks the viewport width. Shared status widgets render neutral labels and quota-colored values without dots.
+
+`application/UsageInsightsService` observes only selected provider snapshots. It stores
+daily starting and lowest remaining percentages with local sample times for the last seven days in
+`agents-usage-insights.xml`; this history stays local and contains no credentials, prompts, or request details. The
+collapsible overview panel renders a heatmap, provider lineup, tactical forecast, and a weekly rotating boss with phase
+changes and a short, aggregated battle log. Battle event text wraps to the available Tool Window width. The tactical
+forecast requires at least an hour and three percentage points
+of
+observed change, and it skips quotas expected to reset first. Reset celebrations briefly highlight the matching
+provider in the lineup. Quota use and forecast values are estimates, not activity counts or comparable quota amounts.
 
 `UsageStatusBarGroup` repositions the existing widgets after installation/removal on the EDT, keeping the visible
 agents adjacent in OpenAI, JetBrains AI, Copilot order without changing their IDs or context-menu settings.

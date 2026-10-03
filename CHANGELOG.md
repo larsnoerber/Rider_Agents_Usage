@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.0.16
+
+- Add a collapsible weekly quest recap with a provider party, local forecast, and boss battle to the Rider overview.
+- Add Quota Portal branding for the GitHub README and JetBrains Marketplace, with a compact portal glyph in the sidebar.
+- Reflow weekly quest content at narrower Rider Tool Window widths and remember whether the panel was left open or
+  closed.
+- Wrap latest battle event text to the available Tool Window width and remove the Flow Compass from the weekly recap.
+- Update the weekly boss battle on hourly and daily quota activity and report observed progress when the overview opens.
+- Give the weekly boss a visible character icon and a clearly labeled health bar.
+- Place the weekly quest after the provider usage cards and style it as a distinct adventure panel.
+- Add rotating weekly boss characters and phases, quota-change battle events, a provider party lineup, reset highlights,
+  rare boss commentary, and a local forecast that waits for enough observed data.
+
 ## 1.0.15
 
 - Migrate the Visual Studio VSIX to a fresh GUID-suffixed identity and the Marketplace internal name

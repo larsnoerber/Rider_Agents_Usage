@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="980" viewBox="0 0 1280 980">
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="1320" viewBox="0 0 1280 1320">
 <title>Agents Usage illustrated overview with example balances</title>
-<desc>Compact usage bars for OpenAI, JetBrains AI and GitHub Copilot, plus status indicators. This is an illustration, not a live account screenshot.</desc>
-<rect x="0" y="0" width="1280" height="980" rx="0" fill="#1E1F22"/>
+<desc>Compact usage bars for OpenAI, JetBrains AI and GitHub Copilot, a weekly quest recap, and status indicators. This is an illustration, not a live account screenshot.</desc>
+<rect x="0" y="0" width="1280" height="1320" rx="0" fill="#1E1F22"/>
 <rect x="100" y="64" width="62" height="62" rx="12" fill="#111827"/>
 <text x="114" y="74" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="30" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">AI</text>
 <rect x="114" y="113" width="10" height="3" rx="1" fill="#5EEAD4"/>
@@ -87,14 +87,33 @@
 <text x="680" y="769" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="18" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Reported:</text>
 <text x="767.0" y="769" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="18" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">09:00</text>
 <text x="132" y="797" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="18" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">More details</text>
-<rect x="100" y="844" width="1080" height="46" rx="6" fill="#2B2D30"/>
-<text x="124" y="854" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="23" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">OpenAi | D=</text>
-<text x="250.5" y="854" fill="#64CD87" font-family="Segoe UI, sans-serif" font-size="23" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">78%</text>
-<text x="294.5" y="854" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="23" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start"> - W=</text>
-<text x="353.5" y="854" fill="#FFB94B" font-family="Segoe UI, sans-serif" font-size="23" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">42%</text>
-<text x="600" y="854" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="23" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">JetBrainAi | </text>
-<text x="718.0" y="854" fill="#64CD87" font-family="Segoe UI, sans-serif" font-size="23" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">70%</text>
-<text x="948" y="854" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="23" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Copilot | </text>
-<text x="1040.0" y="854" fill="#64CD87" font-family="Segoe UI, sans-serif" font-size="23" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">38%</text>
-<text x="100" y="928" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="20" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Illustrated preview · Example balances · Copilot shows consumed quota</text>
+<rect x="100" y="844" width="1080" height="292" rx="8" fill="#2B2D30"/>
+<text x="124" y="858" fill="#D1B5F2" font-family="Segoe UI, sans-serif" font-size="19" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">WEEKLY QUESTS</text>
+<polyline points="278,865 284,871 290,865" fill="none" stroke="#D1B5F2" stroke-width="2"/>
+<text x="124" y="888" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="14" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">YOUR AI PARTY</text>
+<text x="124" y="908" fill="#39AE99" font-family="Segoe UI, sans-serif" font-size="17" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">● OpenAI  78%</text>
+<text x="290" y="908" fill="#9D77DC" font-family="Segoe UI, sans-serif" font-size="17" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">● JetBrains AI  70%</text>
+<text x="500" y="908" fill="#5297E6" font-family="Segoe UI, sans-serif" font-size="17" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">● Copilot  38%</text>
+<text x="124" y="934" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="17" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Forecast  ·  Copilot may reach 20% in about 3 days</text>
+<rect x="116" y="963" width="1048" height="78" rx="6" fill="#34303B"/>
+<text x="132" y="973" fill="#C397FA" font-family="Segoe UI, sans-serif" font-size="16" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">THE QUOTA WRAITH  ·  SHIELD CRACKED</text>
+<text x="1148" y="973" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="16" font-weight="700" dominant-baseline="text-before-edge" text-anchor="end">82% HP</text>
+<rect x="132" y="1000" width="1016" height="10" rx="5" fill="#3D4148"/>
+<rect x="132" y="1000" width="833" height="10" rx="5" fill="#9D77DC"/>
+<text x="132" y="1017" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="15" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">&quot;The Wraith gathers at the edge of the portal.&quot;</text>
+<text x="124" y="1053" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="14" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">LATEST BATTLE EVENTS</text>
+<circle cx="132" cy="1084" r="4" fill="#C397FA"/>
+<text x="145" y="1075" fill="#C397FA" font-family="Segoe UI, sans-serif" font-size="16" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">The Wraith · your agents used quota; the boss has taken</text>
+<text x="145" y="1095" fill="#C397FA" font-family="Segoe UI, sans-serif" font-size="16" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">12% damage this week</text>
+<text x="132" y="1117" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="16" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">·  Copilot hit for 8 quota points</text>
+<rect x="100" y="1160" width="1080" height="46" rx="6" fill="#2B2D30"/>
+<text x="124" y="1170" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="23" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">OpenAi | D=</text>
+<text x="250.5" y="1170" fill="#64CD87" font-family="Segoe UI, sans-serif" font-size="23" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">78%</text>
+<text x="294.5" y="1170" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="23" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start"> - W=</text>
+<text x="353.5" y="1170" fill="#FFB94B" font-family="Segoe UI, sans-serif" font-size="23" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">42%</text>
+<text x="600" y="1170" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="23" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">JetBrainAi | </text>
+<text x="718.0" y="1170" fill="#64CD87" font-family="Segoe UI, sans-serif" font-size="23" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">70%</text>
+<text x="948" y="1170" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="23" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Copilot | </text>
+<text x="1040.0" y="1170" fill="#64CD87" font-family="Segoe UI, sans-serif" font-size="23" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">38%</text>
+<text x="100" y="1256" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="20" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Illustrated preview · Example balances · Copilot shows consumed quota</text>
 </svg>

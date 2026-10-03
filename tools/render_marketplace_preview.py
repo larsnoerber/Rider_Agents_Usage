@@ -9,7 +9,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "docs" / "images"
-WIDTH, HEIGHT, SCALE = 1280, 980, 2
+WIDTH, HEIGHT, SCALE = 1280, 1320, 2
 BACKGROUND = "#1E1F22"
 PANEL = "#2B2D30"
 TEXT = "#DFE1E5"
@@ -23,7 +23,7 @@ draw = ImageDraw.Draw(image)
 svg = [
     f'<svg xmlns="http://www.w3.org/2000/svg" width="{WIDTH}" height="{HEIGHT}" viewBox="0 0 {WIDTH} {HEIGHT}">',
     '<title>Agents Usage illustrated overview with example balances</title>',
-    '<desc>Compact usage bars for OpenAI, JetBrains AI and GitHub Copilot, plus status indicators. '
+    '<desc>Compact usage bars for OpenAI, JetBrains AI and GitHub Copilot, a weekly quest recap, and status indicators. '
     'This is an illustration, not a live account screenshot.</desc>',
 ]
 
@@ -189,7 +189,29 @@ row(682, "Premium requests", 38, "38%", consumed=True)
 row(712, "Chat", 0, "Unlimited", consumed=True)
 facts(743, [("Used", "114 / 300"), ("Available", "186 / 300"), ("Reset", "Nov 1 00:00"), ("Reported", "09:00")])
 
-rectangle(100, 844, 1080, 46, PANEL, radius=6)
+rectangle(100, 844, 1080, 292, PANEL, radius=8)
+label(124, 858, "WEEKLY QUESTS", size=19, color="#D1B5F2", bold=True)
+line([(278, 865), (284, 871), (290, 865)], color="#D1B5F2", width=2)
+label(124, 888, "YOUR AI PARTY", size=14, color=MUTED, bold=True)
+for x, text, color in ((124, "● OpenAI  78%", "#39AE99"), (290, "● JetBrains AI  70%", "#9D77DC"),
+                       (500, "● Copilot  38%", "#5297E6")):
+    label(x, 908, text, size=17, color=color, bold=True)
+label(124, 934, "Forecast  ·  Copilot may reach 20% in about 3 days", size=17, color=MUTED)
+
+rectangle(116, 963, 1048, 78, "#34303B", radius=6)
+label(132, 973, "THE QUOTA WRAITH  ·  SHIELD CRACKED", size=16, color="#C397FA", bold=True)
+label(1148, 973, "82% HP", size=16, color=MUTED, bold=True, right=True)
+rectangle(132, 1000, 1016, 10, TRACK, radius=5)
+rectangle(132, 1000, 833, 10, "#9D77DC", radius=5)
+label(132, 1017, '"The Wraith gathers at the edge of the portal."', size=15, color=MUTED)
+
+label(124, 1053, "LATEST BATTLE EVENTS", size=14, color=MUTED, bold=True)
+circle(132, 1084, 4, "#C397FA")
+label(145, 1075, "The Wraith · your agents used quota; the boss has taken", size=16, color="#C397FA", bold=True)
+label(145, 1095, "12% damage this week", size=16, color="#C397FA", bold=True)
+label(132, 1117, "·  Copilot hit for 8 quota points", size=16, color=MUTED)
+
+rectangle(100, 1160, 1080, 46, PANEL, radius=6)
 for x, parts in (
     (124, [("OpenAi | D=", TEXT), ("78%", GREEN), (" - W=", TEXT), ("42%", AMBER)]),
     (600, [("JetBrainAi | ", TEXT), ("70%", GREEN)]),
@@ -197,10 +219,10 @@ for x, parts in (
 ):
     font = ImageFont.truetype(str(Path("C:/Windows/Fonts/segoeui.ttf")), 23 * SCALE)
     for text, color in parts:
-        label(x, 854, text, size=23, color=color)
+        label(x, 1170, text, size=23, color=color)
         x += font.getlength(text) / SCALE
 
-label(100, 928, "Illustrated preview · Example balances · Copilot shows consumed quota", size=20, color=MUTED)
+label(100, 1256, "Illustrated preview · Example balances · Copilot shows consumed quota", size=20, color=MUTED)
 save_preview("agents-usage-overview")
 
 start_preview(1600, 1080, "Agents Usage expanded agent details",

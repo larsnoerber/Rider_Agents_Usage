@@ -41,7 +41,9 @@ internal class AgentsUsagePanel : JPanel(BorderLayout()), Disposable {
     }
     private val pages = JPanel(pageLayout).apply { isOpaque = false }
     private val overview = JPanel(BorderLayout(0, 5)).apply { isOpaque = false }
+    private val overviewContent = JPanel(BorderLayout(0, JBUI.scale(8))).apply { isOpaque = false }
     private val sections = JPanel(GridBagLayout()).apply { isOpaque = false }
+    private val insights = WeeklyUsageInsightsPanel()
     private var codex: CodexUsagePanel? = null
     private var jetBrainsAi: JetBrainsAiUsagePanel? = null
     private var copilot: GitHubCopilotUsagePanel? = null
@@ -57,7 +59,9 @@ internal class AgentsUsagePanel : JPanel(BorderLayout()), Disposable {
             add(JBLabel("Agents Usage").apply { font = font.deriveFont(Font.BOLD) }, BorderLayout.WEST)
             add(UsageToolbar(UsageRefreshCoordinator::refreshAll, ::showSettings), BorderLayout.EAST)
         }, BorderLayout.NORTH)
-        overview.add(sections, BorderLayout.CENTER)
+        overviewContent.add(sections, BorderLayout.NORTH)
+        overviewContent.add(insights, BorderLayout.SOUTH)
+        overview.add(overviewContent, BorderLayout.CENTER)
         overview.add(JBLabel("Version ${PluginVersion.current}").apply {
             foreground = JBUI.CurrentTheme.Label.disabledForeground()
             font = font.deriveFont(font.size2D - 1f)
@@ -110,6 +114,7 @@ internal class AgentsUsagePanel : JPanel(BorderLayout()), Disposable {
                 toolTipText = text
             })
         }
+        insights.refreshView()
         pages.revalidate()
         pages.repaint()
     }
@@ -135,6 +140,7 @@ internal class AgentsUsagePanel : JPanel(BorderLayout()), Disposable {
         codex?.dispose()
         jetBrainsAi?.dispose()
         copilot?.dispose()
+        insights.dispose()
     }
 
     private companion object {
