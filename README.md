@@ -10,6 +10,11 @@ The status bar displays `OpenAi | D=78% - W=42%`, `JetBrainAi | 70%`, and `Copil
 OpenAI and JetBrains AI show remaining quota. Copilot shows consumed quota: 0% unused, 100% exhausted.
 Each percentage uses its quota color directly; OpenAI D and W have independent colors, without dots.
 Click any provider widget to open **Agents Usage**.
+The Rider/JetBrains overview also supports Cursor account quota, Claude subscription quota and monthly local tokens,
+and Cline account credits and local task tokens/costs. On a fresh Rider installation only JetBrains AI is enabled;
+select additional providers in **Visible agents**. Claude and OpenAI show remaining subscription quota; without
+subscription quotas Claude shows recorded local tokens or its API connection state. Cursor shows consumed quota.
+Cline shows account credits when available, otherwise local token totals.
 Visible widgets stay together in OpenAI, JetBrains AI, Copilot order when agents are toggled.
 
 For the source layout, read [Code structure](docs/ARCHITECTURE.md). Contributors and agents should start with
@@ -23,11 +28,12 @@ For the source layout, read [Code structure](docs/ARCHITECTURE.md). Contributors
 - Additional JetBrains AI status indicator with the remaining credit percentage when AI Assistant is installed and
   enabled.
 - JetBrains AI subscription and top-up credit details in the Tool Window.
-- Independent GitHub Copilot status indicator and quota details when the Copilot plugin is installed.
+- Independent GitHub Copilot status indicator and quota details through its IDE plugin or installed ACP agent.
 - Subscription plan displayed in every provider view, with Unknown when the provider has not reported its plan.
 - Compact colored bars showing remaining OpenAI/JetBrains AI balances and consumed Copilot quota.
 - Compact agent cards with identity accents, subscription badges, and four visible quota/reset/report facts.
-- Expand **More details** per agent for category balances, full reset dates, refresh interval and availability status.
+- Click an agent's subscription badge to show category balances, full reset dates, refresh interval and availability
+  status. Click again to hide the details.
 - Agent checkboxes control visibility in both the overview and status bar; deselected quota reads pause.
 - Tool Window with quota, reset time, countdown, and progress details.
 - Collapsible weekly quest recap with a provider party, quota forecast, and boss battle; it adapts to the Tool Window
@@ -35,6 +41,44 @@ For the source layout, read [Code structure](docs/ARCHITECTURE.md). Contributors
 - Manual refresh and configurable automatic refresh intervals.
 - Automatic discovery of `codex` from the system `PATH`.
 - English interface, tooltips, settings, and error messages.
+- Click the subscription badge for a usage chart with distinct colored series,
+  consumed percentages, reset countdowns and rings, and selectable 1/6/24-hour views. Cline charts use token totals.
+  The local 24-hour history starts with observations made while provider panels exist; it cannot reconstruct past
+  account usage. Observation gaps and quota resets are kept separate.
+- Use the **Weekly** and **Games** checkboxes in configuration to activate or deactivate those areas. Both are off
+  by default on a fresh installation. Choices survive
+  restarts; collapsing a section remains a separate choice.
+- Weekly bosses lose 4 HP per observed percentage point of quota consumption. All selected quota providers contribute;
+  a 1-point change produces a visible hit. Claude and Cursor participate; Cline token counts do not imply quota damage.
+- Boss hits flash and briefly shake the boss, with colored feedback such as **Hit by Claude · 4 Points**. Only actual
+  quota changes generate hits; repeated refreshes and restored history do not replay attacks.
+
+### Cursor, Claude and Cline data sources (JetBrains)
+
+Cursor prefers its official Agent login store: `%APPDATA%/Cursor/auth.json` on Windows, `~/.cursor/auth.json` on macOS,
+and `$XDG_CONFIG_HOME/cursor/auth.json` or `~/.config/cursor/auth.json` on Linux. It falls back to the signed-in Desktop
+application's `User/globalStorage/state.vscdb` in read-only mode. It requests Cursor's usage summary and can
+fall back to Cursor's authenticated current-period endpoint when the web dashboard returns HTTP 403. Shared team
+pools are labeled explicitly. Missing finite limits stay unavailable. Automatic account refreshes run at least 60
+seconds apart.
+
+Claude reads Claude Code's `.credentials.json` under `~/.claude` (or absolute `CLAUDE_CONFIG_DIR`) and requests the
+subscription usage endpoint. Session, weekly, Sonnet and Opus windows appear when reported. The local token scanner
+continues to show this month's Claude Code logs. Automatic quota refreshes run at least 180 seconds apart. Expired
+credentials require renewal in Claude Code. With an ACP API-key login, the official CLI reports the connection state;
+Pro/Max quota percentages do not apply. The selected, installed Claude agent remains visible. Missing local token
+records are shown as unavailable rather than zero usage. Keychain-only subscription credentials cannot currently be
+read.
+
+Cline reads `state/taskHistory.json` in its default CLI and editor stores, and SDK `sessions.db`/message metrics when
+available. It shows input/output tokens, separate cache traffic, and the sum of costs actually recorded by Cline across
+local task history. Deleted tasks and usage on other machines are absent; missing costs are excluded. Cline account
+credits are read separately using its existing CLI/ACP login. The signed balance is converted to USD; no subscription
+percentage is inferred from local totals or credits.
+
+These account endpoints and local formats can change. Credentials stay in memory for provider requests, are never
+printed or copied into plugin settings/history, and are not sent to other services. Redirects are disabled. No
+provider login or token refresh is performed by this plugin.
 
 ## Usage preview
 
@@ -83,10 +127,15 @@ Usage refreshes every 60 seconds by default. Open **Settings > Tools > Agents Us
 interval between 10 and 3600 seconds. Leave the path empty to discover Codex CLI automatically from `PATH`.
 
 The Tool Window also provides refresh presets of 30 seconds, 1 minute, and 5 minutes, plus a custom interval.
-The toolbar stays visible above the agent cards. The **Agent settings** menu and IDE Settings both offer **Visible
-agents** checkboxes for OpenAI, JetBrains AI, and GitHub Copilot. Uncheck an agent to remove its overview card and
-status widget and pause its background quota reads. Optional providers appear only when their plugins are loaded.
+The toolbar stays visible above the agent cards. The Tool Window configuration and IDE Settings both offer **Visible
+agents** checkboxes for OpenAI, JetBrains AI, GitHub Copilot, Claude, Cursor and Cline. Uncheck an agent to remove its
+overview card and
+status widget and pause its background quota reads. Providers require their installed ACP package or loaded IDE plugin.
 Applying settings updates visibility and refreshes selected providers. Zero quota remains visible.
+Fresh Rider installations enable only JetBrains AI; Weekly and Games are disabled. Saved choices are preserved on
+updates.
+Configuration identifies missing ACP packages beneath their checkboxes. Install them through Rider's ACP Registry;
+the usage configuration has no installation buttons.
 
 The same refresh interval applies to all providers. The plugin reads the running AI Assistant quota service and
 requests updates through AI Assistant. Sign in to JetBrains AI Assistant to see your balance. Click either status

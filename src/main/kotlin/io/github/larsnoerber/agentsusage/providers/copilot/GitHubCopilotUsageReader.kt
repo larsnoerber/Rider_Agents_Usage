@@ -1,6 +1,7 @@
 package io.github.larsnoerber.agentsusage.providers.copilot
 
 import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.Disposable
 import io.github.larsnoerber.agentsusage.core.reflection.PluginApi
 import io.github.larsnoerber.agentsusage.core.reflection.loadedPlugin
 import java.time.Instant
@@ -8,10 +9,30 @@ import java.time.LocalDate
 import java.time.ZoneOffset
 import kotlin.math.roundToInt
 
-/** Reads Copilot's own quota service without taking a build dependency on its internal API. */
-internal class GitHubCopilotUsageReader {
+/** Uses the IDE quota service or the installed ACP package's authenticated language server. */
+internal class GitHubCopilotUsageReader : Disposable {
     private val api = PluginApi("GitHub Copilot")
+    private val agentReader = GitHubCopilotAgentUsageReader()
+    private var agentSnapshot: GitHubCopilotUsage? = null
+
     fun read(requestUpdate: Boolean): GitHubCopilotUsage {
+        val pluginUsage = if (loadedPlugin(PLUGIN_ID) != null) {
+            try {
+                readPlugin(requestUpdate)
+            } catch (_: Exception) {
+                GitHubCopilotUsage(error = "The GitHub Copilot IDE quota service is unavailable.")
+            } catch (_: LinkageError) {
+                GitHubCopilotUsage(error = "This GitHub Copilot IDE version does not expose its quota service.")
+            }
+        } else null
+        if (pluginUsage != null && pluginUsage.error == null) return pluginUsage
+        if (!GitHubCopilotAgentUsageReader.isAvailable()) return pluginUsage
+            ?: GitHubCopilotUsage(error = "GitHub Copilot agent package is not installed or enabled.")
+        if (requestUpdate || agentSnapshot == null) agentSnapshot = agentReader.read()
+        return agentSnapshot!!
+    }
+
+    private fun readPlugin(requestUpdate: Boolean): GitHubCopilotUsage {
         val plugin = loadedPlugin(PLUGIN_ID)
             ?: return GitHubCopilotUsage(error = "GitHub Copilot is not installed or enabled")
         val serviceClass = Class.forName("com.github.copilot.services.CopilotQuotaService", true, plugin.pluginClassLoader)
@@ -47,7 +68,7 @@ internal class GitHubCopilotUsageReader {
         val premium = if (freePlan) null else quota("getPremiumInteractions", if (tokenBilling) "AI credits" else "Premium requests", !tokenBilling)
         val chat = quota("getChat", if (freePlan && tokenBilling) "AI credits" else "Chat", !tokenBilling)
         val completions = quota("getCompletions", "Completions")
-        val primary = premium ?: chat ?: completions
+        val primary = if (freePlan) chat ?: completions else premium
         val reset = (getter(response, "getResetDateUtc", required = false) as? String)?.takeIf { it.isNotBlank() }
             ?: (getter(response, "getResetDate", required = false) as? String)
         return GitHubCopilotUsage(
@@ -66,8 +87,10 @@ internal class GitHubCopilotUsageReader {
 
     private fun getter(target: Any, name: String, required: Boolean = true): Any? = api.getter(target, name, required)
 
+    override fun dispose() = agentReader.dispose()
+
     companion object {
         const val PLUGIN_ID = "com.github.copilot"
-        fun isAvailable(): Boolean = loadedPlugin(PLUGIN_ID) != null
+        fun isAvailable(): Boolean = loadedPlugin(PLUGIN_ID) != null || GitHubCopilotAgentUsageReader.isAvailable()
     }
 }

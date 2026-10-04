@@ -4,6 +4,12 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.project.ProjectManager
 import com.intellij.openapi.wm.impl.status.widget.StatusBarWidgetsManager
 import io.github.larsnoerber.agentsusage.providers.codex.CodexUsageService
+import io.github.larsnoerber.agentsusage.providers.claudecode.ClaudeCodeUsageService
+import io.github.larsnoerber.agentsusage.providers.claudecode.ui.ClaudeCodeStatusBarWidgetFactory
+import io.github.larsnoerber.agentsusage.providers.cursor.CursorUsageService
+import io.github.larsnoerber.agentsusage.providers.cursor.ui.CursorStatusBarWidgetFactory
+import io.github.larsnoerber.agentsusage.providers.cline.ClineUsageService
+import io.github.larsnoerber.agentsusage.providers.cline.ui.ClineStatusBarWidgetFactory
 import io.github.larsnoerber.agentsusage.providers.codex.ui.CodexUsageStatusBarWidgetFactory
 import io.github.larsnoerber.agentsusage.providers.copilot.GitHubCopilotUsageService
 import io.github.larsnoerber.agentsusage.providers.copilot.ui.GitHubCopilotStatusBarWidgetFactory
@@ -19,25 +25,46 @@ internal object UsageRefreshCoordinator {
     fun addVisibilityListener(listener: () -> Unit) { visibilityListeners.addIfAbsent(listener) }
     fun removeVisibilityListener(listener: () -> Unit) { visibilityListeners -= listener }
 
-    fun changeVisibleAgents(openAi: Boolean, jetBrainsAi: Boolean, copilot: Boolean) {
+    fun changeVisibleAgents(openAi: Boolean, jetBrainsAi: Boolean, copilot: Boolean, claudeCode: Boolean, cursor: Boolean, cline: Boolean) {
         val settings = AgentsUsageSettings.getInstance().state
         val openAiWasEnabled = settings.showOpenAi
-        val changed = settings.showOpenAi != openAi || settings.showJetBrainsAi != jetBrainsAi || settings.showCopilot != copilot
+        val changed = settings.showOpenAi != openAi || settings.showJetBrainsAi != jetBrainsAi ||
+            settings.showCopilot != copilot || settings.showClaudeCode != claudeCode ||
+            settings.showCursor != cursor || settings.showCline != cline
         settings.showOpenAi = openAi
         settings.showJetBrainsAi = jetBrainsAi
         settings.showCopilot = copilot
+        settings.showClaudeCode = claudeCode
+        settings.showCursor = cursor
+        settings.showCline = cline
         if (!changed) return
         if (openAi && !openAiWasEnabled) CodexUsageService.getInstance().restartTimer()
+        ApplicationManager.getApplication().invokeLater { visibilityListeners.forEach { it() } }
+        refreshStatusWidgets()
+        refreshOptionalProviders()
+    }
+
+    fun refreshStatusWidgets() {
         ApplicationManager.getApplication().invokeLater {
-            visibilityListeners.forEach { it() }
             ProjectManager.getInstance().openProjects.filterNot { it.isDisposed }.forEach { project ->
                 project.getService(StatusBarWidgetsManager::class.java).apply {
                     updateWidget(CodexUsageStatusBarWidgetFactory::class.java)
                     updateWidget(JetBrainsAiStatusBarWidgetFactory::class.java)
                     updateWidget(GitHubCopilotStatusBarWidgetFactory::class.java)
+                    updateWidget(ClaudeCodeStatusBarWidgetFactory::class.java)
+                    updateWidget(CursorStatusBarWidgetFactory::class.java)
+                    updateWidget(ClineStatusBarWidgetFactory::class.java)
                 }
             }
         }
+    }
+
+    fun changeOverviewFeatures(weekly: Boolean, games: Boolean) {
+        val settings = AgentsUsageSettings.getInstance().state
+        if (settings.showWeeklyInsights == weekly && settings.showGames == games) return
+        settings.showWeeklyInsights = weekly
+        settings.showGames = games
+        ApplicationManager.getApplication().invokeLater { visibilityListeners.forEach { it() } }
     }
 
     fun refreshAll() {
@@ -56,5 +83,8 @@ internal object UsageRefreshCoordinator {
         val settings = AgentsUsageSettings.getInstance().state
         if (settings.showJetBrainsAi && JetBrainsAiUsageService.isAvailable()) JetBrainsAiUsageService.getInstance().refresh()
         if (settings.showCopilot && GitHubCopilotUsageService.isAvailable()) GitHubCopilotUsageService.getInstance().refresh()
+        if (settings.showClaudeCode && ClaudeCodeUsageService.isInstalled()) ClaudeCodeUsageService.getInstance().refresh()
+        if (settings.showCursor && CursorUsageService.isAvailable()) CursorUsageService.getInstance().refresh()
+        if (settings.showCline && ClineUsageService.isAvailable()) ClineUsageService.getInstance().refresh()
     }
 }

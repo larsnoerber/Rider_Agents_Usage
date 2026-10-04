@@ -11,6 +11,7 @@ import io.github.larsnoerber.agentsusage.providers.copilot.GitHubCopilotUsageSer
 import io.github.larsnoerber.agentsusage.settings.AgentsUsageSettings
 import io.github.larsnoerber.agentsusage.ui.components.StatusBarPart
 import io.github.larsnoerber.agentsusage.ui.components.StatusBarPresentation
+import io.github.larsnoerber.agentsusage.ui.components.TooltipUsageBar
 import io.github.larsnoerber.agentsusage.ui.components.UsageStatusBarWidget
 import io.github.larsnoerber.agentsusage.ui.components.usageBarColor
 import io.github.larsnoerber.agentsusage.ui.components.usageTooltip
@@ -19,8 +20,8 @@ import java.awt.Color
 class GitHubCopilotStatusBarWidgetFactory : StatusBarWidgetFactory {
     override fun getId(): String = "GitHubCopilotUsageStatusBar"
     override fun getDisplayName(): String = "GitHub Copilot Usage"
-    override fun isAvailable(project: Project): Boolean =
-        AgentsUsageSettings.getInstance().state.showCopilot && GitHubCopilotUsageService.isAvailable()
+    override fun isAvailable(project: Project): Boolean = AgentsUsageSettings.getInstance().state.showCopilot &&
+        GitHubCopilotUsageService.isAvailable()
     override fun createWidget(project: Project): StatusBarWidget =
         UsageStatusBarWidget(project, getId(), GitHubCopilotUsageService.getInstance(), ::copilotPresentation)
     override fun disposeWidget(widget: StatusBarWidget) = widget.dispose()
@@ -48,9 +49,16 @@ private fun copilotPresentation(usage: GitHubCopilotUsage): StatusBarPresentatio
         usage.reportedAt?.let { add("Last reported: ${formatResetTime(it)}") }
         add(usage.error ?: "Click to open usage details")
     }
+    val bars = listOfNotNull(usage.primary, usage.chat, usage.completions)
+        .distinctBy { it.title }
+        .mapNotNull { item ->
+            item.percentUsed?.let { percent ->
+                TooltipUsageBar(item.title, percent, "$percent% used", copilotQuotaColor(item))
+            }
+        }
     return StatusBarPresentation(
         listOf(StatusBarPart("Copilot | "), StatusBarPart(text, copilotQuotaColor(quota))),
-        usageTooltip("GitHub Copilot usage", lines),
+        usageTooltip("GitHub Copilot usage", lines, bars),
         dimmed = usage.error != null
     )
 }

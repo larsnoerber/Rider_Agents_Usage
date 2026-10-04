@@ -1,183 +1,102 @@
 # Changelog
 
+## 1.0.19
+
+- Reuse ACP sign-ins for Copilot quotas, Cursor usage and Cline account credits. Show Claude's API connection or
+  local tokens when subscription quotas do not apply.
+- Default new Rider installations to JetBrains AI only, with Weekly and Games disabled. Preserve saved choices.
+- Hide missing agents from Usage and the status bar; show missing ACP package information in configuration.
+  Remove installation buttons.
+- Toggle provider details and usage charts by clicking the subscription badge; remove the separate details link.
+- Visualize boss hits with the provider and points, an impact flash and shake. Persist damage and count each observed
+  quota point as 4 damage points without replaying repeated refreshes.
+- Add Tic-Tac-Toe with saved scores and configurable Games visibility.
+- Fix the usage chart initialization crash and reading Cline's local session history.
+
 ## 1.0.18
 
-- Wrap weekly forecast, battle log, and help text to the available Tool Window width without clipping words.
-- Shorten quota hit, reset, and daily battle messages.
+- Improve wrapping of weekly forecasts, battle events and help text in narrow Tool Windows.
 
 ## 1.0.17
 
-- Persist weekly boss damage directly so the current battle progress survives plugin updates and restarts.
-- Refresh selected providers when the usage window opens so newly consumed quota updates the boss health immediately.
-- Update the JetBrains Marketplace overview and release notes to describe the weekly recap and persistent boss progress.
-- Make the JetBrains Marketplace text wrap in narrow views and scale its images to the available width.
-- Add the illustrated weekly boss icon and current health percentage to the usage preview.
+- Preserve weekly boss progress across plugin updates and restarts.
+- Refresh selected providers when Usage opens and improve Marketplace previews.
 
 ## 1.0.16
 
-- Add a collapsible weekly quest recap with a provider party, local forecast, and boss battle to the Rider overview.
-- Add Quota Portal branding for the GitHub README and JetBrains Marketplace, with a compact portal glyph in the sidebar.
-- Reflow weekly quest content at narrower Rider Tool Window widths and remember whether the panel was left open or
-  closed.
-- Wrap latest battle event text to the available Tool Window width and remove the Flow Compass from the weekly recap.
-- Update the weekly boss battle on hourly and daily quota activity and report observed progress when the overview opens.
-- Give the weekly boss a visible character icon and a clearly labeled health bar.
-- Place the weekly quest after the provider usage cards and style it as a distinct adventure panel.
-- Add rotating weekly boss characters and phases, quota-change battle events, a provider party lineup, reset highlights,
-  rare boss commentary, and a local forecast that waits for enough observed data.
+- Add collapsible weekly quests with rotating bosses, quota forecasts, provider parties and reset celebrations.
+- Add Quota Portal branding and improve the weekly view at narrow widths.
 
 ## 1.0.15
 
-- Migrate the Visual Studio VSIX to a fresh GUID-suffixed identity and the Marketplace internal name
-  `agents-usage-visualstudio`, after the previous listing was deleted and its old VSIX ID remained rejected.
-  Uninstall Visual Studio Agents Usage 1.0.14 or earlier before installing this new extension identity.
-- Update Marketplace upload instructions for the new listing and derive upload identifiers from the package and
-  publishing manifests to keep them consistent.
+- Change the Visual Studio extension identity for the new Marketplace listing. Uninstall version 1.0.14 or earlier
+  before installing this version.
 
 ## 1.0.14
 
-- Add optional GitHub Copilot quota reporting to Visual Studio through its existing brokered quota service, with
-  plans, consumption bars, resets, explicit unlimited categories and unavailable states.
-- Add the colored AI icon to Visual Studio's Standard toolbar, tool window and clickable quota status indicator.
-- Share polling between the Visual Studio usage view and status indicator. Pause disabled providers and cancel
-  obsolete reads when settings change or the extension is disposed.
-- Prepare Visual Studio Marketplace Markdown/HTML descriptions, illustrated usage/settings images and a publishing
-  manifest. Include a separate Marketplace upload archive in the Visual Studio build and GitHub release.
+- Add Visual Studio Copilot quotas, subscription plans and reset times.
+- Add the Visual Studio toolbar icon, clickable status indicator and Marketplace package.
 
 ## 1.0.13
 
-- Add a native Visual Studio extension targeting Visual Studio 2022/2026 Community, Professional and Enterprise
-  on Windows x64, with Codex quota bars, plans, resets, provider settings, an AI logo and repository link.
-- Add a Visual Studio VSIX build alongside the JetBrains and VS Code packages. Stop CLI process trees on timeout
-  or disposal; pause automatic reads when the usage window is closed or Codex is disabled.
-- Fix Visual Studio VSIX packaging by importing the VSSDK build targets and bundling the required JSON library.
-- Correct the VS Code Marketplace publisher ID to `lanoerber` and derive the settings filter from the installed
-  extension ID. Update the configuration preview to match the publisher.
-- Set the VS Code extension author to `nightevil` to match the Marketplace publisher's display name.
-- Set the Visual Studio VSIX author (`Identity.Publisher`) to the Marketplace display name `nightevil`.
+- Add a native Visual Studio 2022/2026 extension with Codex quotas and provider settings.
+- Fix Visual Studio packaging and Marketplace publisher identifiers.
 
 ## 1.0.12
 
-- Add a Visual Studio Code extension with Codex and Copilot quota views and status indicators, packaged alongside
-  the JetBrains plugin; include illustrated usage and configuration previews in its Marketplace description.
-- Organize JetBrains Tool Window settings into agent selection, refresh interval, and action sections.
-- Open the usage overview when a provider status bar widget is clicked.
-- Show the plugin version in the Agents Usage overview and add a direct GitHub repository link to configuration.
-- Fix VS Code Copilot quota selection: use chat for Free plans, ignore empty 0/0 snapshots, and display unlimited quotas
-  explicitly.
-- Show Copilot's quota category and reported reset date; avoid request counts for AI credit billing.
-- Request Copilot account quota using the API version used by the official VS Code Copilot extension.
-- Restore visible, colored quota bars using native progress elements that work with the webview security policy.
-- Use a transparent AI monogram adapted from the Rider Tool Window icon for the VS Code Activity Bar.
+- Add the packaged VS Code extension with Codex/Copilot usage views and status indicators.
+- Improve settings navigation, quota selection and colored usage bars.
 
 ## 1.0.11
 
-- Reuse the existing AI usage logo as the VS Code Marketplace package icon.
-- Use the AI icon in the VS Code Activity Bar, add color-coded Copilot quota and status indicators, and organize
-  provider selection and refresh settings.
-- Add GitHub Copilot quota reporting to the VS Code extension through VS Code GitHub authentication and GitHub's
-  internal quota endpoint.
+- Add Copilot usage reporting and provider settings to VS Code.
 
 ## 1.0.10
 
-- Avoid restarting Codex when visibility changes affect only other agents.
-- Skip Codex UI notifications when the published usage has not changed.
+- Reduce unnecessary Codex restarts and UI updates.
 
 ## 1.0.9
 
-- Verify Rider 2026.2.3.1 compatibility while retaining the build 261 minimum platform requirement.
-- Keep provider services, Tool Window panels, and status widgets disposable for dynamic plugin unload and reload.
-- Replace internal status bar and plugin registry calls with public APIs, and use JVM default methods to reduce
-  compatibility warnings.
-- Add illustrated Marketplace images for expanded agent details and the status bar, with editable SVG versions.
-- Extend the media renderer to generate all three PNG/SVG pairs and document their gallery captions.
+- Verify Rider 2026.2.3.1 compatibility and improve plugin unload/reload handling.
 
 ## 1.0.8
 
-- Expand agent summaries to four visible facts in a compact two-column grid, with further details on demand.
-- Show OpenAI credits, update time and both resets; JetBrains AI remaining, used and total credits; and Copilot used,
-  available, reset and report values. Expanded views include plan, category balances, refresh interval and status.
-- Prefer registered JetBrains AI application services and their published activation snapshot for subscription
-  lookup. Add active license-journey and product-code fallback paths; identify workspace access without inventing
-  a personal subscription tier.
-- Expose a safe subscription lookup explanation in details/tooltips when the plan remains unavailable. Diagnostics
-  contain only metadata getter/class names and exception types, without account data or credentials.
+- Add compact provider summaries and expandable account details.
+- Improve JetBrains AI subscription detection and unavailable-state explanations.
 
 ## 1.0.7
 
-- Read Copilot Free's included quota from chat, matching Copilot's own dialog, instead of showing its unused premium
-  quota as exhausted. With 100% available, consumption is 0% and green.
-- Keep visible status widgets adjacent in OpenAI, JetBrains AI, Copilot order after enabling/disabling them.
-- Resolve JetBrains AI activation and subscription metadata through loaded content-module class loaders when they
-  are unavailable from the parent plugin loader. Share this compatibility lookup with the quota reader.
+- Correct Copilot Free quota selection and keep enabled status widgets together.
+- Improve compatibility with JetBrains AI subscription APIs.
 
 ## 1.0.6
 
-- Separate agents into compact cards with identity accents and subscription badges.
-- Add a small visible details line for credits, consumed/remaining quota, and reset times.
-- Keep the overview fitted to the Tool Window width and remove empty JetBrains AI quota rows.
-- Show status labels as `OpenAi | D=<percent>% - W=<percent>%`, `JetBrainAi | <percent>%`, and
-  `Copilot | <percent>%`; color each percentage directly and remove usage dots.
-- Add persisted agent checkboxes to IDE Settings and the Tool Window configuration. Deselected agents disappear
-  from both the overview and status bar, and their background quota reads pause.
-- Keep settings and refresh available when all agents are hidden, and omit unavailable optional providers.
-- Update the illustrated Marketplace preview and usage documentation.
+- Add provider cards, subscription badges and persisted visibility checkboxes.
+- Show quota-colored percentages directly in compact status widgets.
 
 ## 1.0.5
 
-- Centralize project identity/version in `gradle.properties`, regenerate the Gradle wrapper, and pin its distribution
-  checksum.
-- Keep platform-specific wrapper line endings and document all required Gradle build files.
-- Place usage color dots directly after percentages in all status widgets.
-- Give OpenAI D and W separate trailing dots colored by their respective balances.
-- Dim stale OpenAI values on refresh errors and preserve error details in the tooltip.
-- Update the illustrated Marketplace preview to match the new indicator positions.
+- Improve status indicators and feedback for stale OpenAI usage.
 
 ## 1.0.4
 
-- Show consumed GitHub Copilot quota in the status bar and overview: 0% unused, 100% exhausted.
-- Fill Copilot bars as consumption increases and warn as the remaining quota decreases.
-- Keep used and remaining counts in tooltips; show unlimited quotas without an exhaustion percentage.
-- Update usage documentation and the illustrated Marketplace preview.
+- Show Copilot consumption from 0% unused to 100% exhausted, including unlimited quota categories.
 
 ## 1.0.3
 
-- Show OpenAI usage as `OpenAi D <percent>% - W <percent>%` with one indicator using the lower remaining balance.
-- Show remaining JetBrains AI usage as `JetbrainAi <percent>%` instead of a credit amount; retain credit details in
-  tooltips.
-- Keep `Copilot <percent>%` and update the illustrated Marketplace preview to match the status bar.
+- Show remaining OpenAI and JetBrains AI quota percentages in the status bar.
 
 ## 1.0.2
 
-- Read JetBrains AI's selected license name for the new AI Access activation, with legacy tier fallback.
-- Add an illustrated usage preview to the plugin description and README, with Marketplace media instructions.
-- Group each provider's models, readers, services, and UI in its own feature directory.
-- Split Tool Window composition, refresh settings, Codex panels, and countdown cards into focused files.
-- Share status widget layout, listener cleanup, provider headers, tooltips, and date formatting.
-- Coordinate provider refreshes centrally and keep settings persistence independent of running services.
-- Supply refresh intervals to shared polling instead of coupling it to settings.
-- Discover only loaded optional plugins and update plugin class registrations for the new packages.
-- Document project rules, architecture, development commands, and compatibility identifiers.
+- Improve JetBrains AI plan detection and compatibility with optional provider plugins.
+- Organize provider integrations and shared UI components.
 
 ## 1.0.1
 
-- Fit each usage bar, category, and remaining balance into a single compact row.
-- Show subscription plans beside provider names and move reset/sync details into tooltips.
-- Reduce overview padding, row spacing, and toolbar button size.
-- Use compact status bar labels: OpenAI, JB AI, and Copilot.
-- Replace the plugin logo with an AI chip and usage bars, with a matching Tool Window icon.
+- Add subscription labels and compact usage rows with smaller status widgets.
 
 ## 1.0.0
 
-- Monitor OpenAI Codex, JetBrains AI, and GitHub Copilot usage in IntelliJ IDEA and Rider.
-- Display independent status bar widgets with remaining usage and color indicators.
-- Show remaining Codex 5-hour and weekly quotas, credits, reset times, and countdowns.
-- Show JetBrains AI subscription credits, top-up credits, and subscription reset times.
-- Show GitHub Copilot premium request or AI credit usage, chat and completion quotas, and reset times.
-- Display the reported subscription plan in each provider view.
-- Present remaining usage as compact colored bars in a scrollable overview.
-- Refresh all available agents manually or automatically using shared Agent settings.
-- Configure refresh presets or a custom interval between 10 and 3600 seconds.
-- Discover the local Codex CLI automatically or configure its path manually.
-- Read usage through the local Codex CLI and installed provider plugins.
-- Provide an English interface, settings, tooltips, and error messages.
+- Monitor OpenAI Codex, JetBrains AI and GitHub Copilot quotas in Rider and IntelliJ IDEA.
+- Show subscription plans, quota bars, reset times and independent status widgets.
+- Support manual refresh, configurable intervals and automatic Codex CLI discovery.

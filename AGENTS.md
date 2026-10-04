@@ -29,7 +29,9 @@ before changing package boundaries and [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md
 - Respect persisted agent checkboxes in both overview and status widgets, and pause deselected provider reads.
 - OpenAI and JetBrains AI show remaining quota; Copilot shows consumed quota (0% unused, 100% exhausted).
   Copilot bars grow with consumption; warning colors reflect how close the quota is to exhaustion.
-- Use English product strings. Escape provider text in HTML tooltips. Do not read or log credentials.
+- Use English product strings. Escape provider text in HTML tooltips. Never print, log, or persist credentials. When a
+  provider usage integration requires authentication, read credentials only from that provider's official local store,
+  keep them in memory for the minimum authenticated quota request to that provider, and never forward them elsewhere.
 
 ## Working on changes
 

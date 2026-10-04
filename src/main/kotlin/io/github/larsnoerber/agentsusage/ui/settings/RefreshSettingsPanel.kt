@@ -2,6 +2,7 @@ package io.github.larsnoerber.agentsusage.ui.settings
 
 import com.intellij.ide.BrowserUtil
 import com.intellij.ui.JBColor
+import com.intellij.ui.components.JBCheckBox
 import com.intellij.ui.components.JBLabel
 import com.intellij.util.ui.JBUI
 import io.github.larsnoerber.agentsusage.application.UsageRefreshCoordinator
@@ -30,6 +31,8 @@ import javax.swing.SpinnerNumberModel
 internal class RefreshSettingsPanel(private val onBack: () -> Unit) : JPanel(BorderLayout()) {
     private val settingsNotice = JBLabel(" ")
     private val agents = AgentSelectionPanel()
+    private val showWeeklyInsights = JBCheckBox("Show Weekly recap")
+    private val showGames = JBCheckBox("Show Games")
     private lateinit var intervalSpinner: JSpinner
     private lateinit var presetButtons: List<RefreshChoice>
 
@@ -40,7 +43,10 @@ internal class RefreshSettingsPanel(private val onBack: () -> Unit) : JPanel(Bor
 
     fun resetFromSettings() {
         agents.reset()
-        intervalSpinner.value = AgentsUsageSettings.getInstance().refreshIntervalSeconds
+        val settings = AgentsUsageSettings.getInstance()
+        showWeeklyInsights.isSelected = settings.state.showWeeklyInsights
+        showGames.isSelected = settings.state.showGames
+        intervalSpinner.value = settings.refreshIntervalSeconds
         settingsNotice.text = " "
         settingsNotice.foreground = usageBarColor(100)
     }
@@ -55,8 +61,9 @@ internal class RefreshSettingsPanel(private val onBack: () -> Unit) : JPanel(Bor
             anchor = GridBagConstraints.NORTHWEST
         })
         add(agentSettings(), sectionConstraints(1, 8))
-        add(refreshSettings(), sectionConstraints(2, 8))
-        add(settingsActions(), sectionConstraints(3, 8))
+        add(overviewSettings(), sectionConstraints(2, 8))
+        add(refreshSettings(), sectionConstraints(3, 8))
+        add(settingsActions(), sectionConstraints(4, 8))
     }
 
     private fun agentSettings(): UsageSurface = UsageSurface().apply {
@@ -65,9 +72,18 @@ internal class RefreshSettingsPanel(private val onBack: () -> Unit) : JPanel(Bor
             foreground = secondaryTextColor()
         }, top = 4)
         addRow(agents, top = 8)
-        addRow(JBLabel("Optional providers appear when their IDE plugins are installed.").apply {
+        addRow(JBLabel("<html>Install missing ACP packages from Rider's ACP Registry, then sign in to the agent.</html>").apply {
             foreground = secondaryTextColor()
         }, top = 4)
+    }
+
+    private fun overviewSettings(): UsageSurface = UsageSurface().apply {
+        addRow(JBLabel("Overview sections").apply { font = font.deriveFont(Font.BOLD, 14f) })
+        addRow(JBLabel("Choose which extra sections appear in the overview.").apply {
+            foreground = secondaryTextColor()
+        }, top = 4)
+        addRow(showWeeklyInsights, top = 8)
+        addRow(showGames, top = 2)
     }
 
     private fun refreshSettings(): UsageSurface = UsageSurface().apply {
@@ -189,6 +205,7 @@ internal class RefreshSettingsPanel(private val onBack: () -> Unit) : JPanel(Bor
         settingsNotice.foreground = usageBarColor(100)
         val seconds = (intervalSpinner.value as Number).toInt().coerceIn(10, 3600)
         agents.applySelection()
+        UsageRefreshCoordinator.changeOverviewFeatures(showWeeklyInsights.isSelected, showGames.isSelected)
         UsageRefreshCoordinator.changeRefreshInterval(seconds)
         settingsNotice.text = "Settings saved · refresh every $seconds seconds"
     }

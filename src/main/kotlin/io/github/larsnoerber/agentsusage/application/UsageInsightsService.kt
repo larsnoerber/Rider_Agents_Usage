@@ -12,6 +12,10 @@ import io.github.larsnoerber.agentsusage.providers.copilot.GitHubCopilotUsage
 import io.github.larsnoerber.agentsusage.providers.copilot.GitHubCopilotUsageService
 import io.github.larsnoerber.agentsusage.providers.jetbrainsai.JetBrainsAiUsage
 import io.github.larsnoerber.agentsusage.providers.jetbrainsai.JetBrainsAiUsageService
+import io.github.larsnoerber.agentsusage.providers.claudecode.ClaudeCodeUsage
+import io.github.larsnoerber.agentsusage.providers.claudecode.ClaudeCodeUsageService
+import io.github.larsnoerber.agentsusage.providers.cursor.CursorUsage
+import io.github.larsnoerber.agentsusage.providers.cursor.CursorUsageService
 import io.github.larsnoerber.agentsusage.settings.AgentsUsageSettings
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -23,6 +27,7 @@ class UsageInsightsState {
     var days: MutableList<UsageInsightsDay> = mutableListOf()
     var bossDamageWeek: String = ""
     var bossDamage: Int = 0
+    var bossDamageVersion: Int = 0
 }
 
 data class UsageInsightsDay(
@@ -35,11 +40,18 @@ data class UsageInsightsDay(
     var jetBrainsStartAt: Long = 0,
     var copilotStart: Int? = null,
     var copilotLow: Int? = null,
-    var copilotStartAt: Long = 0
+    var copilotStartAt: Long = 0,
+    var claudeStart: Int? = null,
+    var claudeLow: Int? = null,
+    var claudeStartAt: Long = 0,
+    var cursorStart: Int? = null,
+    var cursorLow: Int? = null,
+    var cursorStartAt: Long = 0
 )
 
 internal data class UsagePartyMember(val provider: String, val percentLeft: Int?, val unlimited: Boolean = false)
 internal data class UsageForecast(val provider: String, val hoursUntilLow: Double)
+internal data class UsageBossHit(val id: Long, val provider: String, val points: Int, val observedAt: Long)
 
 internal data class UsageInsightsSnapshot(
     val days: List<UsageInsightsDay>,
@@ -52,7 +64,8 @@ internal data class UsageInsightsSnapshot(
     val forecast: UsageForecast?,
     val battleLog: List<String>,
     val celebration: String?,
-    val celebrationId: Long
+    val celebrationId: Long,
+    val hits: List<UsageBossHit>
 )
 
 private data class WeeklyBoss(
@@ -69,6 +82,8 @@ internal class UsageInsightsService : PersistentStateComponent<UsageInsightsStat
     private var previousCodex: CodexUsage? = null
     private var previousJetBrains: JetBrainsAiUsage? = null
     private var previousCopilot: GitHubCopilotUsage? = null
+    private var previousClaude: ClaudeCodeUsage? = null
+    private var previousCursor: CursorUsage? = null
     private var celebration: String? = null
     private var celebrationUntil = 0L
     private var celebrationId = 0L
@@ -79,6 +94,8 @@ internal class UsageInsightsService : PersistentStateComponent<UsageInsightsStat
     private var loggedBattleHour: LocalDateTime? = null
     private val aggregatedHitPoints = mutableMapOf<String, Int>()
     private val lastHitAt = mutableMapOf<String, Long>()
+    private val hits = mutableListOf<UsageBossHit>()
+    private var nextHitId = 0L
     @Volatile private var disposed = false
 
     private val codexService = CodexUsageService.getInstance()
@@ -87,6 +104,10 @@ internal class UsageInsightsService : PersistentStateComponent<UsageInsightsStat
     private val jetBrainsListener: (JetBrainsAiUsage) -> Unit = ::acceptJetBrains
     private val copilotService = if (GitHubCopilotUsageService.isAvailable()) GitHubCopilotUsageService.getInstance() else null
     private val copilotListener: (GitHubCopilotUsage) -> Unit = ::acceptCopilot
+    private val claudeService = ClaudeCodeUsageService.getInstance()
+    private val claudeListener: (ClaudeCodeUsage) -> Unit = ::acceptClaude
+    private val cursorService = CursorUsageService.getInstance()
+    private val cursorListener: (CursorUsage) -> Unit = ::acceptCursor
 
     init {
         state.days = state.days.filter { it.date.toLocalDateOrNull()?.let { date -> !date.isBefore(LocalDate.now().minusDays(6)) } == true }
@@ -104,6 +125,10 @@ internal class UsageInsightsService : PersistentStateComponent<UsageInsightsStat
             copilotService.addListener(copilotListener)
             previousCopilot?.let(::recordCopilot)
         }
+        previousClaude = claudeService.current
+        claudeService.addListener(claudeListener)
+        previousCursor = cursorService.current
+        cursorService.addListener(cursorListener)
     }
 
     override fun getState(): UsageInsightsState = state
@@ -143,9 +168,11 @@ internal class UsageInsightsService : PersistentStateComponent<UsageInsightsStat
         state.days.clear()
         state.bossDamageWeek = weekStart().toString()
         state.bossDamage = 0
+        state.bossDamageVersion = 1
         battleLog.clear()
         aggregatedHitPoints.clear()
         lastHitAt.clear()
+        hits.clear()
         loggedBossWeek = null
         loggedBossPhase = -1
         loggedBattleDay = null
@@ -155,6 +182,8 @@ internal class UsageInsightsService : PersistentStateComponent<UsageInsightsStat
 
     private fun acceptCodex(usage: CodexUsage) {
         if (disposed) return
+        val settings = AgentsUsageSettings.getInstance().state
+        if (!settings.showWeeklyInsights || !settings.showOpenAi) { previousCodex = usage; return }
         val didReset = previousCodex?.let { old ->
             reset(old.fiveHourResetsAt, usage.fiveHourResetsAt, old.fiveHourLeft, usage.fiveHourLeft) ||
                 reset(old.weeklyResetsAt, usage.weeklyResetsAt, old.weeklyLeft, usage.weeklyLeft)
@@ -164,7 +193,12 @@ internal class UsageInsightsService : PersistentStateComponent<UsageInsightsStat
         if (didReset) {
             celebrate("Codex")
             addBattleEvent("Codex reset")
-        } else recordHit("Codex", before, after)
+        } else {
+            val old = previousCodex?.takeIf { it.error == null }
+            val current = usage.takeIf { it.error == null }
+            val drop = maxOf(quotaDrop(old?.fiveHourLeft, current?.fiveHourLeft), quotaDrop(old?.weeklyLeft, current?.weeklyLeft))
+            recordHit("Codex", drop, 0)
+        }
         previousCodex = usage
         recordCodex(usage, didReset)
         publish()
@@ -172,6 +206,8 @@ internal class UsageInsightsService : PersistentStateComponent<UsageInsightsStat
 
     private fun acceptJetBrains(usage: JetBrainsAiUsage) {
         if (disposed) return
+        val settings = AgentsUsageSettings.getInstance().state
+        if (!settings.showWeeklyInsights || !settings.showJetBrainsAi) { previousJetBrains = usage; return }
         val didReset = previousJetBrains?.let { old ->
             reset(old.resetsAt, usage.resetsAt, old.quota?.percentLeft, usage.quota?.percentLeft)
         } ?: false
@@ -188,6 +224,8 @@ internal class UsageInsightsService : PersistentStateComponent<UsageInsightsStat
 
     private fun acceptCopilot(usage: GitHubCopilotUsage) {
         if (disposed) return
+        val settings = AgentsUsageSettings.getInstance().state
+        if (!settings.showWeeklyInsights || !settings.showCopilot) { previousCopilot = usage; return }
         val didReset = previousCopilot?.let { old ->
             reset(old.resetsAt, usage.resetsAt, old.primary?.percentLeft, usage.primary?.percentLeft)
         } ?: false
@@ -202,8 +240,51 @@ internal class UsageInsightsService : PersistentStateComponent<UsageInsightsStat
         publish()
     }
 
+    private fun acceptClaude(usage: ClaudeCodeUsage) {
+        if (disposed) return
+        val settings = AgentsUsageSettings.getInstance().state
+        if (!settings.showWeeklyInsights || !settings.showClaudeCode) { previousClaude = usage; return }
+        val before = previousClaude?.takeIf { it.quotaError == null }?.let(::claudeRemaining)
+        val after = usage.takeIf { it.quotaError == null }?.let(::claudeRemaining)
+        val oldReset = previousClaude?.let(::claudeReset)
+        val didReset = reset(oldReset, claudeReset(usage), before, after)
+        if (didReset) { celebrate("Claude"); addBattleEvent("Claude reset") }
+        else {
+            val old = previousClaude?.takeIf { it.quotaError == null }
+            val drop = if (usage.quotaError == null) usage.quotas.filter { it.title == "Session" || it.title == "Weekly" }
+                .maxOfOrNull { quota -> quotaDrop(old?.quotas?.firstOrNull { it.title == quota.title }?.percentLeft, quota.percentLeft) } ?: 0
+                else 0
+            recordHit("Claude", drop, 0)
+        }
+        previousClaude = usage
+        if (after != null) observe("claude", after, didReset)
+        publish()
+    }
+
+    private fun acceptCursor(usage: CursorUsage) {
+        if (disposed) return
+        val settings = AgentsUsageSettings.getInstance().state
+        if (!settings.showWeeklyInsights || !settings.showCursor) { previousCursor = usage; return }
+        val before = previousCursor?.takeIf { it.error == null }?.percentUsed?.let { 100 - it }
+        val after = usage.takeIf { it.error == null }?.percentUsed?.let { 100 - it }
+        val didReset = reset(previousCursor?.resetsAt, usage.resetsAt, before, after)
+        if (didReset) { celebrate("Cursor"); addBattleEvent("Cursor reset") }
+        else recordHit("Cursor", before, after)
+        previousCursor = usage
+        if (after != null) observe("cursor", after, didReset)
+        publish()
+    }
+
+    private fun claudeRemaining(usage: ClaudeCodeUsage): Int? = usage.quotas
+        .filter { it.title == "Session" || it.title == "Weekly" }.minOfOrNull { it.percentLeft }
+
+    private fun claudeReset(usage: ClaudeCodeUsage): Long? = usage.quotas
+        .filter { it.title == "Session" || it.title == "Weekly" }.minByOrNull { it.percentLeft }?.resetsAt
+
     private fun reset(oldReset: Long?, newReset: Long?, oldLeft: Int?, newLeft: Int?): Boolean =
         oldReset != null && newReset != null && oldReset != newReset && oldLeft != null && newLeft != null && newLeft >= oldLeft + 20
+
+    private fun quotaDrop(before: Int?, after: Int?): Int = if (before == null || after == null) 0 else (before - after).coerceAtLeast(0)
 
     private fun celebrate(provider: String) {
         celebration = provider
@@ -211,16 +292,23 @@ internal class UsageInsightsService : PersistentStateComponent<UsageInsightsStat
         celebrationId++
     }
 
+    @Synchronized
     private fun recordHit(provider: String, before: Int?, after: Int?) {
         val drop = before?.minus(after ?: before) ?: return
         if (drop < HIT_LOG_THRESHOLD) return
+        synchronizeBossDamage()
+        val damage = (drop * BOSS_DAMAGE_PER_QUOTA_POINT).coerceAtMost(100 - state.bossDamage)
+        if (damage <= 0) return
+        state.bossDamage += damage
         val now = System.currentTimeMillis()
+        hits.add(UsageBossHit(++nextHitId, provider, damage, now))
+        if (hits.size > MAX_BATTLE_EVENTS) hits.removeAt(0)
         val recent = now - (lastHitAt[provider] ?: 0L) <= HIT_AGGREGATION_MILLIS
-        val total = if (recent) (aggregatedHitPoints[provider] ?: 0) + drop else drop
+        val total = if (recent) (aggregatedHitPoints[provider] ?: 0) + damage else damage
         aggregatedHitPoints[provider] = total
         lastHitAt[provider] = now
-        if (recent) battleLog.removeAll { it.startsWith("$provider hit for ") }
-        addBattleEvent("$provider hit for $total")
+        if (recent) battleLog.removeAll { it.startsWith("Hit by $provider · ") }
+        addBattleEvent("Hit by $provider · $total Points")
     }
 
     private fun addBattleEvent(message: String) {
@@ -229,18 +317,18 @@ internal class UsageInsightsService : PersistentStateComponent<UsageInsightsStat
     }
 
     private fun recordCodex(usage: CodexUsage, resetObserved: Boolean = false) {
-        if (!AgentsUsageSettings.getInstance().state.showOpenAi || usage.error != null) return
+        if (!AgentsUsageSettings.getInstance().state.showWeeklyInsights || !AgentsUsageSettings.getInstance().state.showOpenAi || usage.error != null) return
         val values = listOfNotNull(usage.fiveHourLeft, usage.weeklyLeft)
         if (values.isNotEmpty()) observe("codex", values.min(), resetObserved)
     }
 
     private fun recordJetBrains(usage: JetBrainsAiUsage, resetObserved: Boolean = false) {
-        if (!AgentsUsageSettings.getInstance().state.showJetBrainsAi || usage.error != null) return
+        if (!AgentsUsageSettings.getInstance().state.showWeeklyInsights || !AgentsUsageSettings.getInstance().state.showJetBrainsAi || usage.error != null) return
         usage.quota?.percentLeft?.let { observe("jetBrains", it, resetObserved) }
     }
 
     private fun recordCopilot(usage: GitHubCopilotUsage, resetObserved: Boolean = false) {
-        if (!AgentsUsageSettings.getInstance().state.showCopilot || usage.error != null) return
+        if (!AgentsUsageSettings.getInstance().state.showWeeklyInsights || !AgentsUsageSettings.getInstance().state.showCopilot || usage.error != null) return
         usage.primary?.percentLeft?.let { observe("copilot", it, resetObserved) }
     }
 
@@ -254,6 +342,8 @@ internal class UsageInsightsService : PersistentStateComponent<UsageInsightsStat
             "codex" -> day.update(remaining, resetObserved, { day.codexStart }, { day.codexStart = it }, { day.codexLow }, { day.codexLow = it }, { day.codexStartAt }, { day.codexStartAt = it })
             "jetBrains" -> day.update(remaining, resetObserved, { day.jetBrainsStart }, { day.jetBrainsStart = it }, { day.jetBrainsLow }, { day.jetBrainsLow = it }, { day.jetBrainsStartAt }, { day.jetBrainsStartAt = it })
             "copilot" -> day.update(remaining, resetObserved, { day.copilotStart }, { day.copilotStart = it }, { day.copilotLow }, { day.copilotLow = it }, { day.copilotStartAt }, { day.copilotStartAt = it })
+            "claude" -> day.update(remaining, resetObserved, { day.claudeStart }, { day.claudeStart = it }, { day.claudeLow }, { day.claudeLow = it }, { day.claudeStartAt }, { day.claudeStartAt = it })
+            "cursor" -> day.update(remaining, resetObserved, { day.cursorStart }, { day.cursorStart = it }, { day.cursorLow }, { day.cursorLow = it }, { day.cursorStartAt }, { day.cursorStartAt = it })
         }
         synchronizeBossDamage()
     }
@@ -282,7 +372,7 @@ internal class UsageInsightsService : PersistentStateComponent<UsageInsightsStat
             addBattleEvent("${boss.name} · ${boss.lines[phaseIndex]}")
         }
         val dailyDamage = week.firstOrNull { it.date == current.toString() }
-            ?.let { maxOf(it.codexDrop(), it.jetBrainsDrop(), it.copilotDrop()) }
+            ?.let { it.codexDrop() + it.jetBrainsDrop() + it.copilotDrop() + it.claudeDrop() + it.cursorDrop() }
             ?: 0
         if (loggedBattleDay != current) {
             loggedBattleDay = current
@@ -305,6 +395,10 @@ internal class UsageInsightsService : PersistentStateComponent<UsageInsightsStat
                 if (quota.unlimited) add(UsagePartyMember("Copilot", null, unlimited = true))
                 else quota.percentLeft?.let { add(UsagePartyMember("Copilot", it)) }
             }
+            if (settings.showClaudeCode) previousClaude?.takeIf { it.quotaError == null }?.let(::claudeRemaining)
+                ?.let { add(UsagePartyMember("Claude", it)) }
+            if (settings.showCursor) previousCursor?.takeIf { it.error == null }?.percentUsed
+                ?.let { add(UsagePartyMember("Cursor", 100 - it)) }
         }
         val today = state.days.firstOrNull { it.date == current.toString() }
         val forecasts = buildList {
@@ -339,7 +433,8 @@ internal class UsageInsightsService : PersistentStateComponent<UsageInsightsStat
             forecast = forecasts.minByOrNull { it.hoursUntilLow },
             battleLog = battleLog.toList(),
             celebration = celebration.takeIf { System.currentTimeMillis() < celebrationUntil },
-            celebrationId = celebrationId
+            celebrationId = celebrationId,
+            hits = hits.toList()
         )
     }
 
@@ -358,15 +453,24 @@ internal class UsageInsightsService : PersistentStateComponent<UsageInsightsStat
 
     private fun synchronizeBossDamage(weekStart: LocalDate = weekStart()) {
         if (state.bossDamageWeek == weekStart.toString()) {
-            state.bossDamage = state.bossDamage.coerceIn(0, 100)
+            if (state.bossDamageVersion == 0) {
+                val recorded = state.days.filter { it.date.toLocalDateOrNull()?.let { date -> !date.isBefore(weekStart) } == true }
+                    .sumOf { it.codexDrop() + it.jetBrainsDrop() + it.copilotDrop() + it.claudeDrop() + it.cursorDrop() }
+                state.bossDamage = (maxOf(state.bossDamage, recorded) * BOSS_DAMAGE_PER_QUOTA_POINT).coerceIn(0, 100)
+                state.bossDamageVersion = 1
+            } else state.bossDamage = state.bossDamage.coerceIn(0, 100)
             return
         }
         val end = minOf(LocalDate.now(), weekStart.plusDays(6))
+        hits.clear()
+        aggregatedHitPoints.clear()
+        lastHitAt.clear()
         state.bossDamage = state.days.asSequence()
             .filter { it.date.toLocalDateOrNull()?.let { date -> !date.isBefore(weekStart) && !date.isAfter(end) } == true }
-            .sumOf { day -> maxOf(day.codexDrop(), day.jetBrainsDrop(), day.copilotDrop()) }
+            .sumOf { day -> (day.codexDrop() + day.jetBrainsDrop() + day.copilotDrop() + day.claudeDrop() + day.cursorDrop()) * BOSS_DAMAGE_PER_QUOTA_POINT }
             .coerceIn(0, 100)
         state.bossDamageWeek = weekStart.toString()
+        state.bossDamageVersion = 1
     }
 
     private fun weekStart(date: LocalDate = LocalDate.now()): LocalDate =
@@ -377,6 +481,8 @@ internal class UsageInsightsService : PersistentStateComponent<UsageInsightsStat
         codexService.removeListener(codexListener)
         jetBrainsService?.removeListener(jetBrainsListener)
         copilotService?.removeListener(copilotListener)
+        claudeService.removeListener(claudeListener)
+        cursorService.removeListener(cursorListener)
         listeners.clear()
     }
 
@@ -384,6 +490,8 @@ internal class UsageInsightsService : PersistentStateComponent<UsageInsightsStat
     private fun UsageInsightsDay.codexDrop(): Int = (codexStart ?: 0) - (codexLow ?: codexStart ?: 0)
     private fun UsageInsightsDay.jetBrainsDrop(): Int = (jetBrainsStart ?: 0) - (jetBrainsLow ?: jetBrainsStart ?: 0)
     private fun UsageInsightsDay.copilotDrop(): Int = (copilotStart ?: 0) - (copilotLow ?: copilotStart ?: 0)
+    private fun UsageInsightsDay.claudeDrop(): Int = (claudeStart ?: 0) - (claudeLow ?: claudeStart ?: 0)
+    private fun UsageInsightsDay.cursorDrop(): Int = (cursorStart ?: 0) - (cursorLow ?: cursorStart ?: 0)
 
     private inline fun UsageInsightsDay.update(
         value: Int,
@@ -443,7 +551,8 @@ internal class UsageInsightsService : PersistentStateComponent<UsageInsightsStat
 
     companion object {
         const val CELEBRATION_MILLIS = 7_000L
-        private const val HIT_LOG_THRESHOLD = 5
+        private const val HIT_LOG_THRESHOLD = 1
+        private const val BOSS_DAMAGE_PER_QUOTA_POINT = 4
         private const val HIT_AGGREGATION_MILLIS = 15 * 60 * 1_000L
         private const val MAX_BATTLE_EVENTS = 4
         private const val MIN_FORECAST_HOURS = 1.0

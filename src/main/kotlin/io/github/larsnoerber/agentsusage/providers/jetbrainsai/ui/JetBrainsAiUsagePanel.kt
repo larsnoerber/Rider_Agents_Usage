@@ -14,6 +14,8 @@ import io.github.larsnoerber.agentsusage.providers.jetbrainsai.formatAiCredits
 import io.github.larsnoerber.agentsusage.ui.components.ProviderHeader
 import io.github.larsnoerber.agentsusage.ui.components.UsageCard
 import io.github.larsnoerber.agentsusage.ui.components.UsageSummary
+import io.github.larsnoerber.agentsusage.ui.components.ProviderUsageDetails
+import io.github.larsnoerber.agentsusage.ui.components.UsageDetailMetric
 import io.github.larsnoerber.agentsusage.ui.components.compactUsageMessage
 import io.github.larsnoerber.agentsusage.ui.components.usageBarColor
 import java.awt.BorderLayout
@@ -28,7 +30,8 @@ internal class JetBrainsAiUsagePanel : JPanel(BorderLayout(0, 4)), Disposable {
     private val subscription = AiCreditCard("Subscription")
     private val topUp = AiCreditCard("Top-up")
     private val status = JBLabel().apply { foreground = JBColor.GRAY }
-    private val summary = UsageSummary()
+    private val details = ProviderUsageDetails("jetbrainsai")
+    private val summary = UsageSummary(details, header)
     private val service = JetBrainsAiUsageService.getInstance()
     private val listener: (JetBrainsAiUsage) -> Unit = ::render
 
@@ -58,6 +61,12 @@ internal class JetBrainsAiUsagePanel : JPanel(BorderLayout(0, 4)), Disposable {
 
     private fun render(usage: JetBrainsAiUsage) {
         val hasDetails = usage.subscription != null || usage.topUp != null
+        details.render(buildList {
+            (usage.subscription ?: usage.quota)?.percentLeft?.let {
+                add(UsageDetailMetric("subscription", "Subscription", (100 - it).toDouble(), usage.resetsAt))
+            }
+            usage.topUp?.percentLeft?.let { add(UsageDetailMetric("topup", "Top-up", (100 - it).toDouble())) }
+        }, record = usage.error == null && !usage.unlimited)
         subscription.render(
             usage.subscription ?: if (!hasDetails) usage.quota else null,
             if (hasDetails) "Subscription" else "Total credits"
@@ -104,7 +113,7 @@ internal class JetBrainsAiUsagePanel : JPanel(BorderLayout(0, 4)), Disposable {
         repaint()
     }
 
-    override fun dispose() = service.removeListener(listener)
+    override fun dispose() { service.removeListener(listener); summary.dispose() }
 }
 
 private class AiCreditCard(title: String) : UsageCard(title) {

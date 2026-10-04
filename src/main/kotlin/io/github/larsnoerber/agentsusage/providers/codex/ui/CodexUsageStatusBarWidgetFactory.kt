@@ -9,6 +9,7 @@ import io.github.larsnoerber.agentsusage.providers.codex.CodexUsageService
 import io.github.larsnoerber.agentsusage.settings.AgentsUsageSettings
 import io.github.larsnoerber.agentsusage.ui.components.StatusBarPart
 import io.github.larsnoerber.agentsusage.ui.components.StatusBarPresentation
+import io.github.larsnoerber.agentsusage.ui.components.TooltipUsageBar
 import io.github.larsnoerber.agentsusage.ui.components.UsageStatusBarWidget
 import io.github.larsnoerber.agentsusage.ui.components.usageBarColor
 import io.github.larsnoerber.agentsusage.ui.components.usageTooltip
@@ -16,7 +17,8 @@ import io.github.larsnoerber.agentsusage.ui.components.usageTooltip
 class CodexUsageStatusBarWidgetFactory : StatusBarWidgetFactory {
     override fun getId(): String = "CodexUsageStatusBar"
     override fun getDisplayName(): String = "OpenAI Usage"
-    override fun isAvailable(project: Project): Boolean = AgentsUsageSettings.getInstance().state.showOpenAi
+    override fun isAvailable(project: Project): Boolean =
+        AgentsUsageSettings.getInstance().state.showOpenAi && CodexUsageService.isAvailable()
     override fun createWidget(project: Project): StatusBarWidget =
         UsageStatusBarWidget(project, getId(), CodexUsageService.getInstance(), ::codexPresentation)
     override fun disposeWidget(widget: StatusBarWidget) = widget.dispose()
@@ -41,6 +43,9 @@ private fun codexPresentation(usage: CodexUsage): StatusBarPresentation {
             "Weekly: remaining ${week ?: "—"}% · ${usage.weeklyReset ?: "reset time unknown"}",
             "Credits: ${usage.credits ?: "—"}",
             usage.error ?: "Click to open Agents Usage and view details"
+        ), listOfNotNull(
+            five?.let { TooltipUsageBar("5-hour", it, "$it% remaining", usageBarColor(it)) },
+            week?.let { TooltipUsageBar("Weekly", it, "$it% remaining", usageBarColor(it)) }
         ))
     )
 }

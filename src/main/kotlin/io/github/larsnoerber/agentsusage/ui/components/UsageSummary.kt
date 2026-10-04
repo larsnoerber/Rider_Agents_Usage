@@ -5,57 +5,50 @@ import com.intellij.openapi.util.text.StringUtil
 import com.intellij.util.ui.JBUI
 import java.awt.BorderLayout
 import java.awt.Dimension
-import java.awt.FlowLayout
 import java.awt.Font
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import java.awt.Insets
-import javax.swing.JButton
 import javax.swing.JPanel
+import com.intellij.openapi.Disposable
 
 /** Four compact facts stay visible; the remaining provider details expand on demand. */
-internal class UsageSummary : JPanel(BorderLayout(0, 2)) {
+internal class UsageSummary(private val usageDetails: ProviderUsageDetails?, private val header: ProviderHeader) :
+    JPanel(BorderLayout(0, 2)), Disposable {
     private val facts = JPanel(GridBagLayout()).apply { isOpaque = false }
     private val more = JPanel(GridBagLayout()).apply { isOpaque = false }
-    private var expanded = false
-    private val toggle = JButton().apply {
-        isContentAreaFilled = false
-        isBorderPainted = false
-        margin = Insets(0, 0, 0, 0)
-        foreground = secondaryTextColor()
-        font = font.deriveFont((font.size2D - 1f).coerceAtLeast(10f))
-        addActionListener {
-            expanded = !expanded
-            updateExpanded()
-            this@UsageSummary.revalidate()
-            this@UsageSummary.repaint()
-        }
+    private val expandedContent = JPanel(BorderLayout()).apply {
+        isOpaque = false
+        add(more, BorderLayout.NORTH)
+        usageDetails?.let { add(it, BorderLayout.CENTER) }
     }
-
+    private var expanded = false
     init {
         isOpaque = false
         add(facts, BorderLayout.NORTH)
-        add(more, BorderLayout.CENTER)
-        add(JPanel(FlowLayout(FlowLayout.LEFT, 0, 0)).apply {
-            isOpaque = false
-            add(toggle)
-        }, BorderLayout.SOUTH)
+        add(expandedContent, BorderLayout.CENTER)
+        header.bindDetailsToggle {
+            expanded = !expanded
+            updateExpanded()
+            revalidate()
+            repaint()
+        }
         updateExpanded()
     }
 
     fun render(title: String, summary: List<Pair<String, String>>, details: List<Pair<String, String>>) {
         fill(facts, summary, columns = 2)
         fill(more, details, columns = 1)
-        toggle.isVisible = details.isNotEmpty()
         toolTipText = usageTooltip(title, (summary + details).map { "${it.first}: ${it.second}" })
         updateExpanded()
     }
 
     private fun updateExpanded() {
-        more.isVisible = expanded
-        toggle.text = if (expanded) "Fewer details" else "More details"
-        toggle.accessibleContext.accessibleName = if (expanded) "Collapse agent details" else "Expand agent details"
+        expandedContent.isVisible = expanded
+        header.setDetailsExpanded(expanded)
     }
+
+    override fun dispose() { header.bindDetailsToggle(null); usageDetails?.dispose() }
 
     private fun fill(target: JPanel, entries: List<Pair<String, String>>, columns: Int) {
         target.removeAll()

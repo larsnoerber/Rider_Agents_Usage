@@ -13,6 +13,8 @@ import io.github.larsnoerber.agentsusage.providers.copilot.GitHubCopilotUsageSer
 import io.github.larsnoerber.agentsusage.ui.components.ProviderHeader
 import io.github.larsnoerber.agentsusage.ui.components.UsageCard
 import io.github.larsnoerber.agentsusage.ui.components.UsageSummary
+import io.github.larsnoerber.agentsusage.ui.components.ProviderUsageDetails
+import io.github.larsnoerber.agentsusage.ui.components.UsageDetailMetric
 import io.github.larsnoerber.agentsusage.ui.components.compactUsageMessage
 import java.awt.BorderLayout
 import java.awt.GridLayout
@@ -23,7 +25,8 @@ internal class GitHubCopilotUsagePanel : JPanel(BorderLayout(0, 4)), Disposable 
     private val cards = JPanel(GridLayout(0, 1, 0, 4)).apply { isOpaque = false }
     private val usageCards = LinkedHashMap<String, CopilotUsageCard>()
     private val status = JBLabel().apply { foreground = JBColor.GRAY }
-    private val summary = UsageSummary()
+    private val details = ProviderUsageDetails("copilot")
+    private val summary = UsageSummary(details, header)
     private val service = GitHubCopilotUsageService.getInstance()
     private val listener: (GitHubCopilotUsage) -> Unit = ::render
 
@@ -42,6 +45,10 @@ internal class GitHubCopilotUsagePanel : JPanel(BorderLayout(0, 4)), Disposable 
 
     private fun render(usage: GitHubCopilotUsage) {
         val quotas = listOfNotNull(usage.primary, usage.chat, usage.completions).distinctBy { it.title }
+        details.render(quotas.mapNotNull { quota ->
+            quota.percentUsed?.let { UsageDetailMetric(
+                quota.title.lowercase().replace(Regex("[^a-z0-9]"), "-"), quota.title, it.toDouble(), usage.resetsAt) }
+        }, record = usage.error == null)
         val titles = quotas.map { it.title }.ifEmpty { listOf("Usage") }
         // Available categories depend on the Copilot plan and billing model.
         if (usageCards.keys.toList() != titles) {
@@ -82,7 +89,7 @@ internal class GitHubCopilotUsagePanel : JPanel(BorderLayout(0, 4)), Disposable 
         repaint()
     }
 
-    override fun dispose() = service.removeListener(listener)
+    override fun dispose() { service.removeListener(listener); summary.dispose() }
 }
 
 private class CopilotUsageCard(title: String) : UsageCard(title) {

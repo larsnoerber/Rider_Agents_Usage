@@ -12,9 +12,10 @@ import io.github.larsnoerber.agentsusage.settings.AgentsUsageSettings
 class GitHubCopilotUsageService : UsageSource<GitHubCopilotUsage>, Disposable {
     private val reader = GitHubCopilotUsageReader()
     private val log = Logger.getInstance(GitHubCopilotUsageService::class.java)
-    private val polling = UsagePolling(GitHubCopilotUsage(), reader::read,
+    private val polling = UsagePolling(GitHubCopilotUsage(error = if (isAvailable()) null else
+        "Install the GitHub Copilot ACP agent or enable its IDE plugin to load quota."), reader::read,
         { AgentsUsageSettings.getInstance().refreshIntervalSeconds },
-        { AgentsUsageSettings.getInstance().state.showCopilot }) { error ->
+        { AgentsUsageSettings.getInstance().state.showCopilot && isAvailable() }) { error ->
         log.debug("Unable to read GitHub Copilot usage", error)
         GitHubCopilotUsage(error = "GitHub Copilot usage is unavailable with this Copilot version")
     }
@@ -25,7 +26,7 @@ class GitHubCopilotUsageService : UsageSource<GitHubCopilotUsage>, Disposable {
     override fun addListener(listener: (GitHubCopilotUsage) -> Unit) = polling.addListener(listener)
     override fun removeListener(listener: (GitHubCopilotUsage) -> Unit) = polling.removeListener(listener)
     override fun refresh() = polling.refresh()
-    override fun dispose() = polling.dispose()
+    override fun dispose() { polling.dispose(); reader.dispose() }
 
     companion object {
         fun getInstance(): GitHubCopilotUsageService =

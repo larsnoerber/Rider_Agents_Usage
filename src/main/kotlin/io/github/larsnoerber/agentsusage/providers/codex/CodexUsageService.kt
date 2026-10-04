@@ -7,6 +7,7 @@ import com.intellij.openapi.diagnostic.Logger
 import com.intellij.util.concurrency.AppExecutorUtil
 import io.github.larsnoerber.agentsusage.core.UsageSource
 import io.github.larsnoerber.agentsusage.settings.AgentsUsageSettings
+import java.io.File
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
@@ -88,6 +89,24 @@ class CodexUsageService : UsageSource<CodexUsage>, Disposable {
     }
 
     companion object {
+        fun isAvailable(): Boolean {
+            val configured = AgentsUsageSettings.getInstance().state.codexPath.trim()
+            if (configured.isNotEmpty() && (configured.contains('\\') || configured.contains('/'))) {
+                return File(configured).isFile
+            }
+            val names = if (configured.isBlank()) listOf("codex.exe", "codex.cmd", "codex.bat", "codex") else buildList {
+                add(configured)
+                if (File(configured).extension.isEmpty()) {
+                    add("$configured.exe")
+                    add("$configured.cmd")
+                    add("$configured.bat")
+                }
+            }
+            if (names.any { File(it).isFile }) return true
+            val pathEntries = System.getenv("PATH")?.split(File.pathSeparator).orEmpty()
+            return pathEntries.any { directory -> names.any { name -> File(directory, name).isFile } }
+        }
+
         fun getInstance(): CodexUsageService =
             ApplicationManager.getApplication().getService(CodexUsageService::class.java)
     }

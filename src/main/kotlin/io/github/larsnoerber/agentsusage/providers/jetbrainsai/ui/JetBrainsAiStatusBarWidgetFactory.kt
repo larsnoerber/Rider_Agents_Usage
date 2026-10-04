@@ -11,6 +11,7 @@ import io.github.larsnoerber.agentsusage.providers.jetbrainsai.formatAiCredits
 import io.github.larsnoerber.agentsusage.settings.AgentsUsageSettings
 import io.github.larsnoerber.agentsusage.ui.components.StatusBarPart
 import io.github.larsnoerber.agentsusage.ui.components.StatusBarPresentation
+import io.github.larsnoerber.agentsusage.ui.components.TooltipUsageBar
 import io.github.larsnoerber.agentsusage.ui.components.UsageStatusBarWidget
 import io.github.larsnoerber.agentsusage.ui.components.usageBarColor
 import io.github.larsnoerber.agentsusage.ui.components.usageTooltip
@@ -44,9 +45,12 @@ private fun jetBrainsPresentation(usage: JetBrainsAiUsage): StatusBarPresentatio
         if (usage.unlimited) add("Unlimited quota")
         add(usage.error ?: "Click to open usage details")
     }
+    val bars = listOfNotNull(usage.quota?.percentLeft?.let {
+        TooltipUsageBar("Credits", it, "$it% remaining", aiCreditColor(usage))
+    })
     return StatusBarPresentation(
         listOf(StatusBarPart("JetBrainAi | "), StatusBarPart(text, aiCreditColor(usage))),
-        usageTooltip("JetBrains AI credits", lines),
+        usageTooltip("JetBrains AI credits", lines, bars),
         dimmed = usage.error != null
     )
 }

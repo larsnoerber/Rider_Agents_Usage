@@ -6,6 +6,7 @@ import com.intellij.openapi.options.Configurable
 import com.intellij.openapi.ui.Messages
 import com.intellij.ui.JBColor
 import com.intellij.ui.components.JBLabel
+import com.intellij.ui.components.JBCheckBox
 import com.intellij.ui.components.JBTextField
 import com.intellij.util.ui.FormBuilder
 import io.github.larsnoerber.agentsusage.application.UsageRefreshCoordinator
@@ -24,6 +25,8 @@ class AgentsUsageConfigurable : Configurable {
     private val panel = JPanel(BorderLayout())
     private val detectButton = JButton("Auto-detect")
     private val agents = AgentSelectionPanel()
+    private val showWeeklyInsights = JBCheckBox("Show Weekly recap")
+    private val showGames = JBCheckBox("Show Games")
 
     init {
         val pathRow = JPanel(BorderLayout(6, 0))
@@ -33,6 +36,9 @@ class AgentsUsageConfigurable : Configurable {
             .addComponent(JBLabel("Agent settings"))
             .addComponent(JBLabel("Visible agents (overview and status bar):"))
             .addComponent(agents)
+            .addComponent(JBLabel("Overview sections:"))
+            .addComponent(showWeeklyInsights)
+            .addComponent(showGames)
             .addComponent(JBLabel("<html>Refresh settings apply to OpenAI, JetBrains AI, and GitHub Copilot.</html>"))
             .addLabeledComponent(JBLabel("Auto-refresh interval for all agents (seconds):"), intervalField)
             .addLabeledComponent(JBLabel("OpenAI (Codex) CLI path (leave empty for auto-detect):"), pathRow)
@@ -58,13 +64,17 @@ class AgentsUsageConfigurable : Configurable {
 
     override fun isModified(): Boolean {
         val settings = AgentsUsageSettings.getInstance().state
-        return pathField.text != settings.codexPath || intervalField.text.toIntOrNull() != settings.refreshSeconds || agents.isModified()
+        return pathField.text != settings.codexPath || intervalField.text.toIntOrNull() != settings.refreshSeconds ||
+            agents.isModified() || showWeeklyInsights.isSelected != settings.showWeeklyInsights ||
+            showGames.isSelected != settings.showGames
     }
 
     override fun reset() {
         val settings = AgentsUsageSettings.getInstance().state
         pathField.text = settings.codexPath
         intervalField.text = settings.refreshSeconds.toString()
+        showWeeklyInsights.isSelected = settings.showWeeklyInsights
+        showGames.isSelected = settings.showGames
         agents.reset()
     }
 
@@ -77,6 +87,7 @@ class AgentsUsageConfigurable : Configurable {
         val settings = AgentsUsageSettings.getInstance().state
         settings.codexPath = pathField.text.trim()
         agents.applySelection()
+        UsageRefreshCoordinator.changeOverviewFeatures(showWeeklyInsights.isSelected, showGames.isSelected)
         UsageRefreshCoordinator.changeRefreshInterval(interval)
     }
 

@@ -7,7 +7,15 @@ import com.intellij.util.ui.JBUI
 import io.github.larsnoerber.agentsusage.application.UsageRefreshCoordinator
 import io.github.larsnoerber.agentsusage.PluginVersion
 import io.github.larsnoerber.agentsusage.providers.codex.ui.CodexUsagePanel
+import io.github.larsnoerber.agentsusage.providers.codex.CodexUsageService
+import io.github.larsnoerber.agentsusage.providers.claudecode.ClaudeCodeUsageService
+import io.github.larsnoerber.agentsusage.providers.cline.ClineUsageService
+import io.github.larsnoerber.agentsusage.providers.cursor.CursorUsageService
 import io.github.larsnoerber.agentsusage.providers.copilot.GitHubCopilotUsageService
+import io.github.larsnoerber.agentsusage.core.agents.AcpAgentInstallation
+import io.github.larsnoerber.agentsusage.providers.claudecode.ui.ClaudeCodeUsagePanel
+import io.github.larsnoerber.agentsusage.providers.cursor.ui.CursorUsagePanel
+import io.github.larsnoerber.agentsusage.providers.cline.ui.ClineUsagePanel
 import io.github.larsnoerber.agentsusage.providers.copilot.ui.GitHubCopilotUsagePanel
 import io.github.larsnoerber.agentsusage.providers.jetbrainsai.JetBrainsAiUsageService
 import io.github.larsnoerber.agentsusage.providers.jetbrainsai.ui.JetBrainsAiUsagePanel
@@ -43,11 +51,31 @@ internal class AgentsUsagePanel : JPanel(BorderLayout()), Disposable {
     private val pages = JPanel(pageLayout).apply { isOpaque = false }
     private val overview = JPanel(BorderLayout(0, 5)).apply { isOpaque = false }
     private val overviewContent = JPanel(BorderLayout(0, JBUI.scale(8))).apply { isOpaque = false }
+    private val agentOverview = JPanel(BorderLayout(0, JBUI.scale(4))).apply { isOpaque = false }
+    private val overviewExtras = JPanel().apply {
+        layout = javax.swing.BoxLayout(this, javax.swing.BoxLayout.Y_AXIS)
+        isOpaque = false
+    }
     private val sections = JPanel(GridBagLayout()).apply { isOpaque = false }
-    private val insights = WeeklyUsageInsightsPanel()
+    private val agentUsageToggle = javax.swing.JButton().apply {
+        horizontalAlignment = javax.swing.JButton.LEFT
+        isContentAreaFilled = false
+        isBorderPainted = false
+        isFocusPainted = false
+        margin = JBUI.emptyInsets()
+        font = font.deriveFont(Font.BOLD, 11f)
+        addActionListener { setAgentUsageExpanded(!settingsState().agentUsageExpanded) }
+    }
+    private var agentUsageExpanded = settingsState().agentUsageExpanded
+    private var insights: WeeklyUsageInsightsPanel? = null
+    private var games: GamesPanel? = null
     private var codex: CodexUsagePanel? = null
     private var jetBrainsAi: JetBrainsAiUsagePanel? = null
     private var copilot: GitHubCopilotUsagePanel? = null
+    private var claudeCode: ClaudeCodeUsagePanel? = null
+    private var cursor: CursorUsagePanel? = null
+    private var cline: ClineUsagePanel? = null
+    private var visibleAgentSelection: List<Boolean>? = null
     private var disposed = false
     private val visibilityListener: () -> Unit = { if (!disposed) updateVisibleAgents() }
     private val settings = RefreshSettingsPanel { showPage(OVERVIEW) }
@@ -60,8 +88,10 @@ internal class AgentsUsagePanel : JPanel(BorderLayout()), Disposable {
             add(JBLabel("Agents Usage").apply { font = font.deriveFont(Font.BOLD) }, BorderLayout.WEST)
             add(UsageToolbar(UsageRefreshCoordinator::refreshAll, ::showSettings), BorderLayout.EAST)
         }, BorderLayout.NORTH)
-        overviewContent.add(sections, BorderLayout.NORTH)
-        overviewContent.add(insights, BorderLayout.SOUTH)
+        agentOverview.add(agentUsageToggle, BorderLayout.NORTH)
+        agentOverview.add(sections, BorderLayout.CENTER)
+        overviewContent.add(agentOverview, BorderLayout.NORTH)
+        overviewContent.add(overviewExtras, BorderLayout.SOUTH)
         overview.add(overviewContent, BorderLayout.CENTER)
         overview.add(JBLabel("Version ${PluginVersion.current}").apply {
             foreground = JBUI.CurrentTheme.Label.disabledForeground()
@@ -89,22 +119,41 @@ internal class AgentsUsagePanel : JPanel(BorderLayout()), Disposable {
             }
         }
         UsageRefreshCoordinator.addVisibilityListener(visibilityListener)
+        setAgentUsageExpanded(agentUsageExpanded)
         updateVisibleAgents()
     }
 
     private fun updateVisibleAgents() {
+        updateOverviewFeatures()
+        val choices = AgentsUsageSettings.getInstance().state
+        val selection = listOf(choices.showOpenAi && (CodexUsageService.isAvailable() || AcpAgentInstallation.isInstalled("codex-acp")),
+            choices.showJetBrainsAi && JetBrainsAiUsageService.isAvailable(),
+            choices.showCopilot && (GitHubCopilotUsageService.isAvailable() || AcpAgentInstallation.isInstalled("github-copilot")),
+            choices.showClaudeCode && ClaudeCodeUsageService.isInstalled(),
+            choices.showCursor && CursorUsageService.isInstalled(),
+            choices.showCline && ClineUsageService.isInstalled())
+        if (selection == visibleAgentSelection) return
+        visibleAgentSelection = selection
         codex?.dispose()
         jetBrainsAi?.dispose()
         copilot?.dispose()
-        val choices = AgentsUsageSettings.getInstance().state
-        codex = if (choices.showOpenAi) CodexUsagePanel() else null
-        jetBrainsAi = if (choices.showJetBrainsAi && JetBrainsAiUsageService.isAvailable()) JetBrainsAiUsagePanel() else null
-        copilot = if (choices.showCopilot && GitHubCopilotUsageService.isAvailable()) GitHubCopilotUsagePanel() else null
+        claudeCode?.dispose()
+        cursor?.dispose()
+        cline?.dispose()
+        codex = if (selection[0]) CodexUsagePanel() else null
+        jetBrainsAi = if (selection[1]) JetBrainsAiUsagePanel() else null
+        copilot = if (selection[2]) GitHubCopilotUsagePanel() else null
+        claudeCode = if (selection[3]) ClaudeCodeUsagePanel() else null
+        cursor = if (selection[4]) CursorUsagePanel() else null
+        cline = if (selection[5]) ClineUsagePanel() else null
         sections.removeAll()
         listOfNotNull(
             codex?.let { AgentSection(it, Color(57, 174, 153)) },
             jetBrainsAi?.let { AgentSection(it, Color(157, 119, 220)) },
-            copilot?.let { AgentSection(it, Color(82, 151, 230)) }
+            copilot?.let { AgentSection(it, Color(82, 151, 230)) },
+            claudeCode?.let { AgentSection(it, Color(207, 117, 77)) },
+            cursor?.let { AgentSection(it, Color(130, 145, 164)) },
+            cline?.let { AgentSection(it, Color(220, 168, 66)) }
         ).forEachIndexed { index, section ->
             sections.add(section, GridBagConstraints().apply {
                 gridx = 0
@@ -120,7 +169,33 @@ internal class AgentsUsagePanel : JPanel(BorderLayout()), Disposable {
                 toolTipText = text
             })
         }
-        insights.refreshView()
+        insights?.refreshView()
+        pages.revalidate()
+        pages.repaint()
+    }
+
+    private fun updateOverviewFeatures() {
+        val state = settingsState()
+        if (state.showWeeklyInsights && insights == null) insights = WeeklyUsageInsightsPanel()
+        if (!state.showWeeklyInsights) { insights?.dispose(); insights = null }
+        if (state.showGames && games == null) games = GamesPanel()
+        overviewExtras.removeAll()
+        insights?.let { overviewExtras.add(it) }
+        if (state.showGames) games?.let { overviewExtras.add(it) }
+        overviewExtras.revalidate()
+        pages.revalidate()
+        pages.repaint()
+    }
+
+    private fun settingsState() = AgentsUsageSettings.getInstance().state
+
+    private fun setAgentUsageExpanded(value: Boolean) {
+        agentUsageExpanded = value
+        settingsState().agentUsageExpanded = value
+        sections.isVisible = value
+        agentUsageToggle.text = if (value) "AGENT USAGE  ▾" else "AGENT USAGE  ▸"
+        agentUsageToggle.accessibleContext.accessibleName = if (value) "Collapse agent usage" else "Expand agent usage"
+        agentOverview.revalidate()
         pages.revalidate()
         pages.repaint()
     }
@@ -146,7 +221,10 @@ internal class AgentsUsagePanel : JPanel(BorderLayout()), Disposable {
         codex?.dispose()
         jetBrainsAi?.dispose()
         copilot?.dispose()
-        insights.dispose()
+        claudeCode?.dispose()
+        cursor?.dispose()
+        cline?.dispose()
+        insights?.dispose()
     }
 
     private companion object {

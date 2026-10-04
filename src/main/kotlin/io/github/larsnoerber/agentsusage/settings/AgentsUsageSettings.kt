@@ -5,19 +5,31 @@ import com.intellij.openapi.components.PersistentStateComponent
 import com.intellij.openapi.components.State
 import com.intellij.openapi.components.Storage
 
+// Keep legacy constructor defaults so omitted fields in existing XML retain their previous meaning.
 data class AgentsUsageState(
     @Volatile var codexPath: String = "",
     @Volatile var refreshSeconds: Int = AgentsUsageSettings.DEFAULT_REFRESH_SECONDS,
     @Volatile var showOpenAi: Boolean = true,
     @Volatile var showJetBrainsAi: Boolean = true,
     @Volatile var showCopilot: Boolean = true,
-    @Volatile var weeklyInsightsExpanded: Boolean = true
+    @Volatile var showClaudeCode: Boolean = true,
+    @Volatile var showCursor: Boolean = false,
+    @Volatile var showCline: Boolean = false,
+    @Volatile var showWeeklyInsights: Boolean = true,
+    @Volatile var showGames: Boolean = true,
+    @Volatile var weeklyInsightsExpanded: Boolean = true,
+    @Volatile var gamesExpanded: Boolean = true,
+    @Volatile var agentUsageExpanded: Boolean = true
 )
 
 // Keep the original identifiers so saved paths and refresh intervals survive upgrades.
 @State(name = "CodexUsageSettings", storages = [Storage("codex-usage.xml")])
 class AgentsUsageSettings : PersistentStateComponent<AgentsUsageState> {
-    @Volatile private var state = AgentsUsageState()
+    // Fresh installations start with JetBrains AI only; loaded XML preserves saved selections.
+    @Volatile private var state = AgentsUsageState(
+        showOpenAi = false, showCopilot = false, showClaudeCode = false,
+        showWeeklyInsights = false, showGames = false
+    )
 
     val refreshIntervalSeconds: Int
         get() = state.refreshSeconds.coerceIn(MIN_REFRESH_SECONDS, MAX_REFRESH_SECONDS)

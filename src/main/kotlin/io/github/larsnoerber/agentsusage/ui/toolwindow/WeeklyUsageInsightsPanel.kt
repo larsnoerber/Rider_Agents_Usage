@@ -6,6 +6,7 @@ import com.intellij.ui.JBColor
 import com.intellij.ui.components.JBLabel
 import com.intellij.util.ui.JBUI
 import io.github.larsnoerber.agentsusage.application.UsageInsightsService
+import io.github.larsnoerber.agentsusage.application.UsageBossHit
 import io.github.larsnoerber.agentsusage.application.UsageInsightsSnapshot
 import io.github.larsnoerber.agentsusage.application.UsagePartyMember
 import io.github.larsnoerber.agentsusage.ui.components.secondaryTextColor
@@ -72,6 +73,11 @@ internal class WeeklyUsageInsightsPanel : JPanel(BorderLayout(0, 4)), Disposable
         font = font.deriveFont(java.awt.Font.ITALIC, font.size2D - 1f)
     }
     private val bossIcon = QuotaBossIcon()
+    private val hitFeedback = JPanel().apply {
+        layout = BoxLayout(this, BoxLayout.Y_AXIS)
+        isOpaque = false
+    }
+    private val bossBackground = JBColor(Color(244, 238, 252), Color(48, 40, 59))
     private val boss = JProgressBar(0, 100).apply {
         isStringPainted = false
         preferredSize = JBUI.size(64, 16)
@@ -80,7 +86,7 @@ internal class WeeklyUsageInsightsPanel : JPanel(BorderLayout(0, 4)), Disposable
     }
     private val bossBattle = JPanel(BorderLayout(JBUI.scale(6), 0)).apply {
         isOpaque = true
-        background = JBColor(Color(244, 238, 252), Color(48, 40, 59))
+        background = bossBackground
         border = BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(JBColor(Color(211, 194, 233), Color(91, 73, 111))),
             JBUI.Borders.empty(6)
@@ -98,6 +104,7 @@ internal class WeeklyUsageInsightsPanel : JPanel(BorderLayout(0, 4)), Disposable
             add(boss)
             add(Box.createVerticalStrut(JBUI.scale(3)))
             add(bossQuote)
+            add(hitFeedback)
         }, BorderLayout.CENTER)
     }
     private val celebration = JBLabel(" ").apply {
@@ -118,6 +125,10 @@ internal class WeeklyUsageInsightsPanel : JPanel(BorderLayout(0, 4)), Disposable
     private var battleEvents = emptyList<String>()
     private val battleEventLabels = mutableListOf<JBLabel>()
     private var battleEventWidth = -1
+    private data class ActiveHit(val hit: UsageBossHit, val label: JBLabel)
+    private val activeHits = mutableListOf<ActiveHit>()
+    private var lastSeenHitId = 0L
+    private val hitTimer = Timer(40) { updateHitAnimation() }
     private val expiryTimer = Timer(UsageInsightsService.CELEBRATION_MILLIS.toInt()) {
         celebration.text = " "
         celebration.isVisible = false
@@ -174,8 +185,11 @@ internal class WeeklyUsageInsightsPanel : JPanel(BorderLayout(0, 4)), Disposable
             override fun componentResized(event: ComponentEvent) = updateBattleEventWidths()
         })
         addHierarchyListener { event ->
-            if (event.changeFlags and HierarchyEvent.SHOWING_CHANGED.toLong() != 0L && isShowing) {
-                service.overviewOpened()
+            if (event.changeFlags and HierarchyEvent.SHOWING_CHANGED.toLong() != 0L) {
+                if (isShowing) {
+                    service.overviewOpened()
+                    updateHitAnimation()
+                } else hitTimer.stop()
             }
         }
         service.addListener(listener)
@@ -185,6 +199,7 @@ internal class WeeklyUsageInsightsPanel : JPanel(BorderLayout(0, 4)), Disposable
         expanded = value
         settings.state.weeklyInsightsExpanded = value
         body.isVisible = value
+        updateHitAnimation()
         toggle.text = if (value) "WEEKLY QUESTS  ▾" else "WEEKLY QUESTS  ▸"
         revalidate()
     }
@@ -247,10 +262,11 @@ internal class WeeklyUsageInsightsPanel : JPanel(BorderLayout(0, 4)), Disposable
         }
         bossStatus.text = "<html>${snapshot.bossName.uppercase()}<br>${snapshot.bossPhase.uppercase()}</html>"
         bossStatus.foreground = bossAccent(snapshot.bossVariant)
-        bossStatus.toolTipText = "Boss health drops with observed quota use. A different challenger appears each week."
+        bossStatus.toolTipText = "Each observed percentage point of quota use deals 4 HP damage. Selected quota providers contribute together. A different challenger appears each week."
         bossHp.text = if (health == 0) "DEFEATED" else "$health% HP"
         bossQuote.text = "<html>\"${snapshot.bossLine}\"</html>"
         bossIconLabelRepaint()
+        showHits(snapshot.hits)
 
         combatLog.removeAll()
         battleEvents = snapshot.battleLog.take(3)
@@ -290,6 +306,66 @@ internal class WeeklyUsageInsightsPanel : JPanel(BorderLayout(0, 4)), Disposable
         setWrappedText(forecast, forecastMessage)
         setWrappedText(footer, footerMessage)
         updateBattleEventWidths()
+        activeHits.forEach { setWrappedText(it.label, hitText(it.hit)) }
+    }
+
+    private fun hitText(hit: UsageBossHit): String = "Hit by ${hit.provider} · ${hit.points} Points"
+
+    private fun showHits(hits: List<UsageBossHit>) {
+        val now = System.currentTimeMillis()
+        val removed = activeHits.filter { active -> hits.none { it.id == active.hit.id } }
+        removed.forEach { hitFeedback.remove(it.label) }
+        activeHits.removeAll(removed.toSet())
+        hits.filter { it.id > lastSeenHitId }.forEach { hit ->
+            lastSeenHitId = maxOf(lastSeenHitId, hit.id)
+            if (now - hit.observedAt !in 0 until HIT_DISPLAY_MILLIS) return@forEach
+            val label = JBLabel().apply {
+                alignmentX = LEFT_ALIGNMENT
+                maximumSize = Dimension(Int.MAX_VALUE, Int.MAX_VALUE)
+                border = JBUI.Borders.emptyTop(3)
+                font = font.deriveFont(java.awt.Font.BOLD)
+                toolTipText = hitText(hit)
+            }
+            setWrappedText(label, hitText(hit))
+            activeHits.add(ActiveHit(hit, label))
+            hitFeedback.add(label)
+            if (activeHits.size > 3) hitFeedback.remove(activeHits.removeAt(0).label)
+        }
+        hitFeedback.revalidate()
+        updateHitAnimation()
+    }
+
+    private fun updateHitAnimation() {
+        if (disposed) return
+        val now = System.currentTimeMillis()
+        val expired = activeHits.filter { now - it.hit.observedAt >= HIT_DISPLAY_MILLIS }
+        expired.forEach { hitFeedback.remove(it.label) }
+        if (expired.isNotEmpty()) {
+            activeHits.removeAll(expired.toSet())
+            hitFeedback.revalidate()
+            body.revalidate()
+        }
+        activeHits.forEach { active ->
+            val elapsed = (now - active.hit.observedAt).coerceAtLeast(0)
+            val fade = if (elapsed < HIT_DISPLAY_MILLIS - 600) 0.0
+                else (elapsed - (HIT_DISPLAY_MILLIS - 600)) / 600.0
+            active.label.foreground = blend(providerAccent(active.hit.provider), bossBackground, fade)
+        }
+        val latest = activeHits.lastOrNull()?.hit
+        val age = latest?.let { (now - it.observedAt).coerceAtLeast(0) } ?: HIT_IMPACT_MILLIS
+        val impact = (1.0 - age.toDouble() / HIT_IMPACT_MILLIS).coerceIn(0.0, 1.0)
+        val color = latest?.let { providerAccent(it.provider) } ?: bossBackground
+        bossIcon.impact = impact
+        bossIcon.impactColor = color
+        bossBattle.background = blend(bossBackground, color, impact * 0.25)
+        bossBattle.repaint()
+        if (activeHits.isNotEmpty() && expanded && isShowing) hitTimer.start() else hitTimer.stop()
+    }
+
+    private fun blend(from: Color, to: Color, amount: Double): Color {
+        val value = amount.coerceIn(0.0, 1.0)
+        fun channel(left: Int, right: Int): Int = (left + (right - left) * value).toInt()
+        return Color(channel(from.red, to.red), channel(from.green, to.green), channel(from.blue, to.blue))
     }
 
     private fun setWrappedText(label: JBLabel, text: String, availableWidth: Int? = null) {
@@ -362,17 +438,23 @@ internal class WeeklyUsageInsightsPanel : JPanel(BorderLayout(0, 4)), Disposable
     private fun providerAccent(provider: String): Color = when (provider) {
         "Codex" -> JBColor(Color(57, 174, 153), Color(85, 208, 181))
         "JetBrains AI" -> JBColor(Color(157, 119, 220), Color(190, 158, 245))
+        "Claude" -> JBColor(Color(187, 93, 49), Color(239, 157, 113))
+        "Cursor" -> JBColor(Color(101, 119, 142), Color(167, 185, 209))
         else -> JBColor(Color(82, 151, 230), Color(128, 184, 248))
     }
 
     private fun providerChipBackground(provider: String): Color = when (provider) {
         "Codex" -> JBColor(Color(235, 248, 244), Color(40, 57, 52))
         "JetBrains AI" -> JBColor(Color(244, 239, 251), Color(55, 47, 67))
+        "Claude" -> JBColor(Color(253, 241, 232), Color(69, 49, 39))
+        "Cursor" -> JBColor(Color(241, 244, 247), Color(47, 53, 61))
         else -> JBColor(Color(237, 244, 252), Color(40, 51, 65))
     }
 
     private companion object {
         const val RESET_GLOW_MILLIS = 3_000L
+        const val HIT_DISPLAY_MILLIS = 2_500L
+        const val HIT_IMPACT_MILLIS = 650L
     }
 
     private fun bossIconLabelRepaint() {
@@ -382,6 +464,8 @@ internal class WeeklyUsageInsightsPanel : JPanel(BorderLayout(0, 4)), Disposable
     override fun dispose() {
         disposed = true
         expiryTimer.stop()
+        hitTimer.stop()
+        activeHits.clear()
         service.removeListener(listener)
     }
 
@@ -389,6 +473,8 @@ internal class WeeklyUsageInsightsPanel : JPanel(BorderLayout(0, 4)), Disposable
         var variant = 0
         var phase = 0
         var accent: Color = JBColor(Color(133, 91, 194), Color(182, 139, 242))
+        var impact = 0.0
+        var impactColor: Color = accent
 
         override fun getIconWidth(): Int = JBUI.scale(24)
         override fun getIconHeight(): Int = JBUI.scale(24)
@@ -400,6 +486,15 @@ internal class WeeklyUsageInsightsPanel : JPanel(BorderLayout(0, 4)), Disposable
                 val scale = iconWidth / 32.0
                 g.translate(x.toDouble(), y.toDouble())
                 g.scale(scale, scale)
+                if (impact > 0) {
+                    g.color = Color(impactColor.red, impactColor.green, impactColor.blue, (impact * 220).toInt())
+                    for (ray in 0..7) {
+                        val angle = ray * Math.PI / 4
+                        g.drawLine((16 + kotlin.math.cos(angle) * 12).toInt(), (16 + kotlin.math.sin(angle) * 12).toInt(),
+                            (16 + kotlin.math.cos(angle) * 16).toInt(), (16 + kotlin.math.sin(angle) * 16).toInt())
+                    }
+                    g.translate(kotlin.math.sin(impact * Math.PI * 6) * impact * 2, 0.0)
+                }
                 g.color = accent
                 when (Math.floorMod(variant, 3)) {
                     0 -> {

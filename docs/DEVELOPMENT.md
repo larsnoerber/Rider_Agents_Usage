@@ -151,6 +151,10 @@ identifiers, tokens, headers, or license secrets.
 ### GitHub Copilot
 
 `providers/copilot/GitHubCopilotUsageReader` reads Copilot's quota service and its last report time.
+If that IDE service is unavailable, it runs the native language server from Rider's installed `github-copilot`
+ACP package and requests `checkQuota` after LSP initialization. The server reads its own authentication store.
+This fallback does not start an agent session or prompt and does not export a token to Agents Usage. Native processes
+are bounded by a timeout and disposed after each quota request. The protocol is internal and may change.
 Premium request billing can expose exact counts; credit billing uses the reported remaining percentage.
 Only quota categories actually reported by Copilot are shown.
 Free plans use the chat quota as their included allowance, matching Copilot's own quota dialog. Under token billing
@@ -163,6 +167,48 @@ tooltips, colors warn as the balance decreases, and unlimited quotas are not giv
 AI Assistant and Copilot APIs are internal and may change with provider updates.
 `core/reflection/` caches getter lookup and discovers only loaded provider plugins.
 These integrations use the installed plugins' existing connections; no additional usage-reporting server is introduced.
+
+### Cursor, Claude and Cline (JetBrains)
+
+Configuration lists missing ACP packages beneath their provider checkboxes and directs the user to Rider's ACP
+Registry. There are no installation buttons. Cursor uses its ACP package; Claude and Cline can also use their
+native IDE integrations. Installing a package does not authenticate the account.
+The Usage overview hides providers without an installed agent package; Claude and Cline can also use their loaded
+native IDE plugins. Status widgets additionally require their reader's usage source.
+The quota/history readers reuse provider-local sources: Cursor Agent auth (preferred) or Desktop's SQLite sign-in,
+Claude Code's subscription credentials and session files, and Cline CLI/ACP's provider store. Tokens are read anew for
+quota requests and are never refreshed,
+logged or persisted.
+Cursor Agent stores auth under `%APPDATA%/Cursor/auth.json` on Windows, `~/.cursor/auth.json` on macOS,
+and `$XDG_CONFIG_HOME/cursor/auth.json` or `~/.config/cursor/auth.json` on Linux.
+Reader destinations are fixed to `cursor.com`, `api2.cursor.sh`, `api.anthropic.com`, or `api.cline.bot`, with no
+redirects.
+Quota requests use internal APIs and need signed-in account checks after compilation. Claude's request includes the
+CLI-compatible user-agent header described by the referenced Claude usage implementation. macOS Keychain-only Claude
+subscription quota reads require a readable official credentials file. A read-only `auth status --json` probe of
+the installed native Claude SDK distinguishes API-key ACP logins from subscription OAuth. API-key accounts show
+local monthly tokens and their authentication mode; Pro/Max quota percentages are not applicable.
+
+Cline reads local task aggregates or SDK message metrics in the standard CLI/editor stores; custom
+absolute `CLINE_DIR`, `CLINE_DATA_DIR` and `CLINE_DB_DATA_DIR` environment paths are respected. Message files referenced
+by the session database must remain inside the application's local storage roots. For account credits, it reads only
+the Cline provider's existing auth under `settings/providers.json` in the official CLI data root. The authenticated
+balance request goes solely to `https://api.cline.bot/api/v1/users/<id>/balance`. A signed micro-dollar balance is
+converted to USD, matching the installed Cline Hub's display. Cline reports this balance independently of local
+history totals and recorded costs, without inferring a fixed account limit. Unsupported/missing stores and partial
+read failures stay visible as unavailable or incomplete usage.
+The SDK session file can wrap its `messages` array in a document. The streaming reader skips system prompts and
+message content, retaining only numeric metrics. An empty or not-yet-billed recorded session is valid zero usage.
+
+Provider protocols and storage formats are checked against the installed official packages. The provider-detail
+layout uses the supplied screenshot and independently implemented Swing charts.
+
+Chart history collects snapshots while provider panels exist and retains only numeric observations for 24 hours.
+Clicking a provider's subscription badge toggles its details and starts a countdown repaint timer when shown;
+hiding/disposal stops it. Live IDE checks should cover
+narrow/light/dark layouts, absent quotas, reset boundaries, 1/6/24-hour charts, visibility toggles, and repeated
+refreshes
+without boss damage. Weekly/Game activation choices and section expansion choices are persisted independently.
 
 ### Visual Studio Code providers
 
