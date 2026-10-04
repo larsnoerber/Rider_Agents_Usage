@@ -1,20 +1,19 @@
-# Agents Usage
+# AgentMeter
 
-<p><img src="docs/images/agents-usage-logo.png" alt="Agents Usage Quota Portal logo" width="180"/></p>
+<p><img src="docs/images/agents-usage-logo.png" alt="AgentMeter Quota Portal logo" width="180"/></p>
 
-Agents Usage, maintained by Lars Nörber, is available for JetBrains IDEs, including IntelliJ IDEA and Rider, and as an
+AgentMeter, maintained by Lars Nörber, is available for JetBrains IDEs, including IntelliJ IDEA and Rider, and as an
 extension for Visual Studio Code. It displays Codex 5-hour and weekly usage, JetBrains AI credits, and GitHub Copilot
 quotas in JetBrains IDEs. The VS Code extension displays Codex and GitHub Copilot quota. A native Visual Studio
 2022/2026 extension also provides Codex quota in Community, Professional and Enterprise on Windows x64.
 The status bar displays `OpenAi | D=78% - W=42%`, `JetBrainAi | 70%`, and `Copilot | 38%` (example balances).
 OpenAI and JetBrains AI show remaining quota. Copilot shows consumed quota: 0% unused, 100% exhausted.
 Each percentage uses its quota color directly; OpenAI D and W have independent colors, without dots.
-Click any provider widget to open **Agents Usage**.
-The Rider/JetBrains overview also supports Cursor account quota, Claude subscription quota and monthly local tokens,
-and Cline account credits and local task tokens/costs. On a fresh Rider installation only JetBrains AI is enabled;
+Click any provider widget to open **AgentMeter**.
+The Rider/JetBrains overview also supports Cursor account quota through its ACP sign-in,
+and Claude subscription quota and monthly local tokens. On a fresh Rider installation only JetBrains AI is enabled;
 select additional providers in **Visible agents**. Claude and OpenAI show remaining subscription quota; without
 subscription quotas Claude shows recorded local tokens or its API connection state. Cursor shows consumed quota.
-Cline shows account credits when available, otherwise local token totals.
 Visible widgets stay together in OpenAI, JetBrains AI, Copilot order when agents are toggled.
 
 For the source layout, read [Code structure](docs/ARCHITECTURE.md). Contributors and agents should start with
@@ -42,22 +41,21 @@ For the source layout, read [Code structure](docs/ARCHITECTURE.md). Contributors
 - Automatic discovery of `codex` from the system `PATH`.
 - English interface, tooltips, settings, and error messages.
 - Click the subscription badge for a usage chart with distinct colored series,
-  consumed percentages, reset countdowns and rings, and selectable 1/6/24-hour views. Cline charts use token totals.
+  consumed percentages, reset countdowns and rings, and selectable 1/6/24-hour views.
   The local 24-hour history starts with observations made while provider panels exist; it cannot reconstruct past
   account usage. Observation gaps and quota resets are kept separate.
 - Use the **Weekly** and **Games** checkboxes in configuration to activate or deactivate those areas. Both are off
   by default on a fresh installation. Choices survive
   restarts; collapsing a section remains a separate choice.
 - Weekly bosses lose 4 HP per observed percentage point of quota consumption. All selected quota providers contribute;
-  a 1-point change produces a visible hit. Claude and Cursor participate; Cline token counts do not imply quota damage.
+  a 1-point change produces a visible hit. Claude and Cursor participate when quota percentages are available.
 - Boss hits flash and briefly shake the boss, with colored feedback such as **Hit by Claude · 4 Points**. Only actual
   quota changes generate hits; repeated refreshes and restored history do not replay attacks.
 
-### Cursor, Claude and Cline data sources (JetBrains)
+### Cursor and Claude data sources (JetBrains)
 
 Cursor prefers its official Agent login store: `%APPDATA%/Cursor/auth.json` on Windows, `~/.cursor/auth.json` on macOS,
-and `$XDG_CONFIG_HOME/cursor/auth.json` or `~/.config/cursor/auth.json` on Linux. It falls back to the signed-in Desktop
-application's `User/globalStorage/state.vscdb` in read-only mode. It requests Cursor's usage summary and can
+and `$XDG_CONFIG_HOME/cursor/auth.json` or `~/.config/cursor/auth.json` on Linux. It requests Cursor's usage summary and can
 fall back to Cursor's authenticated current-period endpoint when the web dashboard returns HTTP 403. Shared team
 pools are labeled explicitly. Missing finite limits stay unavailable. Automatic account refreshes run at least 60
 seconds apart.
@@ -70,11 +68,6 @@ Pro/Max quota percentages do not apply. The selected, installed Claude agent rem
 records are shown as unavailable rather than zero usage. Keychain-only subscription credentials cannot currently be
 read.
 
-Cline reads `state/taskHistory.json` in its default CLI and editor stores, and SDK `sessions.db`/message metrics when
-available. It shows input/output tokens, separate cache traffic, and the sum of costs actually recorded by Cline across
-local task history. Deleted tasks and usage on other machines are absent; missing costs are excluded. Cline account
-credits are read separately using its existing CLI/ACP login. The signed balance is converted to USD; no subscription
-percentage is inferred from local totals or credits.
 
 These account endpoints and local formats can change. Credentials stay in memory for provider requests, are never
 printed or copied into plugin settings/history, and are not sent to other services. Redirects are disabled. No
@@ -94,10 +87,9 @@ See [Marketplace media](docs/MARKETPLACE.md) for the image files and listing ins
 1. Download the plugin ZIP from [GitHub Releases](https://github.com/larsnoerber/Rider_Agents_Usage/releases/latest).
 2. In your IDE, open **Settings > Plugins**, click the gear icon, and choose **Install Plugin from Disk**.
 3. Select the ZIP and restart the IDE if prompted.
-4. Open **View > Tool Windows > Agents Usage**, or click the `OpenAi` status bar widget.
+4. Open **View > Tool Windows > AgentMeter**, or click the `OpenAi` status bar widget.
 
-Agents Usage uses the plugin ID `io.github.larsnoerber.agentsusage`. Disable or uninstall an earlier installation of
-Codex Usage Monitor before installing Agents Usage to avoid duplicate widgets.
+AgentMeter uses the stable plugin ID `io.github.larsnoerber.agentsusage`.
 
 The current CLI integration requires Windows and an IntelliJ Platform IDE version 2026.1 or later. Codex CLI must
 already be installed and signed in locally.
@@ -105,16 +97,16 @@ already be installed and signed in locally.
 ### Visual Studio Code
 
 Download `agents-usage-vscode-<version>.vsix` from GitHub Releases, then run **Extensions: Install from VSIX...** in
-VS Code. The extension requires Codex CLI to be installed and signed in. Open the **Agents Usage** Activity Bar view,
+VS Code. The extension requires Codex CLI to be installed and signed in. Open the **AgentMeter** Activity Bar view,
 or click its status bar item to see the reported 5-hour and weekly quotas.
-Agents Usage displays quota only; install
+AgentMeter displays quota only; install
 the [OpenAI Codex extension](https://marketplace.visualstudio.com/items?itemName=openai.chatgpt)
 separately to use Codex as a coding agent in VS Code.
 
 ### Visual Studio Community, Professional and Enterprise
 
 Build or download `agents-usage-visualstudio-<version>.vsix`, close Visual Studio and open the package with
-Visual Studio's VSIX Installer. Then choose **View > Other Windows > Agents Usage**.
+Visual Studio's VSIX Installer. Then choose **View > Other Windows > AgentMeter**.
 Use **Settings** in the window to configure Codex/Copilot visibility, status display, CLI path and refresh interval.
 Codex reports remaining quota; GitHub Copilot reports consumption through Visual Studio's existing quota service.
 Click the AI icon in the Standard toolbar or status bar to open Usage. Older Copilot builds may not expose quotas.
@@ -123,12 +115,12 @@ See [Visual Studio setup](visualstudio/README.md).
 
 ## Settings
 
-Usage refreshes every 60 seconds by default. Open **Settings > Tools > Agents Usage** to set the CLI path or a refresh
+Usage refreshes every 60 seconds by default. Open **Settings > Tools > AgentMeter** to set the CLI path or a refresh
 interval between 10 and 3600 seconds. Leave the path empty to discover Codex CLI automatically from `PATH`.
 
 The Tool Window also provides refresh presets of 30 seconds, 1 minute, and 5 minutes, plus a custom interval.
 The toolbar stays visible above the agent cards. The Tool Window configuration and IDE Settings both offer **Visible
-agents** checkboxes for OpenAI, JetBrains AI, GitHub Copilot, Claude, Cursor and Cline. Uncheck an agent to remove its
+agents** checkboxes for OpenAI, JetBrains AI, GitHub Copilot, Claude and Cursor. Uncheck an agent to remove its
 overview card and
 status widget and pause its background quota reads. Providers require their installed ACP package or loaded IDE plugin.
 Applying settings updates visibility and refreshes selected providers. Zero quota remains visible.
@@ -156,7 +148,7 @@ at build 261 and has no upper bound; the build verifies against Rider 2026.2.3.1
 .\gradlew.bat buildPlugin
 ```
 
-The installable ZIP is written to `build/distributions/agents-usage-<version>.zip`.
+The installable ZIP is written to `build/distributions/agentmeter-<version>.zip`.
 Project identity and the release version are configured in `gradle.properties`.
 Both Gradle wrapper scripts are required for builds; see [Build files](docs/DEVELOPMENT.md#gradle-build-files).
 
@@ -186,7 +178,7 @@ displays this information inside the IDE and does not upload it to any additiona
 
 ## Maintainer and license
 
-Agents Usage is maintained by **Lars Nörber**. Source code and support are available
+AgentMeter is maintained by **Lars Nörber**. Source code and support are available
 at [larsnoerber/Rider_Agents_Usage](https://github.com/larsnoerber/Rider_Agents_Usage).
 
 The source code is licensed under the [MIT License](LICENSE). Use of the distributed plugin is governed by

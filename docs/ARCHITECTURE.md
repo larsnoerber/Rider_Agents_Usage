@@ -4,7 +4,7 @@ Source packages are rooted at `io.github.larsnoerber.agentsusage`.
 Provider code is grouped by feature, so a provider change can be understood in one place.
 
 ```text
-Agents Usage/
+AgentMeter/
 ├── AGENTS.md                         Project rules
 ├── README.md                         Installation and usage
 ├── CHANGELOG.md                      Release history
@@ -148,13 +148,13 @@ installation buttons or plugin-download workflow.
 system path without reading authentication data. Both configuration pages expose Weekly and Games checkboxes for
 overview sections.
 `UsageRefreshCoordinator` applies changes, notifies overview listeners on the EDT,
-and asks the IDE to reevaluate all six status widget factories. The overview creates only selected, available
+and asks the IDE to reevaluate all five status widget factories. The overview creates only selected, available
 provider panels and disposes old panels when selection changes. Its toolbar remains available with no providers.
 Deselected or unavailable providers skip background reads. JetBrains AI requires its optional plugin; Copilot uses
 either the optional IDE quota service or its installed ACP language server. The overview also accepts installed ACP
 packages for OpenAI,
-Copilot, Claude, Cursor and Cline; missing packages do not create provider cards. Claude and Cline also accept their
-loaded native IDE plugins. Claude, Cursor and Cline status widgets additionally require the local source their
+Copilot, Claude and Cursor; missing packages do not create provider cards. Claude also accept their
+loaded native IDE plugins. Claude and Cursor status widgets additionally require the local source their
 current reader can use. Installed agents without usable sign-in/history show an explicit unavailable explanation.
 An installed package and account login do not imply a finite account quota. Claude API-key logins are identified
 through the official CLI; local logs remain readable even without subscription OAuth credentials.
@@ -192,21 +192,21 @@ it contains only API metadata and exception types, never provider object content
 ## Additional providers and usage details
 
 `providers/cursor/` contains Cursor's immutable snapshot, local sign-in reader, throttled service,
-consumption panel and widget. `providers/cline/` contains local task-history/SDK metric reads, account credits, totals
-and UI.
+consumption panel and widget.
 `providers/claudecode/` retains the local monthly token scanner and adds subscription quota reads and a widget.
-Their status widgets are shown only while the matching Rider ACP registry packages (`cursor`, `cline`, `claude-acp`)
-and provider-local sources are present. Installation detection reads package paths only. Provider readers use their
+Their status widgets are shown only while the matching Rider ACP registry packages (`cursor`, `claude-acp`)
+are present; Cursor additionally requires its local account source. Installation detection reads package paths only. Provider readers use their
 own official local login stores for requests to that provider, or delegate authentication to the native package.
-All six providers are selected through `AgentSelectionPanel` and refreshed through `UsageRefreshCoordinator`.
+All five providers are selected through `AgentSelectionPanel` and refreshed through `UsageRefreshCoordinator`.
 Fresh Rider installations select only JetBrains AI, with Weekly and Games disabled. `AgentsUsageSettings` initializes
 these choices separately from `AgentsUsageState`'s legacy constructor defaults so omitted XML fields preserve
 existing selections. The existing `showClaudeCode` identifier is preserved. New widget identifiers
-are `ClaudeCodeUsageStatusBar`, `CursorUsageStatusBar`, and `ClineUsageStatusBar`; existing identifiers stay unchanged.
+are `ClaudeCodeUsageStatusBar` and `CursorUsageStatusBar`; existing identifiers stay unchanged.
 
-`core/storage/LocalUsageFiles` shares application-store path resolution, safe JSON field reads, and read-only SQLite
-access for Cursor and Cline. It never copies databases or reads arbitrary credential stores. The packaged SQLite
-driver reads active WAL data; when sidecars are absent, immutable mode avoids creating them. `core/http/UsageHttp`
+`core/storage/LocalUsageFiles` shares application-store path resolution and safe JSON field reads for Cursor
+and Claude. Cursor reads only its official Agent/ACP auth JSON; no database driver or Desktop database fallback
+is packaged. Cline support was removed for the first stable Marketplace release.
+`core/http/UsageHttp`
 provides bounded asynchronous HTTPS reads, cancellation, disabled redirects/cookie storage, and rate-limit backoff.
 Only provider readers supply destinations and authentication headers; errors retain status codes rather than response
 bodies, credentials, or exception messages. Services invoke these readers off the EDT and dispatch UI listeners via
@@ -219,8 +219,8 @@ request, on timeout, and on disposal. The parser skips empty quota placeholders 
 separate from unlimited basic chat. `core/agents/AcpAgentInstallation.installedFile` resolves files from the newest
 installed version and is shared with Claude's read-only native auth-status probe.
 
-Cursor prefers the official agent auth file (`%APPDATA%/Cursor/auth.json` on Windows, `~/.cursor/auth.json` on macOS,
-and `$XDG_CONFIG_HOME/cursor/auth.json` or `~/.config/cursor/auth.json` on Linux), then its desktop database.
+Cursor reads the official agent auth file (`%APPDATA%/Cursor/auth.json` on Windows, `~/.cursor/auth.json` on macOS,
+and `$XDG_CONFIG_HOME/cursor/auth.json` or `~/.config/cursor/auth.json` on Linux).
 Claude uses official subscription OAuth credentials where present. Otherwise `ClaudeAuthStatusReader` asks the
 installed SDK binary for `auth status --json`, retaining only authentication mode and plan information. API-key
 logins show local token usage with an explanation, without empty Pro/Max quota bars or a false sign-in request.
@@ -228,11 +228,6 @@ Claude's status widget requires the persisted selection and an installed package
 credentials on the EDT. Without subscription quotas it shows recorded monthly tokens or the API connection state.
 Absent local logs are displayed as unavailable rather than zero usage. Disabling the Claude checkbox still hides
 both views and pauses reads.
-Cline reads `settings/providers.json` from its official CLI data root solely for requests to `api.cline.bot`.
-`ClineAccountUsageReader` converts the signed account balance from micro-dollars to USD, matching Cline Hub. Credits
-are displayed independently of recorded task costs; no percentage allowance is inferred. Account reads are
-throttled to at least 60 seconds and cancelled on disposal. Credentials and account identifiers are never included
-in snapshots, charts, logs, or persisted plugin settings.
 
 `core/history/UsageHistory` stores only numeric, timestamped observations and reset markers in
 `agents-usage-history.xml`, limited to 24 hours and 1800 observations per series. It imports no providers, settings or
@@ -240,11 +235,11 @@ UI. `ui/components/ProviderUsageDetails` supplies colored rows, countdown rings 
 shows it inside the details toggled by the provider badge and preserves expansion across provider updates. Provider
 panels supply metric names,
 values, units and resets, record their observed snapshots, and dispose countdown timers with their subscriptions.
-Charts show consumed quota percentages for finite quotas; Cline shows input/output token totals. Gaps over 15 minutes
+Charts show consumed quota percentages for finite quotas. Gaps over 15 minutes
 and differing reset markers are not connected. No prior history is fabricated; collection starts while provider
 panels exist. There is no credential, account identifier, prompt, task text, or provider-response history.
 
-Weekly and Games activation is persisted separately from section expansion. The Agents Usage settings checkboxes call
+Weekly and Games activation is persisted separately from section expansion. The AgentMeter settings checkboxes call
 the coordinator, which publishes feature changes to all open views. Disabling Weekly disposes its
 view/listener/celebration timer;
 the insights service continues provider baseline updates but skips progression while disabled. Games are detached
@@ -252,8 +247,7 @@ while disabled, retaining an unfinished board in the existing view and persisted
 
 The weekly boss now loses four HP per observed quota percentage point, starting with one-point hits. The largest
 drop across a provider's session/weekly windows contributes once, and separate providers' hits add together. Actual
-damage is persisted immediately. Claude and Cursor participate in the lineup and hits; Cline local tokens are not
-converted into quota damage. Legacy current-week damage/daily observations are scaled once using `bossDamageVersion`.
+damage is persisted immediately. Claude and Cursor participate in the lineup and hits when finite quota percentages are reported. Legacy current-week damage/daily observations are scaled once using `bossDamageVersion`.
 Actual damage also produces bounded, transient `UsageBossHit` events with a sequence ID, provider, points and time.
 The weekly panel uses them for provider-colored hit labels, an impact flash and a short boss shake. Events are not
 persisted or inferred from restored damage or battle-log text. Duplicate IDs never replay; multiple provider hits
@@ -283,3 +277,8 @@ Package locations may change; these identifiers preserve the existing user confi
 | JetBrains AI widget        | `JetBrainsAiCreditsStatusBar`            |
 | Copilot widget             | `GitHubCopilotUsageStatusBar`            |
 | Settings component/storage | `CodexUsageSettings` / `codex-usage.xml` |
+
+The public product name is **AgentMeter** starting with 1.1.0. Plugin/package identifiers and the internal
+Tool Window ID `Agents Usage` remain stable; the factory sets its visible title and stripe title to AgentMeter during initialization.
+`tools/package_jetbrains_marketplace.py` packages release-tagged listing copy and the reproducible PNG/SVG
+gallery as a separate upload bundle; documentation images are not bundled into the Rider plugin.

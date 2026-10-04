@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.1.0 — First stable Marketplace release
+
+- Monitor OpenAI Codex, JetBrains AI, GitHub Copilot, Claude and Cursor in the usage overview and status bar.
+- Show subscription plans, provider-reported quotas, reset countdowns and local usage charts; click a badge to toggle details.
+- Configure provider visibility and refresh intervals. New Rider installations enable only JetBrains AI.
+- Optional weekly insights, quota forecasts, boss battles with visible hits, and Tic-Tac-Toe; Weekly and Games are off by default.
+- Use existing local provider sign-ins without telemetry or credential storage in plugin settings.
+
+## Development previews
+
+Versions below document development builds before the first stable Marketplace release.
+
 ## 1.0.19
 
 - Reuse ACP sign-ins for Copilot quotas, Cursor usage and Cline account credits. Show Claude's API connection or

@@ -1,8 +1,8 @@
 {
   "name": "agents-usage-vscode",
-  "displayName": "Agents Usage",
+  "displayName": "AgentMeter",
   "description": "View provider-reported OpenAI Codex and GitHub Copilot usage in Visual Studio Code.",
-  "version": "1.0.19",
+  "version": "1.1.0",
   "publisher": "lanoerber",
   "author": "nightevil",
   "icon": "resources/icon.png",
@@ -25,26 +25,26 @@
     "commands": [
       {
         "command": "agentsUsage.openUsage",
-        "title": "Agents Usage: Open Usage"
+        "title": "AgentMeter: Open Usage"
       },
       {
         "command": "agentsUsage.refresh",
-        "title": "Agents Usage: Refresh Usage"
+        "title": "AgentMeter: Refresh Usage"
       },
       {
         "command": "agentsUsage.openSettings",
-        "title": "Agents Usage: Open Settings"
+        "title": "AgentMeter: Open Settings"
       },
       {
         "command": "agentsUsage.signInCopilot",
-        "title": "Agents Usage: Sign in to GitHub for Copilot usage"
+        "title": "AgentMeter: Sign in to GitHub for Copilot usage"
       }
     ],
     "viewsContainers": {
       "activitybar": [
         {
           "id": "agentsUsage",
-          "title": "Agents Usage",
+          "title": "AgentMeter",
           "icon": "resources/activity-icon.svg"
         }
       ]
@@ -74,7 +74,7 @@
       ]
     },
     "configuration": {
-      "title": "Agents Usage",
+      "title": "AgentMeter",
       "properties": {
         "agentsUsage.providers.codex.enabled": {
           "type": "boolean",

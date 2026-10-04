@@ -14,7 +14,7 @@ namespace AgentsUsage.VisualStudio.UI
 
         public UsageToolWindow() : base(null)
         {
-            Caption = "Agents Usage";
+            Caption = "AgentMeter";
             Content = host;
             BitmapImageMoniker = new ImageMoniker { Guid = new Guid("988815e6-cdbc-44b5-a9ae-b81ee39b3975"), Id = 1 };
         }

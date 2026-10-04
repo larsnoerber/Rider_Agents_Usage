@@ -58,7 +58,7 @@ class AgentsUsageConfigurable : Configurable {
         detectButton.addActionListener { detectCodexPath() }
     }
 
-    override fun getDisplayName(): String = "Agents Usage"
+    override fun getDisplayName(): String = "AgentMeter"
     override fun getPreferredFocusedComponent(): JComponent = intervalField
     override fun createComponent(): JComponent = panel
 
@@ -81,7 +81,7 @@ class AgentsUsageConfigurable : Configurable {
     override fun apply() {
         val interval = intervalField.text.toIntOrNull()
         if (interval == null || interval !in AgentsUsageSettings.MIN_REFRESH_SECONDS..AgentsUsageSettings.MAX_REFRESH_SECONDS) {
-            Messages.showErrorDialog("Refresh interval must be an integer between 10 and 3600 seconds.", "Agents Usage")
+            Messages.showErrorDialog("Refresh interval must be an integer between 10 and 3600 seconds.", "AgentMeter")
             return
         }
         val settings = AgentsUsageSettings.getInstance().state
@@ -100,7 +100,7 @@ class AgentsUsageConfigurable : Configurable {
                 if (path == null) {
                     Messages.showWarningDialog(
                         "Codex CLI was not found on the system PATH. Please install and sign in to Codex CLI first, or enter the full path to codex.cmd manually.",
-                        "Agents Usage"
+                        "AgentMeter"
                     )
                 } else {
                     pathField.text = path

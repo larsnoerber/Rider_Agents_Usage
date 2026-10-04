@@ -88,7 +88,7 @@ internal class RefreshSettingsPanel(private val onBack: () -> Unit) : JPanel(Bor
 
     private fun refreshSettings(): UsageSurface = UsageSurface().apply {
         addRow(JBLabel("Refresh interval").apply { font = font.deriveFont(Font.BOLD, 14f) })
-        addRow(JBLabel("Choose how often Agents Usage refreshes all selected providers.").apply {
+        addRow(JBLabel("Choose how often AgentMeter refreshes all selected providers.").apply {
             foreground = secondaryTextColor()
         }, top = 4)
         presetButtons = listOf(
@@ -163,7 +163,7 @@ internal class RefreshSettingsPanel(private val onBack: () -> Unit) : JPanel(Bor
             toolTipText = "Back to usage overview"
             addActionListener { onBack() }
         })
-        add(JButton("Agents Usage").apply {
+        add(JButton("AgentMeter").apply {
             isContentAreaFilled = false
             isBorderPainted = false
             isFocusPainted = false

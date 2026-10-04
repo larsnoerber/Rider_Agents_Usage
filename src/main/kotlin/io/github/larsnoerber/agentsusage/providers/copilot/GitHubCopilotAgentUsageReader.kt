@@ -45,8 +45,8 @@ internal class GitHubCopilotAgentUsageReader : Disposable {
                                 addProperty("version", "2026.2")
                             })
                             add("editorPluginInfo", JsonObject().apply {
-                                addProperty("name", "Agents Usage")
-                                addProperty("version", "1.0.19")
+                                addProperty("name", "AgentMeter")
+                                addProperty("version", io.github.larsnoerber.agentsusage.PluginVersion.current)
                             })
                         })
                     })

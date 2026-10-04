@@ -27,7 +27,7 @@ def render(name):
                                   size * SCALE)
         draw.text((x * SCALE, y * SCALE), value, font=font, fill=color)
 
-    text(48, 32, "Agents Usage", 34, bold=True)
+    text(48, 32, "AgentMeter", 34, bold=True)
     text(48, 82, "Visual Studio Code  /  " + ("Usage overview" if name == "usage" else "Configuration"), 23, MUTED)
     text(48, 837, "Illustrated preview with example balances. No live account data.", 20, MUTED)
     box(48, 139, 1184, 673, "#202020", 9, "#3D3D3D")
@@ -44,7 +44,7 @@ def render(name):
         text(x + 12, y + 3, label, 18, "#FFFFFF")
 
     if name == "usage":
-        text(128, 201, "AGENTS USAGE", 19, bold=True)
+        text(128, 201, "AGENT USAGE", 19, bold=True)
         text(128, 239, "Usage", 19, bold=True)
         button(351, 237, 89, "Refresh")
         button(450, 237, 93, "Settings")
@@ -81,7 +81,7 @@ def render(name):
         text(132, 205, "Settings", 24, bold=True)
         box(132, 253, 1060, 41, "#313131", 3, "#515151")
         text(150, 258, f"@ext:{MANIFEST['publisher']}.{MANIFEST['name']}", 20)
-        text(132, 322, "Agents Usage", 27, bold=True)
+        text(132, 322, "AgentMeter", 27, bold=True)
 
         def setting(y, title, description, checked=None, value=None):
             text(132, y, title, 21, bold=True)

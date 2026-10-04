@@ -1,9 +1,9 @@
-<h1>Agents Usage for Visual Studio</h1>
+<h1>AgentMeter for Visual Studio</h1>
 <p>See provider-reported OpenAI Codex and GitHub Copilot quotas in a native Visual Studio tool window and the status
     bar.</p>
 <p>
     <img src="https://raw.githubusercontent.com/larsnoerber/Rider_Agents_Usage/v@VERSION@/visualstudio/Marketplace/images/usage.png"
-         alt="Agents Usage overview and AI status indicators" width="1280"/></p>
+         alt="AgentMeter overview and AI status indicators" width="1280"/></p>
 <p><em>Illustrated preview with example balances. Actual values depend on the signed-in provider account.</em></p>
 <h2>Features</h2>
 <ul>
@@ -24,18 +24,18 @@
         providers are not read.
     </li>
     <li><strong>Configuration:</strong> provider selection, status display, Codex CLI path and refresh interval under
-        Tools &gt; Options &gt; Agents Usage &gt; General.
+        Tools &gt; Options &gt; AgentMeter &gt; General.
     </li>
     <li><strong>Project information:</strong> visible package version and GitHub repository link.</li>
 </ul>
 <h2>Compatibility and setup</h2>
 <p>For Visual Studio 2022 and 2026 Community, Professional and Enterprise on Windows x64.</p>
-<p><strong>Migration from 1.0.14 or earlier:</strong> uninstall the previous Agents Usage extension before installing
+<p><strong>Migration from 1.0.14 or earlier:</strong> uninstall the previous AgentMeter extension before installing
     1.0.15. The deleted Marketplace listing's identity has been replaced; this is a new extension identity, not an
     automatic update. Keep only the new identity installed.</p>
 <ol>
     <li>Install the Visual Studio VSIX and complete the installer's instructions.</li>
-    <li>Open View &gt; Other Windows &gt; Agents Usage, or click the AI button on the Standard toolbar.</li>
+    <li>Open View &gt; Other Windows &gt; AgentMeter, or click the AI button on the Standard toolbar.</li>
     <li>Use Settings to choose providers and configure refresh.</li>
     <li>Codex requires an installed CLI signed in with <code>codex login</code>. An empty CLI path uses PATH.</li>
     <li>Copilot requires a signed-in Visual Studio Copilot integration exposing quota data. Open Copilot once if the
@@ -44,7 +44,7 @@
 </ol>
 <p>
     <img src="https://raw.githubusercontent.com/larsnoerber/Rider_Agents_Usage/v@VERSION@/visualstudio/Marketplace/images/settings.png"
-         alt="Agents Usage provider and display configuration" width="1280"/></p>
+         alt="AgentMeter provider and display configuration" width="1280"/></p>
 <p><em>Illustrated configuration preview. Settings use Visual Studio's native Options dialog.</em></p>
 <p>Automatic refresh continues while the status indicator is enabled. With the status indicator disabled, automatic
     reads run only while the Usage window is visible. Copilot uses its existing connection without requesting a separate

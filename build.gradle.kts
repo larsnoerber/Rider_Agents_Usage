@@ -18,7 +18,6 @@ repositories {
 }
 
 dependencies {
-    implementation("org.xerial:sqlite-jdbc:3.51.3.0")
     intellijPlatform {
         intellijIdea("2026.1.2")
     }
@@ -43,13 +42,12 @@ intellijPlatform {
         }
         changeNotes = """
             <ul>
-              <li>Reuse ACP sign-ins for Copilot quotas, Cursor usage and Cline account credits; show Claude API connection or local token usage.</li>
-              <li>Default new Rider installations to JetBrains AI only, with Weekly and Games disabled; preserve saved choices.</li>
-              <li>Hide missing agents from Usage and the status bar; show ACP installation information in configuration without install buttons.</li>
-              <li>Toggle provider details and charts through the subscription badge, without a separate details link.</li>
-              <li>Visualize boss hits with provider and points, an impact flash and shake; preserve damage without replaying refreshes.</li>
-              <li>Add Tic-Tac-Toe with saved scores and configurable Games visibility.</li>
-              <li>Fix the usage chart initialization crash and reading Cline session history.</li>
+              <li>AgentMeter 1.1.0: first stable release prepared for JetBrains Marketplace.</li>
+              <li>Monitor OpenAI Codex, JetBrains AI, GitHub Copilot, Claude and Cursor in one usage overview and the status bar.</li>
+              <li>View provider-reported quotas, subscription plans, reset countdowns and local usage charts. Click a subscription badge to show or hide details.</li>
+              <li>Choose installed providers and refresh intervals in configuration. New installations start with JetBrains AI only.</li>
+              <li>Enable optional weekly insights, quota-driven boss battles and Tic-Tac-Toe through the Weekly and Games checkboxes.</li>
+              <li>Use existing local provider sign-ins. No telemetry or credential storage in plugin settings.</li>
             </ul>
         """.trimIndent()
     }

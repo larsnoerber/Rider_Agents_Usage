@@ -27,7 +27,7 @@ namespace AgentsUsage.VisualStudio.Settings
         {
             if (RefreshIntervalSeconds < 10 || RefreshIntervalSeconds > 3600)
             {
-                System.Windows.Forms.MessageBox.Show("Choose a refresh interval between 10 and 3600 seconds.", "Agents Usage");
+                System.Windows.Forms.MessageBox.Show("Choose a refresh interval between 10 and 3600 seconds.", "AgentMeter");
                 e.ApplyBehavior = ApplyKind.Cancel;
                 return;
             }

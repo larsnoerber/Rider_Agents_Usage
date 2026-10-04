@@ -24,7 +24,7 @@ internal class CodexUsageReader : Disposable {
     fun read(configuredPath: String): CodexUsage {
         check(!disposed) { "Codex usage reader is disposed" }
         val path = resolvePath(configuredPath)
-            ?: error("Codex CLI was not found. Install and sign in to Codex CLI, or specify its path in Settings > Tools > Agents Usage.")
+            ?: error("Codex CLI was not found. Install and sign in to Codex CLI, or specify its path in Settings > Tools > AgentMeter.")
         val command = if (path.endsWith(".exe", ignoreCase = true)) {
             ProcessBuilder(path, "app-server", "--stdio")
         } else {

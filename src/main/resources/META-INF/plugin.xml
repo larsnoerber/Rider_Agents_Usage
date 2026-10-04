@@ -1,39 +1,39 @@
 <idea-plugin>
     <id>io.github.larsnoerber.agentsusage</id>
-    <name>Agents Usage</name>
+    <name>AgentMeter</name>
     <vendor url="https://github.com/larsnoerber/Rider_Agents_Usage">Lars Nörber</vendor>
 
     <description><![CDATA[
-        <div style="max-width:100%; white-space:normal; overflow-wrap:anywhere; word-wrap:break-word;">
-        <p><img src="https://raw.githubusercontent.com/larsnoerber/Rider_Agents_Usage/main/docs/images/agents-usage-logo.png"
-                alt="Agents Usage Quota Portal logo" width="180" style="max-width:100%; height:auto;"/></p>
-        <h2>Agents Usage</h2>
-        <p>Monitor Codex, JetBrains AI, GitHub Copilot, Cursor, Claude, and Cline usage directly in IntelliJ Platform IDEs, including IntelliJ IDEA and Rider. Maintained by Lars Nörber.</p>
+        <p>Monitor AI usage and quotas in Rider with AgentMeter. Keep OpenAI Codex, JetBrains AI,
+        GitHub Copilot, Claude and Cursor balances in one Tool Window and the status bar.</p>
+        <h3>Your AI quota at a glance</h3>
         <ul>
-          <li>Displays remaining 5-hour and weekly quotas in the status bar.</li>
-          <li>Displays remaining JetBrains AI subscription and top-up credits when AI Assistant is installed.</li>
-          <li>Displays consumed GitHub Copilot quota from 0% unused to 100% exhausted through its IDE plugin or installed ACP agent.</li>
-          <li>Reuses Cursor and Cline ACP sign-ins for usage and account credits; displays Claude subscription quotas or its API connection and recorded local tokens.</li>
-          <li>Click a subscription badge to show or hide provider details, usage charts and reset countdowns.</li>
-          <li>Starts with only JetBrains AI enabled on new installations; Weekly and Games are enabled through configuration checkboxes.</li>
-          <li>Shows missing ACP packages in configuration without installation buttons.</li>
-          <li>Visualizes boss hits with the provider, damage points, an impact flash and shake.</li>
-          <li>Shows a collapsible weekly recap with your provider party, a local quota forecast, and a quota-driven boss battle.</li>
-          <li>Preserves weekly boss damage across plugin updates and refreshes selected providers when the overview opens.</li>
-          <li>Groups agents into compact accented cards with subscription badges, colored bars, and credit/reset details.</li>
-          <li>Colors status percentages directly and lets you choose visible agents with checkboxes.</li>
-          <li>Shows four compact facts per agent, with further quota, reset, subscription, and status details on demand.</li>
-          <li>Supports manual refresh and configurable automatic refresh intervals.</li>
-          <li>Automatically discovers the local Codex CLI from the system PATH.</li>
+          <li>OpenAI Codex: remaining 5-hour and weekly quota, reset times and countdowns.</li>
+          <li>JetBrains AI: remaining subscription credits, top-up balances and plan details.</li>
+          <li>GitHub Copilot: consumed quota through the installed IDE plugin or ACP language server.</li>
+          <li>Claude: reported subscription quotas and monthly local tokens, or API connection status when subscription quotas do not apply.</li>
+          <li>Cursor: reported account consumption through its existing ACP sign-in.</li>
         </ul>
+        <h3>Choose what you see</h3>
+        <p>Click a subscription badge to show or hide provider details and local usage charts.
+        Select providers and refresh intervals in configuration. Missing agent packages are identified
+        there and hidden from Usage and the status bar. New installations enable only JetBrains AI.</p>
+        <p>Optional Weekly and Games checkboxes enable local weekly insights, quota forecasts,
+        a boss battle with visible provider hits, and Tic-Tac-Toe with saved scores. Both are disabled by default.</p>
         <h3>Usage preview</h3>
-        <p><img src="https://raw.githubusercontent.com/larsnoerber/Rider_Agents_Usage/main/docs/images/agents-usage-overview.png"
-                alt="Illustrated Agents Usage overview with provider usage bars, weekly party, boss health and status indicators"
-                width="100%" style="max-width:760px; height:auto;"/></p>
-        <p>Illustrated preview with example balances. Available quotas and subscription details depend on your plan and installed provider plugins.</p>
-        <p><b>OpenAI requirement:</b> Codex CLI must be installed and signed in on the local machine. You can deselect OpenAI when monitoring only other agents.</p>
-        <p>This plugin uses local CLI/plugin state and existing provider sign-ins. Authenticated quota requests go only to the corresponding provider; credentials are never copied into plugin settings or history. There is no telemetry. Codex is a trademark of OpenAI; this independent plugin is not affiliated with or endorsed by OpenAI.</p>
-        </div>
+        <p><img src="https://raw.githubusercontent.com/larsnoerber/Rider_Agents_Usage/v1.1.0/docs/images/agents-usage-overview.png"
+                alt="AgentMeter overview: illustrated example balances for five providers"
+                width="760" style="max-width:100%; height:auto;"/></p>
+        <p>Illustrated preview with example balances, not a live account screenshot.
+        Available data depends on the installed provider, login method and subscription plan.</p>
+        <h3>Requirements and privacy</h3>
+        <p>Rider 2026.1 or later. The current Codex CLI integration requires Windows and an installed,
+        signed-in Codex CLI. Optional providers require their loaded IDE plugin or installed ACP package
+        and a supported local sign-in. This plugin monitors usage; it does not install or authenticate agents.</p>
+        <p>Quota requests use existing local provider sign-ins and go only to the corresponding provider.
+        Credentials are never stored in plugin settings or usage history. No telemetry.
+        Provider integrations use internal APIs and local formats that can change.</p>
+        <p>Maintained by Lars Nörber. Independent plugin; not affiliated with or endorsed by the named providers.</p>
     ]]></description>
 
     <depends>com.intellij.modules.platform</depends>
@@ -45,8 +45,6 @@
                 serviceImplementation="io.github.larsnoerber.agentsusage.providers.claudecode.ClaudeCodeUsageService"/>
         <applicationService
                 serviceImplementation="io.github.larsnoerber.agentsusage.providers.cursor.CursorUsageService"/>
-        <applicationService
-                serviceImplementation="io.github.larsnoerber.agentsusage.providers.cline.ClineUsageService"/>
         <applicationService serviceImplementation="io.github.larsnoerber.agentsusage.settings.AgentsUsageSettings"/>
         <toolWindow id="Agents Usage" anchor="right" icon="/icons/agentsUsage.svg"
                     factoryClass="io.github.larsnoerber.agentsusage.ui.toolwindow.AgentsUsageToolWindowFactory"/>
@@ -64,10 +62,7 @@
                                 order="last, after GitHubCopilotUsageStatusBar, before CursorUsageStatusBar"/>
         <statusBarWidgetFactory id="CursorUsageStatusBar"
                                 implementation="io.github.larsnoerber.agentsusage.providers.cursor.ui.CursorStatusBarWidgetFactory"
-                                order="last, after ClaudeCodeUsageStatusBar, before ClineUsageStatusBar"/>
-        <statusBarWidgetFactory id="ClineUsageStatusBar"
-                                implementation="io.github.larsnoerber.agentsusage.providers.cline.ui.ClineStatusBarWidgetFactory"
-                                order="last, after CursorUsageStatusBar"/>
+                                order="last, after ClaudeCodeUsageStatusBar"/>
         <applicationConfigurable parentId="tools"
                                  instance="io.github.larsnoerber.agentsusage.settings.AgentsUsageConfigurable"/>
     </extensions>

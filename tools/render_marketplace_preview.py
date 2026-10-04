@@ -22,7 +22,7 @@ image = Image.new("RGB", (WIDTH * SCALE, HEIGHT * SCALE), BACKGROUND)
 draw = ImageDraw.Draw(image)
 svg = [
     f'<svg xmlns="http://www.w3.org/2000/svg" width="{WIDTH}" height="{HEIGHT}" viewBox="0 0 {WIDTH} {HEIGHT}">',
-    '<title>Agents Usage illustrated overview with example balances</title>',
+    '<title>AgentMeter illustrated overview with example balances</title>',
     '<desc>Compact usage bars for OpenAI, JetBrains AI and GitHub Copilot, a weekly quest recap, and status indicators. '
     'This is an illustration, not a live account screenshot.</desc>',
 ]
@@ -116,7 +116,6 @@ def facts(y, entries):
         key = name + ":"
         label(x, row_y, key, size=18, color=MUTED)
         label(x + font.getlength(key) / SCALE + 9, row_y, value, size=18, bold=True)
-    label(132, y + 54, "More details", size=18, color=MUTED)
 
 
 def start_preview(width, height, title, description):
@@ -143,7 +142,7 @@ def preview_heading(subtitle):
     label(114, 74, "AI", size=30, bold=True)
     for x, color in ((114, "#5EEAD4"), (129, "#60A5FA"), (144, "#A78BFA")):
         rectangle(x, 113, 10, 3, color, radius=1)
-    label(182, 64, "Agents Usage", size=42, bold=True)
+    label(182, 64, "AgentMeter", size=42, bold=True)
     label(184, 117, subtitle, size=24, color=MUTED)
 
 
@@ -176,7 +175,6 @@ def detail_card(x, name, plan, accent, bars, summary, details):
         y = 452 + index * 34
         label(x + 18, y, key + ":", size=18, color=MUTED)
         label(x + 18 + text_width(key + ":") + 7, y, value, size=18, bold=True)
-    label(x + 18, 452 + len(details) * 34 + 12, "Fewer details", size=18, color=MUTED)
 
 
 def status_bar(y, groups):
@@ -189,111 +187,158 @@ def status_bar(y, groups):
         x += 26
 
 
-rectangle(0, 0, WIDTH, HEIGHT, BACKGROUND)
-rectangle(100, 64, 62, 62, "#111827", radius=12)
-label(114, 74, "AI", size=30, bold=True)
-for x, color in ((114, "#5EEAD4"), (129, "#60A5FA"), (144, "#A78BFA")):
-    rectangle(x, 113, 10, 3, color, radius=1)
-label(182, 64, "Agents Usage", size=42, bold=True)
-label(184, 117, "Usage overview and status indicators", size=24, color=MUTED)
+# All gallery assets use the Marketplace's recommended 1280 x 800 format.
+PRODUCT = "AgentMeter"
+PROVIDERS = [
+    ("OpenAI", "Plus", "#39AE99", [("5 hours remaining", 78, "78%", False), ("Weekly remaining", 42, "42%", False)], "5h reset: 16:30  ·  Updated: 09:00"),
+    ("JetBrains AI", "AI Pro", "#9D77DC", [("Subscription", 65, "6.5 / 10", False), ("Top-up", 80, "4 / 5", False)], "Credits left: 10.5  ·  Available: 70%"),
+    ("GitHub Copilot", "Pro", "#5297E6", [("Premium used", 38, "38%", True), ("Chat", 0, "Unlimited", True)], "Used: 114 / 300  ·  Reset: Nov 1"),
+    ("Claude", "Pro", "#CF754D", [("Session remaining", 84, "84%", False), ("Weekly remaining", 62, "62%", False)], "Monthly tokens: 128K  ·  Updated: 09:00"),
+    ("Cursor", "Pro", "#8291A4", [("Plan used", 24, "24%", True), ("Auto used", 18, "18%", True)], "Included plan  ·  Updated: 09:00"),
+]
 
-label(132, 197, "Agents Usage", size=23, bold=True)
-# Vector toolbar marks avoid platform-dependent symbol fonts.
-line([(1068 + 10 * cos(t * pi / 18), 211 + 10 * sin(t * pi / 18)) for t in range(3, 34)])
-line([(1077, 198), (1077, 207), (1068, 207)])
-circle(1132, 211, 8, MUTED)
-circle(1132, 211, 5, BACKGROUND)
-for tooth in range(8):
-    angle = tooth * pi / 4
-    line([(1132 + r * cos(angle), 211 + r * sin(angle)) for r in (7, 12)], width=3)
 
-provider(257, "OpenAI", "Plus", "#39AE99")
-row(288, "5 hours", 78, "78%")
-row(318, "This week", 42, "42%")
-facts(349, [("Credits", "120"), ("Updated", "09:00"), ("5h reset", "16:30"), ("Week reset", "Oct 8 09:00")])
+def canvas(subtitle):
+    start_preview(1280, 800, PRODUCT + " · " + subtitle, subtitle)
+    preview_heading(subtitle)
+    # Replace the legacy heading in the shared renderer without affecting IDs or filenames.
 
-provider(454, "JetBrains AI", "AI Pro", "#9D77DC")
-row(485, "Subscription", 65, "6.5 / 10")
-row(515, "Top-up", 80, "4 / 5")
-facts(546, [("Credits left", "10.5"), ("Used", "4.5"), ("Total", "15"), ("Reset", "Oct 20 09:00")])
 
-provider(651, "GitHub Copilot", "Pro", "#5297E6")
-row(682, "Premium requests", 38, "38%", consumed=True)
-row(712, "Chat", 0, "Unlimited", consumed=True)
-facts(743, [("Used", "114 / 300"), ("Available", "186 / 300"), ("Reset", "Nov 1 00:00"), ("Reported", "09:00")])
+def footer(note="Example balances · Illustrated preview, not a live account screenshot"):
+    label(100, 755, note, size=17, color=MUTED)
 
-rectangle(100, 844, 1080, 292, PANEL, radius=8)
-label(124, 858, "WEEKLY QUESTS", size=19, color="#D1B5F2", bold=True)
-line([(278, 865), (284, 871), (290, 865)], color="#D1B5F2", width=2)
-label(124, 888, "YOUR AI PARTY", size=14, color=MUTED, bold=True)
-for x, text, color in ((124, "● OpenAI  78%", "#39AE99"), (290, "● JetBrains AI  70%", "#9D77DC"),
-                       (500, "● Copilot  38%", "#5297E6")):
-    label(x, 908, text, size=17, color=color, bold=True)
-label(124, 934, "Forecast  ·  Copilot may reach 20% in about 3 days", size=17, color=MUTED)
 
-rectangle(116, 963, 1048, 78, "#34303B", radius=6)
-quota_wraith_icon(128, 985)
-label(166, 973, "THE QUOTA WRAITH  ·  SHIELD CRACKED", size=16, color="#C397FA", bold=True)
-label(1148, 973, "70% HP", size=16, color=MUTED, bold=True, right=True)
-rectangle(166, 1000, 982, 10, TRACK, radius=5)
-rectangle(166, 1000, 687, 10, "#9D77DC", radius=5)
-label(166, 1017, '"The Wraith gathers at the edge of the portal."', size=15, color=MUTED)
+def badge(x, y, plan, expanded=False):
+    width = max(100, text_width(plan, 18) + 50)
+    rectangle(x - width, y, width, 30, TRACK, radius=5)
+    label(x - width + 12, y + 3, plan, size=18, color=TEXT)
+    center = x - 17
+    line([(center - 4, y + (18 if expanded else 12)), (center, y + (12 if expanded else 18)),
+          (center + 4, y + (18 if expanded else 12))], width=2)
 
-label(124, 1053, "LATEST BATTLE EVENTS", size=14, color=MUTED, bold=True)
-circle(132, 1084, 4, "#C397FA")
-label(145, 1075, "The Wraith · your agents used quota; the boss has taken", size=16, color="#C397FA", bold=True)
-label(145, 1095, "12% damage this week", size=16, color="#C397FA", bold=True)
-label(132, 1117, "·  Copilot hit for 8 quota points", size=16, color=MUTED)
 
-rectangle(100, 1160, 1080, 46, PANEL, radius=6)
-for x, parts in (
-    (124, [("OpenAi | D=", TEXT), ("78%", GREEN), (" - W=", TEXT), ("42%", AMBER)]),
-    (600, [("JetBrainAi | ", TEXT), ("70%", GREEN)]),
-    (948, [("Copilot | ", TEXT), ("38%", GREEN)]),
-):
-    font = ImageFont.truetype(str(Path("C:/Windows/Fonts/segoeui.ttf")), 23 * SCALE)
-    for text, color in parts:
-        label(x, 1170, text, size=23, color=color)
-        x += font.getlength(text) / SCALE
+def compact_card(x, y, entry, width=528):
+    name, plan, accent, bars, summary = entry
+    rectangle(x, y, width, 160, PANEL, radius=8)
+    rectangle(x + 5, y + 10, 4, 140, accent, radius=2)
+    label(x + 20, y + 13, name, size=24, bold=True)
+    badge(x + width - 18, y + 13, plan)
+    for i, (title, percent, value, consumed) in enumerate(bars):
+        yy = y + 54 + i * 30
+        balance = 100 - percent if consumed else percent
+        color = GREEN if balance >= 50 else AMBER if balance >= 20 else "#FF6E6E"
+        label(x + 20, yy, title, size=18, color=MUTED)
+        rectangle(x + 213, yy + 5, 156, 12, TRACK, radius=3)
+        if percent: rectangle(x + 213, yy + 5, round(156 * percent / 100), 12, color, radius=3)
+        label(x + width - 18, yy, value, size=18, color=color, bold=True, right=True)
+    label(x + 20, y + 125, summary, size=17, color=MUTED)
 
-label(100, 1256, "Illustrated preview · Example balances · Copilot shows consumed quota", size=20, color=MUTED)
+
+canvas("Five providers. One usage overview.")
+for index, entry in enumerate(PROVIDERS):
+    compact_card(100 if index < 3 else 652, 194 + (index if index < 3 else index - 3) * 172, entry)
+rectangle(652, 538, 528, 160, PANEL, radius=8)
+label(676, 558, "Make it your own", size=24, bold=True)
+label(676, 601, "Choose visible providers in configuration.", size=19, color=MUTED)
+label(676, 634, "Click a plan badge for details and charts.", size=19, color=MUTED)
+label(676, 667, "Weekly and Games are optional.", size=18, color="#C397FA")
+footer()
 save_preview("agents-usage-overview")
 
-start_preview(1600, 1080, "Agents Usage expanded agent details",
-              "OpenAI, JetBrains AI and GitHub Copilot details shown side by side for readability.")
-preview_heading("Expanded agent details · Quotas, reset dates and refresh status")
-detail_card(100, "OpenAI", "Plus", "#39AE99",
-            [("5 hours", 78, "78%", False), ("This week", 42, "42%", False)],
-            [("Credits", "120"), ("Updated", "09:00"), ("5h reset", "16:30"), ("Week reset", "Oct 8 09:00")],
-            [("Subscription", "Plus"), ("5h left", "78%"), ("Week left", "42%"),
-             ("5h resets at", "Oct 3, 16:30"), ("Week resets at", "Oct 8, 09:00"),
-             ("Refresh", "Every 60 seconds"), ("Status", "Usage available")])
-detail_card(575, "JetBrains AI", "AI Pro", "#9D77DC",
-            [("Subscription", 65, "6.5 / 10", False), ("Top-up", 80, "4 / 5", False)],
-            [("Credits left", "10.5"), ("Used", "4.5"), ("Total", "15"), ("Reset", "Oct 20 09:00")],
-            [("Subscription", "AI Pro"), ("Subscription left", "6.5 / 10 credits"),
-             ("Top-up left", "4 / 5 credits"), ("Available", "70%"), ("Resets at", "Oct 20, 09:00"),
-             ("Refresh", "Every 60 seconds"), ("Status", "Balance available")])
-detail_card(1050, "GitHub Copilot", "Pro", "#5297E6",
-            [("Premium requests", 38, "38%", True), ("Chat", 0, "Unlimited", True)],
-            [("Used", "114 / 300"), ("Available", "186 / 300"), ("Reset", "Nov 1 00:00"), ("Reported", "09:00")],
-            [("Subscription", "Pro"), ("Premium requests used", "114 / 300"),
-             ("Premium requests left", "186 / 300"), ("Chat used", "Unlimited"), ("Chat left", "Unlimited"),
-             ("Resets at", "Nov 1, 00:00"), ("Last report", "Oct 3, 09:00"),
-             ("Refresh", "Every 60 seconds"), ("Status", "Report available")])
-label(100, 1022, "Illustrated preview · Example balances · Expanded views arranged side by side", size=20, color=MUTED)
+canvas("Click a subscription badge to show or hide details")
+compact_card(100, 194, PROVIDERS[0])
+badge(610, 207, "Plus", expanded=True)
+rectangle(100, 354, 528, 350, PANEL, radius=8)
+label(120, 370, "OpenAI details", size=23, bold=True)
+for i, (key, value) in enumerate([( "Subscription", "Plus"), ("5h reset", "Oct 4, 16:30"), ("Week reset", "Oct 8, 09:00"), ("Refresh", "Every 60 seconds")]):
+    label(120, 411 + i * 30, key, size=18, color=MUTED)
+    label(607, 411 + i * 30, value, size=18, bold=True, right=True)
+label(120, 553, "Usage history · consumed %", size=18, bold=True)
+label(607, 553, "1h   6h   24h", size=17, color=MUTED, right=True)
+for yy in (590, 630, 670): line([(138, yy), (599, yy)], color=TRACK, width=1)
+line([(138, 670), (220, 661), (300, 640), (400, 633), (490, 611), (599, 605)], color="#39AE99", width=3)
+line([(138, 648), (220, 640), (300, 625), (400, 604), (490, 593), (599, 583)], color="#5297E6", width=3)
+label(652, 211, "Details when you need them", size=29, bold=True)
+for i, text in enumerate(["Subscription plan and quota categories", "Reset dates and countdowns", "Local 1 / 6 / 24-hour usage charts", "Connection and refresh status"]):
+    circle(664, 291 + i * 61, 4, "#39AE99")
+    label(681, 278 + i * 61, text, size=21, color=MUTED)
+rectangle(652, 557, 528, 147, PANEL, radius=8)
+label(676, 579, "Click again to collapse", size=25, bold=True)
+label(676, 621, "Keep the overview compact while you work.", size=20, color=MUTED)
+label(676, 661, "Chart history starts with local observations.", size=18, color=MUTED)
+footer()
 save_preview("agents-usage-details")
 
-start_preview(1280, 720, "Agents Usage status bar",
-              "Colored quota percentages, adjacent agent widgets and an example with JetBrains AI hidden.")
-preview_heading("Status bar · Colored percentages and adjacent agent widgets")
+canvas("Quota colors, right in your status bar")
 openai_parts = [("OpenAi | D=", TEXT), ("78%", GREEN), (" - W=", TEXT), ("42%", AMBER)]
 jetbrains_parts = [("JetBrainAi | ", TEXT), ("70%", GREEN)]
 copilot_parts = [("Copilot | ", TEXT), ("38%", GREEN)]
-label(100, 208, "All selected agents", size=23, bold=True)
-status_bar(252, [openai_parts, jetbrains_parts, copilot_parts])
-label(100, 346, "OpenAI / JetBrains AI: remaining quota · Copilot: consumed quota", size=22, color=MUTED)
-label(100, 436, "JetBrains AI hidden — remaining agents stay together", size=23, bold=True)
-status_bar(480, [openai_parts, copilot_parts])
-label(100, 652, "Illustrated preview · Example balances · No usage dots", size=20, color=MUTED)
+label(100, 213, "Your selected providers stay together", size=25, bold=True)
+status_bar(257, [openai_parts, jetbrains_parts, copilot_parts])
+label(100, 364, "OpenAI and JetBrains AI show remaining quota.", size=24, color=MUTED)
+label(100, 409, "Copilot shows consumed quota: 0% unused, 100% exhausted.", size=24, color=MUTED)
+label(100, 500, "Fresh installation: only JetBrains AI enabled", size=25, bold=True)
+status_bar(544, [jetbrains_parts])
+label(100, 662, "Click a provider widget to open " + PRODUCT + ".", size=22, color=MUTED)
+footer()
 save_preview("agents-usage-statusbar")
+
+canvas("Configuration · choose your providers and extras")
+rectangle(100, 193, 580, 520, PANEL, radius=8)
+label(124, 215, "Visible agents", size=25, bold=True)
+for i, (name, selected) in enumerate([( "OpenAI", False), ("JetBrains AI", True), ("GitHub Copilot", False), ("Claude", False), ("Cursor", False)]):
+    y = 265 + i * 42
+    rectangle(124, y + 3, 22, 22, "#3574F0" if selected else TRACK, radius=3)
+    if selected: line([(129, y + 13), (134, y + 18), (142, y + 8)], color="#FFFFFF", width=2)
+    label(162, y, name, size=22)
+label(124, 487, "Overview sections", size=25, bold=True)
+for i, name in enumerate(["Weekly", "Games"]):
+    y = 535 + i * 40
+    rectangle(124, y + 3, 22, 22, TRACK, radius=3)
+    label(162, y, name, size=22)
+label(124, 632, "Refresh interval", size=20, color=MUTED)
+rectangle(332, 626, 180, 34, TRACK, radius=4)
+label(348, 631, "60 seconds", size=20)
+label(732, 217, "Start with a quiet setup", size=27, bold=True)
+label(732, 264, "JetBrains AI is enabled by default.", size=21, color=MUTED)
+label(732, 308, "Weekly and Games start disabled.", size=21, color=MUTED)
+label(732, 390, "Missing ACP package?", size=27, bold=True)
+label(732, 439, "Configuration explains what is missing.", size=20, color=MUTED)
+label(732, 482, "Install from Rider?s ACP Registry.", size=20, color=MUTED)
+label(732, 564, "Selected and installed providers", size=21)
+label(732, 599, "appear in Usage and the status bar.", size=21)
+label(732, 653, "Deselected provider reads pause.", size=20, color=MUTED)
+footer("Illustrated fresh-install configuration · Optional provider package required")
+save_preview("agents-usage-config")
+
+canvas("Optional weekly insights and a little downtime")
+rectangle(100, 194, 680, 506, PANEL, radius=8)
+label(124, 216, "WEEKLY QUESTS", size=23, color="#D1B5F2", bold=True)
+label(124, 270, "YOUR AI PARTY", size=17, color=MUTED, bold=True)
+label(124, 309, "OpenAI 78%    JetBrains AI 70%    Claude 62%", size=21, color="#C397FA")
+label(124, 357, "Forecast based on your local quota observations", size=20, color=MUTED)
+rectangle(124, 418, 632, 155, "#34303B", radius=8)
+quota_wraith_icon(142, 451, size=56)
+label(221, 440, "THE QUOTA WRAITH", size=24, color="#C397FA", bold=True)
+label(732, 481, "70% HP", size=19, color=MUTED, right=True)
+rectangle(221, 518, 511, 13, TRACK, radius=5)
+rectangle(221, 518, 358, 13, "#9D77DC", radius=5)
+label(221, 550, "Hit by Claude · 4 Points", size=20, color="#CF754D", bold=True)
+label(124, 612, "Quota use lands visible hits on the weekly boss.", size=21)
+label(124, 654, "Damage persists across refreshes and restarts.", size=19, color=MUTED)
+rectangle(804, 194, 376, 506, PANEL, radius=8)
+label(828, 216, "GAMES", size=23, color="#D1B5F2", bold=True)
+label(828, 269, "Tic-Tac-Toe", size=25, bold=True)
+for i in range(1, 3):
+    line([(848 + i * 90, 337), (848 + i * 90, 607)], width=2, color=TRACK)
+    line([(848, 337 + i * 90), (1118, 337 + i * 90)], width=2, color=TRACK)
+for column, row_index in [(0,0), (1,1), (2,2)]:
+    x, y = 872 + column * 90, 361 + row_index * 90
+    line([(x, y), (x + 42, y + 42)], color="#60A5FA", width=4)
+    line([(x + 42, y), (x, y + 42)], color="#60A5FA", width=4)
+for column, row_index in [(2,0), (0,1)]:
+    x, y = 893 + column * 90, 382 + row_index * 90
+    circle(x, y, 23, "#C397FA"); circle(x, y, 18, PANEL)
+label(828, 650, "Wins 3    Draws 2    Losses 1", size=20, color=MUTED)
+footer("Illustrated example · Enable Weekly and Games in configuration · Both off by default")
+save_preview("agents-usage-weekly-games")

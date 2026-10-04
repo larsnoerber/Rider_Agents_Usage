@@ -1,54 +1,48 @@
-# Marketplace media
+# AgentMeter Marketplace materials
 
-## Visual Studio Code
+## JetBrains Marketplace — first stable release 1.1.0
 
-The VS Code extension's `vscode/README.md` embeds `vscode/resources/previews/usage.png` and `settings.png` in its
-Marketplace description. These are VS Code illustrations with example balances, not live account screenshots.
-Regenerate them with `python tools/render_vscode_preview.py` (Pillow and Windows Segoe UI required).
-Packaging includes both PNGs and links the description images to the matching GitHub release tag.
+AgentMeter monitors OpenAI Codex, JetBrains AI, GitHub Copilot, Claude and Cursor in Rider.
+Version 1.1.0 is the first stable release prepared for this listing. Earlier GitHub versions are development previews.
+The existing plugin ID remains `io.github.larsnoerber.agentsusage` for upgrade compatibility.
 
-## JetBrains IDEs
+The listing description is in `src/main/resources/META-INF/plugin.xml`. It introduces the current features,
+requirements and privacy behavior without development changelog or migration text.
+The description uses the release-tagged overview image; later source changes cannot alter this release's preview.
 
-The Quota Portal logo is `images/agents-usage-logo.png`. It is used near the start of the GitHub README and plugin
-description, and can also be uploaded as Marketplace media. The Tool Window uses a compact portal glyph for the
-sidebar.
+### Gallery images
 
-The plugin description in `src/main/resources/META-INF/plugin.xml` embeds the public PNG:
+All five images are **1280 × 800 PNG**, with editable SVG counterparts. They are illustrated examples,
+not live account screenshots. Balances are fictional; provider cards are arranged for gallery readability.
+No account data or credentials are read when rendering these images.
 
-![Illustrated usage overview](images/agents-usage-overview.png)
+| File | Suggested caption |
+| --- | --- |
+| [Overview](images/agents-usage-overview.png) | AgentMeter — five providers in one usage overview (illustrated example) |
+| [Details](images/agents-usage-details.png) | Click a subscription badge for details and charts (illustrated example) |
+| [Status bar](images/agents-usage-statusbar.png) | Provider quota colors in the status bar (illustrated example) |
+| [Configuration](images/agents-usage-config.png) | Choose providers, Weekly and Games (illustrated fresh installation) |
+| [Weekly and Games](images/agents-usage-weekly-games.png) | Optional weekly boss battles and Tic-Tac-Toe (illustrated example) |
 
-- `images/agents-usage-overview.png`: 1280 × 1320 image for the description and Marketplace Media gallery. It includes
-  the provider cards, weekly quest recap without the removed Flow Compass, dynamically wrapped battle event example,
-  and status bar.
-- `images/agents-usage-overview.svg`: editable vector version.
-- `images/agents-usage-details.png`: 1600 × 1080 illustration of all three expanded agent detail views,
-  arranged side by side for readability.
-- `images/agents-usage-statusbar.png`: 1280 × 720 illustration of colored status percentages and agent visibility.
-- `images/agents-usage-details.svg` / `images/agents-usage-statusbar.svg`: matching editable vector versions.
-- `../tools/render_marketplace_preview.py`: reproducible renderer using Python and Pillow. Run it from any directory;
-  its default font is Windows Segoe UI.
+Regenerate with `python tools/render_marketplace_preview.py` (Pillow and Windows Segoe UI required).
+The existing Quota Portal logo is `images/agents-usage-logo.png`; the plugin's SVG logo stays in `META-INF`.
 
-This is an **illustrated preview with example balances**, not a screenshot of a live account. The provider labels,
-plans, compact bars, and status text follow the current UI. Account-specific categories can differ.
-Keep that caption when using the images, and regenerate the PNG/SVG pairs when changing the illustrated UI.
+### Upload preparation
 
-Run `python tools/render_marketplace_preview.py` to regenerate all three image pairs.
-For the Media gallery, use the PNG files. Suggested captions:
+Create the media bundle with `python tools/package_jetbrains_marketplace.py` after building the Rider plugin.
 
-- **Usage overview — illustrated example**
-- **Expanded agent details — illustrated example**
-- **Status bar and agent visibility — illustrated example**
+The GitHub release provides `agentmeter-1.1.0.zip` for plugin upload and `agentmeter-marketplace-1.1.0.zip`
+with the five gallery PNGs, logo, HTML description, release notes and upload instructions.
 
-## Showing the image on Marketplace
+1. Upload the Rider plugin ZIP to JetBrains Marketplace with name **AgentMeter**.
+2. Use the packaged `plugin.xml` description (or the matching `description.html` in the media bundle).
+3. Upload the five PNGs under **Media**, retaining the illustrated-example captions.
+4. Use **First stable release** as the release summary; the release notes introduce the available features.
 
-1. Push the image to the repository's public `main` branch. The description uses an absolute HTTPS raw GitHub URL;
-   local paths and images inside the plugin ZIP are not public Marketplace image URLs.
-2. Upload the rebuilt plugin ZIP. Select the description from `plugin.xml` in the listing's General Information
-   settings if an independently edited Marketplace description is currently selected.
-3. To make the image available in the zoomable gallery, additionally upload the PNG under **Media** in the plugin
-   admin panel, with a caption such as **Usage overview and status indicators — illustrated example**.
+Creating the ZIP and GitHub release does not submit the listing to JetBrains Marketplace.
+The 1280 × 800 image format follows [JetBrains Marketplace guidance](https://plugins.jetbrains.com/docs/marketplace/jetbrains-marketplace-approval-guidelines.html).
 
-The image is prepared in the repository; no Marketplace upload is performed by building the plugin.
-JetBrains recommends the Media section for images, and 600–800 pixels of display width for images embedded in
-descriptions. The embedded preview uses a width of 760 pixels.
-See [JetBrains listing documentation](https://plugins.jetbrains.com/docs/marketplace/best-practices-for-listing.html).
+## Other editors
+
+The repository also contains separate VS Code and Visual Studio sources. This Rider release does not build their
+packages. Their preview renderers and publishing materials remain in their respective directories.

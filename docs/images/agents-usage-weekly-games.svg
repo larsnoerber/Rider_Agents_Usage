@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="800" viewBox="0 0 1280 800">
+<title>AgentMeter · Optional weekly insights and a little downtime</title>
+<desc>Optional weekly insights and a little downtime This is an illustration with example balances, not a live account screenshot.</desc>
+<rect x="100" y="64" width="62" height="62" rx="12" fill="#111827"/>
+<text x="114" y="74" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="30" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">AI</text>
+<rect x="114" y="113" width="10" height="3" rx="1" fill="#5EEAD4"/>
+<rect x="129" y="113" width="10" height="3" rx="1" fill="#60A5FA"/>
+<rect x="144" y="113" width="10" height="3" rx="1" fill="#A78BFA"/>
+<text x="182" y="64" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="42" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">AgentMeter</text>
+<text x="184" y="117" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="24" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Optional weekly insights and a little downtime</text>
+<rect x="100" y="194" width="680" height="506" rx="8" fill="#2B2D30"/>
+<text x="124" y="216" fill="#D1B5F2" font-family="Segoe UI, sans-serif" font-size="23" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">WEEKLY QUESTS</text>
+<text x="124" y="270" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="17" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">YOUR AI PARTY</text>
+<text x="124" y="309" fill="#C397FA" font-family="Segoe UI, sans-serif" font-size="21" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">OpenAI 78%    JetBrains AI 70%    Claude 62%</text>
+<text x="124" y="357" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="20" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Forecast based on your local quota observations</text>
+<rect x="124" y="418" width="632" height="155" rx="8" fill="#34303B"/>
+<path d="M5 11 C4 5 9 2 15 3 L11 .5 L20 4 L28 .5 L25 7 C30 12 29 21 28 26 L22 23 L16 29 L10 24 L4 28 C2 22 2 15 5 11 Z" fill="#C397FA" transform="translate(142 451) scale(1.75)"/>
+<g transform="translate(142 451) scale(1.75)" fill="#FFFFFF"><ellipse cx="11" cy="14" rx="3" ry="4"/><ellipse cx="22" cy="14" rx="3" ry="4"/></g>
+<g transform="translate(142 451) scale(1.75)" fill="#37284C"><ellipse cx="11.5" cy="15" rx="1.5" ry="2"/><ellipse cx="20.5" cy="15" rx="1.5" ry="2"/></g>
+<path d="M15 18 L12 22 L17 25" fill="none" stroke="#FFE782" stroke-width="2" transform="translate(142 451) scale(1.75)"/>
+<text x="221" y="440" fill="#C397FA" font-family="Segoe UI, sans-serif" font-size="24" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">THE QUOTA WRAITH</text>
+<text x="732" y="481" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="19" font-weight="400" dominant-baseline="text-before-edge" text-anchor="end">70% HP</text>
+<rect x="221" y="518" width="511" height="13" rx="5" fill="#3D4148"/>
+<rect x="221" y="518" width="358" height="13" rx="5" fill="#9D77DC"/>
+<text x="221" y="550" fill="#CF754D" font-family="Segoe UI, sans-serif" font-size="20" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">Hit by Claude · 4 Points</text>
+<text x="124" y="612" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="21" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Quota use lands visible hits on the weekly boss.</text>
+<text x="124" y="654" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="19" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Damage persists across refreshes and restarts.</text>
+<rect x="804" y="194" width="376" height="506" rx="8" fill="#2B2D30"/>
+<text x="828" y="216" fill="#D1B5F2" font-family="Segoe UI, sans-serif" font-size="23" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">GAMES</text>
+<text x="828" y="269" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="25" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">Tic-Tac-Toe</text>
+<polyline points="938,337 938,607" fill="none" stroke="#3D4148" stroke-width="2"/>
+<polyline points="848,427 1118,427" fill="none" stroke="#3D4148" stroke-width="2"/>
+<polyline points="1028,337 1028,607" fill="none" stroke="#3D4148" stroke-width="2"/>
+<polyline points="848,517 1118,517" fill="none" stroke="#3D4148" stroke-width="2"/>
+<polyline points="872,361 914,403" fill="none" stroke="#60A5FA" stroke-width="4"/>
+<polyline points="914,361 872,403" fill="none" stroke="#60A5FA" stroke-width="4"/>
+<polyline points="962,451 1004,493" fill="none" stroke="#60A5FA" stroke-width="4"/>
+<polyline points="1004,451 962,493" fill="none" stroke="#60A5FA" stroke-width="4"/>
+<polyline points="1052,541 1094,583" fill="none" stroke="#60A5FA" stroke-width="4"/>
+<polyline points="1094,541 1052,583" fill="none" stroke="#60A5FA" stroke-width="4"/>
+<circle cx="1073" cy="382" r="23" fill="#C397FA"/>
+<circle cx="1073" cy="382" r="18" fill="#2B2D30"/>
+<circle cx="893" cy="472" r="23" fill="#C397FA"/>
+<circle cx="893" cy="472" r="18" fill="#2B2D30"/>
+<text x="828" y="650" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="20" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Wins 3    Draws 2    Losses 1</text>
+<text x="100" y="755" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="17" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Illustrated example · Enable Weekly and Games in configuration · Both off by default</text>
+</svg>

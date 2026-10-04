@@ -13,7 +13,7 @@
         <Parent guid="guidSHLMainMenu" id="IDG_VS_WNDO_OTRWNDWS1" />
         <Icon guid="ImageGuid" id="AI" />
         <CommandFlag>IconIsMoniker</CommandFlag>
-        <Strings><ButtonText>Agents Usage</ButtonText></Strings>
+        <Strings><ButtonText>AgentMeter</ButtonText></Strings>
       </Button>
     </Buttons>
   </Commands>

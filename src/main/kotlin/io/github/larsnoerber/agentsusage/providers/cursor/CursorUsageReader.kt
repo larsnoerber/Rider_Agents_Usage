@@ -24,19 +24,16 @@ internal class CursorUsageReader : AutoCloseable {
         }
 
         fun hasLocalAccount(): Boolean {
-            val database = LocalUsageFiles.configRoot("Cursor").resolve("User/globalStorage/state.vscdb")
             val agentAuth = agentAuthPath()
-            return Files.isRegularFile(database) || Files.isRegularFile(agentAuth)
+            return Files.isRegularFile(agentAuth)
         }
     }
 
     fun read(): CursorUsage {
         return try {
-        val database = LocalUsageFiles.configRoot("Cursor").resolve("User/globalStorage/state.vscdb")
         val agentAuth = agentAuthPath()
         val token = (if (Files.isRegularFile(agentAuth)) LocalUsageFiles.json(agentAuth).stringValue("accessToken") else null)
-            ?: (if (Files.isRegularFile(database)) LocalUsageFiles.databaseValue(database, "cursorAuth/accessToken") else null)
-            ?: return CursorUsage(error = "Sign in to the Cursor ACP agent or local Cursor application to read usage.")
+            ?: return CursorUsage(error = "Sign in to the Cursor ACP agent to read usage.")
         val parts = token.split('.')
         if (parts.size != 3) return CursorUsage(error = "Cursor session is unavailable. Sign in again in Cursor.")
         val payload = JsonParser.parseString(String(Base64.getUrlDecoder().decode(parts[1]), Charsets.UTF_8)).asJsonObject
@@ -45,7 +42,7 @@ internal class CursorUsageReader : AutoCloseable {
             ?: return CursorUsage(error = "Cursor session format is unavailable.")
         val expires = payload.numberValue("exp")
         if (expires == null || expires <= Instant.now().epochSecond + 60)
-            return CursorUsage(error = "Cursor session expired. Sign in again to the Cursor ACP agent or application.")
+            return CursorUsage(error = "Cursor session expired. Sign in again to the Cursor ACP agent.")
         val response = try {
             http.get("https://cursor.com/api/usage-summary", mapOf(
                 "Cookie" to "WorkosCursorSessionToken=$user%3A%3A$token", "Origin" to "https://cursor.com",

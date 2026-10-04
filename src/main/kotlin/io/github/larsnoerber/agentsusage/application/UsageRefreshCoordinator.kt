@@ -8,8 +8,6 @@ import io.github.larsnoerber.agentsusage.providers.claudecode.ClaudeCodeUsageSer
 import io.github.larsnoerber.agentsusage.providers.claudecode.ui.ClaudeCodeStatusBarWidgetFactory
 import io.github.larsnoerber.agentsusage.providers.cursor.CursorUsageService
 import io.github.larsnoerber.agentsusage.providers.cursor.ui.CursorStatusBarWidgetFactory
-import io.github.larsnoerber.agentsusage.providers.cline.ClineUsageService
-import io.github.larsnoerber.agentsusage.providers.cline.ui.ClineStatusBarWidgetFactory
 import io.github.larsnoerber.agentsusage.providers.codex.ui.CodexUsageStatusBarWidgetFactory
 import io.github.larsnoerber.agentsusage.providers.copilot.GitHubCopilotUsageService
 import io.github.larsnoerber.agentsusage.providers.copilot.ui.GitHubCopilotStatusBarWidgetFactory
@@ -25,18 +23,17 @@ internal object UsageRefreshCoordinator {
     fun addVisibilityListener(listener: () -> Unit) { visibilityListeners.addIfAbsent(listener) }
     fun removeVisibilityListener(listener: () -> Unit) { visibilityListeners -= listener }
 
-    fun changeVisibleAgents(openAi: Boolean, jetBrainsAi: Boolean, copilot: Boolean, claudeCode: Boolean, cursor: Boolean, cline: Boolean) {
+    fun changeVisibleAgents(openAi: Boolean, jetBrainsAi: Boolean, copilot: Boolean, claudeCode: Boolean, cursor: Boolean) {
         val settings = AgentsUsageSettings.getInstance().state
         val openAiWasEnabled = settings.showOpenAi
         val changed = settings.showOpenAi != openAi || settings.showJetBrainsAi != jetBrainsAi ||
             settings.showCopilot != copilot || settings.showClaudeCode != claudeCode ||
-            settings.showCursor != cursor || settings.showCline != cline
+            settings.showCursor != cursor
         settings.showOpenAi = openAi
         settings.showJetBrainsAi = jetBrainsAi
         settings.showCopilot = copilot
         settings.showClaudeCode = claudeCode
         settings.showCursor = cursor
-        settings.showCline = cline
         if (!changed) return
         if (openAi && !openAiWasEnabled) CodexUsageService.getInstance().restartTimer()
         ApplicationManager.getApplication().invokeLater { visibilityListeners.forEach { it() } }
@@ -53,7 +50,6 @@ internal object UsageRefreshCoordinator {
                     updateWidget(GitHubCopilotStatusBarWidgetFactory::class.java)
                     updateWidget(ClaudeCodeStatusBarWidgetFactory::class.java)
                     updateWidget(CursorStatusBarWidgetFactory::class.java)
-                    updateWidget(ClineStatusBarWidgetFactory::class.java)
                 }
             }
         }
@@ -85,6 +81,5 @@ internal object UsageRefreshCoordinator {
         if (settings.showCopilot && GitHubCopilotUsageService.isAvailable()) GitHubCopilotUsageService.getInstance().refresh()
         if (settings.showClaudeCode && ClaudeCodeUsageService.isInstalled()) ClaudeCodeUsageService.getInstance().refresh()
         if (settings.showCursor && CursorUsageService.isAvailable()) CursorUsageService.getInstance().refresh()
-        if (settings.showCline && ClineUsageService.isAvailable()) ClineUsageService.getInstance().refresh()
     }
 }

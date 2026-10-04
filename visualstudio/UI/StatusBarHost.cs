@@ -66,9 +66,9 @@ namespace AgentsUsage.VisualStudio.UI
                 else AddPercent(text, coordinator.Copilot?.Primary?.PercentUsed, false);
                 row.Children.Add(text);
             }
-            if (!options.CodexEnabled && !options.CopilotEnabled) row.Children.Add(new TextBlock { Text = "Agents Usage" });
+            if (!options.CodexEnabled && !options.CopilotEnabled) row.Children.Add(new TextBlock { Text = "AgentMeter" });
             button.Content = row;
-            button.ToolTip = "Open Agents Usage\nOpenAI plan: " + (coordinator.Codex?.Plan ?? "Unknown")
+            button.ToolTip = "Open AgentMeter\nOpenAI plan: " + (coordinator.Codex?.Plan ?? "Unknown")
                 + "\nCopilot plan: " + (coordinator.Copilot?.Plan ?? "Unknown")
                 + (coordinator.Codex?.Error == null ? "" : "\n" + coordinator.Codex.Error)
                 + (coordinator.Copilot?.Error == null ? "" : "\n" + coordinator.Copilot.Error);

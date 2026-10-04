@@ -42,7 +42,7 @@ private fun codexPresentation(usage: CodexUsage): StatusBarPresentation {
             "5h: remaining ${five ?: "—"}% · ${usage.fiveHourReset ?: "reset time unknown"}",
             "Weekly: remaining ${week ?: "—"}% · ${usage.weeklyReset ?: "reset time unknown"}",
             "Credits: ${usage.credits ?: "—"}",
-            usage.error ?: "Click to open Agents Usage and view details"
+            usage.error ?: "Click to open AgentMeter and view details"
         ), listOfNotNull(
             five?.let { TooltipUsageBar("5-hour", it, "$it% remaining", usageBarColor(it)) },
             week?.let { TooltipUsageBar("Weekly", it, "$it% remaining", usageBarColor(it)) }

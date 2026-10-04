@@ -15,7 +15,7 @@ namespace AgentsUsage.VisualStudio
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [ProvideToolWindow(typeof(UsageToolWindow))]
-    [ProvideOptionPage(typeof(UsageOptions), "Agents Usage", "General", 0, 0, true)]
+    [ProvideOptionPage(typeof(UsageOptions), "AgentMeter", "General", 0, 0, true)]
     [ProvideAutoLoad(UIContextGuids80.NoSolution, PackageAutoLoadFlags.BackgroundLoad)]
     [ProvideAutoLoad(UIContextGuids80.SolutionExists, PackageAutoLoadFlags.BackgroundLoad)]
     [Guid(PackageId)]

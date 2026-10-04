@@ -30,7 +30,7 @@ namespace AgentsUsage.VisualStudio.UI
             var root = new DockPanel { Margin = new Thickness(12) };
             var header = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 0, 0, 12) };
             header.Children.Add(QuotaElements.Icon(28));
-            header.Children.Add(QuotaElements.Label("Agents Usage", 16, true));
+            header.Children.Add(QuotaElements.Label("AgentMeter", 16, true));
             DockPanel.SetDock(header, Dock.Top);
             root.Children.Add(header);
             var toolbar = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 0, 0, 12) };

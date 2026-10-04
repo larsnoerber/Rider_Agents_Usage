@@ -1,7 +1,7 @@
-# Agents Usage for Visual Studio Code
+# AgentMeter for Visual Studio Code
 
 The VS Code extension reads the provider-reported OpenAI Codex 5-hour and weekly quotas from the locally installed
-Codex CLI app-server. It displays remaining percentages and reset times in the Agents Usage Activity Bar view and an
+Codex CLI app-server. It displays remaining percentages and reset times in the AgentMeter Activity Bar view and an
 OpenAI Codex status bar item.
 
 It also reads GitHub Copilot quota snapshots and displays consumed quota in the view and status bar. Select **Sign in
@@ -12,14 +12,14 @@ estimate quota from activity. VS Code's
 built-in [Copilot usage dashboard](https://code.visualstudio.com/docs/setup/copilot#_monitor-your-usage)
 remains available from the Copilot status-bar item.
 
-Codex CLI must be installed and signed in to read Codex usage. Use **Agents Usage: Open Settings** to set its
+Codex CLI must be installed and signed in to read Codex usage. Use **AgentMeter: Open Settings** to set its
 executable path or change the refresh interval.
 This extension displays quota only. To chat with Codex and use it as a coding agent in VS Code, install the separate
 [OpenAI Codex extension](https://marketplace.visualstudio.com/items?itemName=openai.chatgpt).
 
 ## Usage preview
 
-![Agents Usage in VS Code with colored quota bars and status indicators](resources/previews/usage.png)
+![AgentMeter in VS Code with colored quota bars and status indicators](resources/previews/usage.png)
 
 Illustrated VS Code preview with example balances, not a live account screenshot. OpenAI Codex shows remaining
 5-hour and weekly quota; GitHub Copilot shows consumed quota. Subscription plans and reset times appear below
@@ -27,11 +27,11 @@ the colored bars. Available quotas depend on your account and subscription.
 
 ## Configuration
 
-![Agents Usage settings in VS Code](resources/previews/settings.png)
+![AgentMeter settings in VS Code](resources/previews/settings.png)
 
 Illustrated settings preview. Select the providers to display, configure the Codex CLI path and refresh interval,
 and choose whether to show status indicators. Disabling a provider also pauses its quota reads.
-Open configuration through the **Settings** button or **Agents Usage: Open Settings**.
+Open configuration through the **Settings** button or **AgentMeter: Open Settings**.
 
 ## Build
 

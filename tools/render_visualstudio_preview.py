@@ -31,7 +31,7 @@ def render(name):
         box(x, y, width, 32, "#363636", 2, "#636363")
         text(x + 10, y + 3, label, 17)
 
-    text(48, 30, "Agents Usage", 34, bold=True)
+    text(48, 30, "AgentMeter", 34, bold=True)
     text(48, 82, "Visual Studio  /  " + ("Usage and status bar" if name == "usage" else "Provider configuration"), 23, MUTED)
     text(48, 840, "Illustrated preview with example balances. No live account data.", 20, MUTED)
     box(48, 140, 1184, 676, "#252526", 7, "#515151")
@@ -45,9 +45,9 @@ def render(name):
         icon(193, 187, 27)
         text(242, 192, "Debug    |    Any CPU    |    Start", 16, MUTED)
         box(49, 222, 479, 552, "#252526", outline="#515151")
-        text(65, 229, "Agents Usage", 16, bold=True)
+        text(65, 229, "AgentMeter", 16, bold=True)
         icon(69, 265, 30)
-        text(109, 265, "Agents Usage", 22, bold=True)
+        text(109, 265, "AgentMeter", 22, bold=True)
         button(69, 313, 91, "Refresh")
         button(168, 313, 91, "Settings")
         button(267, 313, 86, "GitHub")
@@ -91,10 +91,10 @@ def render(name):
         text(95, 270, "Environment", 19, MUTED)
         text(95, 307, "Text Editor", 19, MUTED)
         text(95, 344, "GitHub", 19, MUTED)
-        text(95, 390, "Agents Usage", 20, bold=True)
+        text(95, 390, "AgentMeter", 20, bold=True)
         box(89, 427, 239, 37, "#3F3F46", 2)
         text(115, 432, "General", 19)
-        text(382, 256, "Agents Usage > General", 23, bold=True)
+        text(382, 256, "AgentMeter > General", 23, bold=True)
         rows = [("Agents", None), ("Show GitHub Copilot", "True"), ("Show OpenAI Codex", "True"),
                 ("Display", None), ("Show status bar", "True"), ("Refresh", None),
                 ("Codex CLI path", "(discover on PATH)"), ("Refresh interval (seconds)", "60")]

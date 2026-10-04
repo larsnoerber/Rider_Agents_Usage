@@ -9,13 +9,11 @@ import io.github.larsnoerber.agentsusage.PluginVersion
 import io.github.larsnoerber.agentsusage.providers.codex.ui.CodexUsagePanel
 import io.github.larsnoerber.agentsusage.providers.codex.CodexUsageService
 import io.github.larsnoerber.agentsusage.providers.claudecode.ClaudeCodeUsageService
-import io.github.larsnoerber.agentsusage.providers.cline.ClineUsageService
 import io.github.larsnoerber.agentsusage.providers.cursor.CursorUsageService
 import io.github.larsnoerber.agentsusage.providers.copilot.GitHubCopilotUsageService
 import io.github.larsnoerber.agentsusage.core.agents.AcpAgentInstallation
 import io.github.larsnoerber.agentsusage.providers.claudecode.ui.ClaudeCodeUsagePanel
 import io.github.larsnoerber.agentsusage.providers.cursor.ui.CursorUsagePanel
-import io.github.larsnoerber.agentsusage.providers.cline.ui.ClineUsagePanel
 import io.github.larsnoerber.agentsusage.providers.copilot.ui.GitHubCopilotUsagePanel
 import io.github.larsnoerber.agentsusage.providers.jetbrainsai.JetBrainsAiUsageService
 import io.github.larsnoerber.agentsusage.providers.jetbrainsai.ui.JetBrainsAiUsagePanel
@@ -74,7 +72,6 @@ internal class AgentsUsagePanel : JPanel(BorderLayout()), Disposable {
     private var copilot: GitHubCopilotUsagePanel? = null
     private var claudeCode: ClaudeCodeUsagePanel? = null
     private var cursor: CursorUsagePanel? = null
-    private var cline: ClineUsagePanel? = null
     private var visibleAgentSelection: List<Boolean>? = null
     private var disposed = false
     private val visibilityListener: () -> Unit = { if (!disposed) updateVisibleAgents() }
@@ -85,7 +82,7 @@ internal class AgentsUsagePanel : JPanel(BorderLayout()), Disposable {
         border = JBUI.Borders.empty(6)
         overview.add(JPanel(BorderLayout()).apply {
             isOpaque = false
-            add(JBLabel("Agents Usage").apply { font = font.deriveFont(Font.BOLD) }, BorderLayout.WEST)
+            add(JBLabel("AgentMeter").apply { font = font.deriveFont(Font.BOLD) }, BorderLayout.WEST)
             add(UsageToolbar(UsageRefreshCoordinator::refreshAll, ::showSettings), BorderLayout.EAST)
         }, BorderLayout.NORTH)
         agentOverview.add(agentUsageToggle, BorderLayout.NORTH)
@@ -130,8 +127,7 @@ internal class AgentsUsagePanel : JPanel(BorderLayout()), Disposable {
             choices.showJetBrainsAi && JetBrainsAiUsageService.isAvailable(),
             choices.showCopilot && (GitHubCopilotUsageService.isAvailable() || AcpAgentInstallation.isInstalled("github-copilot")),
             choices.showClaudeCode && ClaudeCodeUsageService.isInstalled(),
-            choices.showCursor && CursorUsageService.isInstalled(),
-            choices.showCline && ClineUsageService.isInstalled())
+            choices.showCursor && CursorUsageService.isInstalled())
         if (selection == visibleAgentSelection) return
         visibleAgentSelection = selection
         codex?.dispose()
@@ -139,21 +135,18 @@ internal class AgentsUsagePanel : JPanel(BorderLayout()), Disposable {
         copilot?.dispose()
         claudeCode?.dispose()
         cursor?.dispose()
-        cline?.dispose()
         codex = if (selection[0]) CodexUsagePanel() else null
         jetBrainsAi = if (selection[1]) JetBrainsAiUsagePanel() else null
         copilot = if (selection[2]) GitHubCopilotUsagePanel() else null
         claudeCode = if (selection[3]) ClaudeCodeUsagePanel() else null
         cursor = if (selection[4]) CursorUsagePanel() else null
-        cline = if (selection[5]) ClineUsagePanel() else null
         sections.removeAll()
         listOfNotNull(
             codex?.let { AgentSection(it, Color(57, 174, 153)) },
             jetBrainsAi?.let { AgentSection(it, Color(157, 119, 220)) },
             copilot?.let { AgentSection(it, Color(82, 151, 230)) },
             claudeCode?.let { AgentSection(it, Color(207, 117, 77)) },
-            cursor?.let { AgentSection(it, Color(130, 145, 164)) },
-            cline?.let { AgentSection(it, Color(220, 168, 66)) }
+            cursor?.let { AgentSection(it, Color(130, 145, 164)) }
         ).forEachIndexed { index, section ->
             sections.add(section, GridBagConstraints().apply {
                 gridx = 0
@@ -223,7 +216,6 @@ internal class AgentsUsagePanel : JPanel(BorderLayout()), Disposable {
         copilot?.dispose()
         claudeCode?.dispose()
         cursor?.dispose()
-        cline?.dispose()
         insights?.dispose()
     }
 

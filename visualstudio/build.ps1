@@ -76,14 +76,14 @@ $htmlPath = Join-Path $uploadFolder 'overview.html'
 $html = [System.IO.File]::ReadAllText($htmlPath).Replace('@VERSION@', $releaseVersion)
 [System.IO.File]::WriteAllText($htmlPath, $html,[System.Text.UTF8Encoding]::new($false))
 $details = @"
-Display name: Agents Usage
+Display name: AgentMeter
 Version: $releaseVersion
 Publisher ID: $( $publishMetadata.publisher )
 Publisher display name / VSIX author: $( $manifest.PackageManifest.Metadata.Identity.Publisher )
 VSIX ID: $( $manifest.PackageManifest.Metadata.Identity.Id )
 Internal name: $( $publishMetadata.identity.internalName )
 Upload: New extension > Visual Studio for this new identity; later updates use Edit on this listing
-Migration: Uninstall Agents Usage 1.0.14 or earlier before installing this new identity
+Migration: Uninstall AgentMeter 1.0.14 or earlier before installing this new identity
 Short description: Track OpenAI Codex and GitHub Copilot quotas in Visual Studio with colored bars, subscription plans, reset times and clickable AI status indicators.
 Versions: Visual Studio 2022 and 2026
 Editions: Community, Professional, Enterprise

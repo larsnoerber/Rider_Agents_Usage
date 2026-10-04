@@ -20,7 +20,6 @@ internal class AgentSelectionPanel : JPanel() {
     private val copilot = JBCheckBox("GitHub Copilot")
     private val claudeCode = JBCheckBox("Claude (subscription quota and local tokens)")
     private val cursor = JBCheckBox("Cursor")
-    private val cline = JBCheckBox("Cline (account credits, local tokens and costs)")
     private val acpNotices = mutableListOf<Pair<String, JBLabel>>()
     init {
         layout = BoxLayout(this, BoxLayout.Y_AXIS)
@@ -30,7 +29,6 @@ internal class AgentSelectionPanel : JPanel() {
         add(agentRow(copilot, "github-copilot"))
         add(agentRow(claudeCode, "claude-acp"))
         add(agentRow(cursor, "cursor"))
-        add(agentRow(cline, "cline"))
         toolTipText = "Selected installed agents appear in the overview and status bar."
         reset()
         addHierarchyListener { event ->
@@ -73,18 +71,17 @@ internal class AgentSelectionPanel : JPanel() {
         copilot.isSelected = state.showCopilot
         claudeCode.isSelected = state.showClaudeCode
         cursor.isSelected = state.showCursor
-        cline.isSelected = state.showCline
     }
 
     fun isModified(): Boolean {
         val state = AgentsUsageSettings.getInstance().state
         return openAi.isSelected != state.showOpenAi || jetBrainsAi.isSelected != state.showJetBrainsAi ||
             copilot.isSelected != state.showCopilot || claudeCode.isSelected != state.showClaudeCode ||
-            cursor.isSelected != state.showCursor || cline.isSelected != state.showCline
+            cursor.isSelected != state.showCursor
     }
 
     fun applySelection() = UsageRefreshCoordinator.changeVisibleAgents(
-        openAi.isSelected, jetBrainsAi.isSelected, copilot.isSelected, claudeCode.isSelected, cursor.isSelected, cline.isSelected
+        openAi.isSelected, jetBrainsAi.isSelected, copilot.isSelected, claudeCode.isSelected, cursor.isSelected
     )
 
 }

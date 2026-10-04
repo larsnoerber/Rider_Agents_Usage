@@ -1,4 +1,4 @@
-# Agents Usage for Visual Studio
+# AgentMeter for Visual Studio
 
 Native Visual Studio extension for **Visual Studio 2022 and 2026**, in Community, Professional and Enterprise on
 Windows x64. It uses stable Visual Studio 2022 SDK APIs and an open installation version range (`[17.0,)`).
@@ -11,7 +11,7 @@ checking the extension in each IDE version.
 - Provider-reported subscription plan, credits and local reset times.
 - GitHub Copilot consumed quota, plans, reset times and colored bars through Visual Studio's own quota service.
 - Manual refresh and automatic refresh while the view is open or the status indicator is enabled.
-- Provider visibility, CLI path and refresh interval under **Tools > Options > Agents Usage > General**.
+- Provider visibility, CLI path and refresh interval under **Tools > Options > AgentMeter > General**.
 - Colored AI logo in the Standard toolbar, tool window and clickable quota status indicator.
 - Visible package version, GitHub repository link, and ready-to-upload Marketplace descriptions and images.
 
@@ -44,13 +44,13 @@ the publishing manifest can supply it and image assets to Microsoft's command-li
 ## Install and open
 
 **Migration in 1.0.15:** the Visual Studio VSIX uses a new identity after deletion of the previous Marketplace entry.
-Uninstall Agents Usage 1.0.14 or earlier and complete its uninstall before installing this package. This is a new
+Uninstall AgentMeter 1.0.14 or earlier and complete its uninstall before installing this package. This is a new
 extension identity; existing installations do not receive it as an automatic update. Keep only the new identity
 installed.
 
 1. Close Visual Studio and open the Visual Studio VSIX package with Visual Studio's VSIX Installer.
 2. Select your Visual Studio installation and install the extension.
-3. Open Visual Studio and choose **View > Other Windows > Agents Usage**.
+3. Open Visual Studio and choose **View > Other Windows > AgentMeter**.
 4. Use **Settings** to configure the CLI path or refresh interval.
 
 The Visual Studio and VS Code packages both use the `.vsix` suffix but have different manifests and runtimes.

@@ -12,7 +12,7 @@ import io.github.larsnoerber.agentsusage.settings.AgentsUsageSettings
 class CursorUsageService : UsageSource<CursorUsage>, Disposable {
     private val reader = CursorUsageReader()
     private var snapshot = CursorUsage(error = if (isAvailable()) null else
-        "Sign in to the Cursor ACP agent or application to load usage.")
+        "Sign in to the Cursor ACP agent to load usage.")
     private val polling = UsagePolling(snapshot, { refresh ->
         if (refresh) snapshot = reader.read()
         snapshot

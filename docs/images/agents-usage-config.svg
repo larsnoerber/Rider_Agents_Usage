@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="800" viewBox="0 0 1280 800">
+<title>AgentMeter · Configuration · choose your providers and extras</title>
+<desc>Configuration · choose your providers and extras This is an illustration with example balances, not a live account screenshot.</desc>
+<rect x="100" y="64" width="62" height="62" rx="12" fill="#111827"/>
+<text x="114" y="74" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="30" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">AI</text>
+<rect x="114" y="113" width="10" height="3" rx="1" fill="#5EEAD4"/>
+<rect x="129" y="113" width="10" height="3" rx="1" fill="#60A5FA"/>
+<rect x="144" y="113" width="10" height="3" rx="1" fill="#A78BFA"/>
+<text x="182" y="64" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="42" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">AgentMeter</text>
+<text x="184" y="117" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="24" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Configuration · choose your providers and extras</text>
+<rect x="100" y="193" width="580" height="520" rx="8" fill="#2B2D30"/>
+<text x="124" y="215" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="25" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">Visible agents</text>
+<rect x="124" y="268" width="22" height="22" rx="3" fill="#3D4148"/>
+<text x="162" y="265" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="22" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">OpenAI</text>
+<rect x="124" y="310" width="22" height="22" rx="3" fill="#3574F0"/>
+<polyline points="129,320 134,325 142,315" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+<text x="162" y="307" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="22" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">JetBrains AI</text>
+<rect x="124" y="352" width="22" height="22" rx="3" fill="#3D4148"/>
+<text x="162" y="349" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="22" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">GitHub Copilot</text>
+<rect x="124" y="394" width="22" height="22" rx="3" fill="#3D4148"/>
+<text x="162" y="391" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="22" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Claude</text>
+<rect x="124" y="436" width="22" height="22" rx="3" fill="#3D4148"/>
+<text x="162" y="433" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="22" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Cursor</text>
+<text x="124" y="487" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="25" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">Overview sections</text>
+<rect x="124" y="538" width="22" height="22" rx="3" fill="#3D4148"/>
+<text x="162" y="535" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="22" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Weekly</text>
+<rect x="124" y="578" width="22" height="22" rx="3" fill="#3D4148"/>
+<text x="162" y="575" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="22" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Games</text>
+<text x="124" y="632" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="20" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Refresh interval</text>
+<rect x="332" y="626" width="180" height="34" rx="4" fill="#3D4148"/>
+<text x="348" y="631" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="20" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">60 seconds</text>
+<text x="732" y="217" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="27" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">Start with a quiet setup</text>
+<text x="732" y="264" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="21" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">JetBrains AI is enabled by default.</text>
+<text x="732" y="308" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="21" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Weekly and Games start disabled.</text>
+<text x="732" y="390" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="27" font-weight="700" dominant-baseline="text-before-edge" text-anchor="start">Missing ACP package?</text>
+<text x="732" y="439" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="20" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Configuration explains what is missing.</text>
+<text x="732" y="482" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="20" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Install from Rider?s ACP Registry.</text>
+<text x="732" y="564" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="21" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Selected and installed providers</text>
+<text x="732" y="599" fill="#DFE1E5" font-family="Segoe UI, sans-serif" font-size="21" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">appear in Usage and the status bar.</text>
+<text x="732" y="653" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="20" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Deselected provider reads pause.</text>
+<text x="100" y="755" fill="#A6A9B1" font-family="Segoe UI, sans-serif" font-size="17" font-weight="400" dominant-baseline="text-before-edge" text-anchor="start">Illustrated fresh-install configuration · Optional provider package required</text>
+</svg>

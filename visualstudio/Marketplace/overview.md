@@ -1,6 +1,6 @@
-# Agents Usage for Visual Studio
+# AgentMeter for Visual Studio
 
-Keep your AI quota in view while you work. Agents Usage displays **provider-reported allowance and consumption**
+Keep your AI quota in view while you work. AgentMeter displays **provider-reported allowance and consumption**
 for OpenAI Codex and GitHub Copilot in a native Visual Studio tool window and the status bar.
 
 ![Usage overview and AI status indicators](images/usage.png)
@@ -36,12 +36,12 @@ for OpenAI Codex and GitHub Copilot in a native Visual Studio tool window and th
 
 ## Getting started
 
-**Migrating from Agents Usage 1.0.14 or earlier?** Uninstall that Visual Studio extension before installing 1.0.15.
+**Migrating from AgentMeter 1.0.14 or earlier?** Uninstall that Visual Studio extension before installing 1.0.15.
 The deleted Marketplace listing's identity has been replaced; this package is a new extension, not an automatic update.
 
-1. Install **Agents Usage** for Visual Studio and complete the VSIX Installer's instructions.
-2. Open **View > Other Windows > Agents Usage**, or click the AI button on the Standard toolbar.
-3. Use **Settings** or **Tools > Options > Agents Usage > General** to choose providers and refresh settings.
+1. Install **AgentMeter** for Visual Studio and complete the VSIX Installer's instructions.
+2. Open **View > Other Windows > AgentMeter**, or click the AI button on the Standard toolbar.
+3. Use **Settings** or **Tools > Options > AgentMeter > General** to choose providers and refresh settings.
 4. Sign in to Codex/Copilot through their existing tools, then click **Refresh**.
 
 ![Provider and display configuration](images/settings.png)

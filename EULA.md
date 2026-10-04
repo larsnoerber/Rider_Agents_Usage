@@ -1,8 +1,8 @@
-# Agents Usage End-User License Agreement
+# AgentMeter End-User License Agreement
 
 **Effective date:** October 3, 2026
 
-This End-User License Agreement ("Agreement") governs your use of the Agents Usage IntelliJ Platform plugin (the
+This End-User License Agreement ("Agreement") governs your use of the AgentMeter IntelliJ Platform plugin (the
 "Plugin"), provided by Lars Nörber ("Developer"). By installing or using the Plugin, you agree to this Agreement.
 
 ## 1. License

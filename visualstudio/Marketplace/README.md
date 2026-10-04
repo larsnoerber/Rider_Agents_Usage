@@ -31,7 +31,7 @@ Keep these identifiers stable after publishing the new listing.
 The publisher reported that the previous listing was deleted and uploading its legacy VSIX ID was rejected as
 already in use. Version 1.0.15 adopts a new identity with explicit migration approval. This creates a new extension,
 not an automatic update to packages identified as `lanoerber.AgentsUsage.VisualStudio`.
-Uninstall the old Agents Usage extension (1.0.14 or earlier) from Visual Studio, complete the uninstaller's
+Uninstall the old AgentMeter extension (1.0.14 or earlier) from Visual Studio, complete the uninstaller's
 instructions,
 then install the new VSIX. The Visual Studio package registrations are shared, so keep only one identity installed.
 

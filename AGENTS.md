@@ -1,4 +1,4 @@
-# Agents Usage project rules
+# AgentMeter project rules
 
 These rules apply to this repository. Read [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 before changing package boundaries and [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) for local commands.

@@ -15,7 +15,7 @@ $env:JAVA_HOME = 'C:/path/to/jdk-25'
 
 Run `.\gradlew.bat verifyPlugin` to check binary compatibility with the configured Rider build.
 
-The installable archive is `build/distributions/agents-usage-<version>.zip`.
+The installable archive is `build/distributions/agentmeter-<version>.zip`.
 Install it through **Settings > Plugins > Install Plugin from Disk**.
 
 ## Visual Studio Code extension
@@ -65,7 +65,7 @@ images, publish manifest and ready-to-copy web upload fields. See `visualstudio/
 publishing. The web uploader does not automatically replace the full overview from a VSIX.
 Regenerate illustrated images with `python tools/render_visualstudio_preview.py` (Pillow required).
 The corresponding Gradle task is `buildVisualStudioExtension`. Open the package with Visual Studio's VSIX Installer,
-then use **View > Other Windows > Agents Usage**. See [../visualstudio/README.md](../visualstudio/README.md).
+then use **View > Other Windows > AgentMeter**. See [../visualstudio/README.md](../visualstudio/README.md).
 The manifest targets 2022/2026 Community, Professional and Enterprise on x64. Other versions and architectures are
 not claimed. Codex and optional Copilot quota reporting are supported. No live account or cross-version IDE check is
 implied by a successful build.
@@ -153,7 +153,7 @@ identifiers, tokens, headers, or license secrets.
 `providers/copilot/GitHubCopilotUsageReader` reads Copilot's quota service and its last report time.
 If that IDE service is unavailable, it runs the native language server from Rider's installed `github-copilot`
 ACP package and requests `checkQuota` after LSP initialization. The server reads its own authentication store.
-This fallback does not start an agent session or prompt and does not export a token to Agents Usage. Native processes
+This fallback does not start an agent session or prompt and does not export a token to AgentMeter. Native processes
 are bounded by a timeout and disposed after each quota request. The protocol is internal and may change.
 Premium request billing can expose exact counts; credit billing uses the reported remaining percentage.
 Only quota categories actually reported by Copilot are shown.
@@ -168,20 +168,20 @@ AI Assistant and Copilot APIs are internal and may change with provider updates.
 `core/reflection/` caches getter lookup and discovers only loaded provider plugins.
 These integrations use the installed plugins' existing connections; no additional usage-reporting server is introduced.
 
-### Cursor, Claude and Cline (JetBrains)
+### Cursor and Claude (JetBrains)
 
 Configuration lists missing ACP packages beneath their provider checkboxes and directs the user to Rider's ACP
-Registry. There are no installation buttons. Cursor uses its ACP package; Claude and Cline can also use their
+Registry. There are no installation buttons. Cursor uses its ACP package; Claude can also use their
 native IDE integrations. Installing a package does not authenticate the account.
-The Usage overview hides providers without an installed agent package; Claude and Cline can also use their loaded
+The Usage overview hides providers without an installed agent package; Claude can also use their loaded
 native IDE plugins. Status widgets additionally require their reader's usage source.
-The quota/history readers reuse provider-local sources: Cursor Agent auth (preferred) or Desktop's SQLite sign-in,
-Claude Code's subscription credentials and session files, and Cline CLI/ACP's provider store. Tokens are read anew for
+The quota/history readers reuse provider-local sources: Cursor Agent auth and
+Claude Code's subscription credentials and session files. Tokens are read anew for
 quota requests and are never refreshed,
 logged or persisted.
 Cursor Agent stores auth under `%APPDATA%/Cursor/auth.json` on Windows, `~/.cursor/auth.json` on macOS,
 and `$XDG_CONFIG_HOME/cursor/auth.json` or `~/.config/cursor/auth.json` on Linux.
-Reader destinations are fixed to `cursor.com`, `api2.cursor.sh`, `api.anthropic.com`, or `api.cline.bot`, with no
+Reader destinations are fixed to `cursor.com`, `api2.cursor.sh`, or `api.anthropic.com`, with no
 redirects.
 Quota requests use internal APIs and need signed-in account checks after compilation. Claude's request includes the
 CLI-compatible user-agent header described by the referenced Claude usage implementation. macOS Keychain-only Claude
@@ -189,16 +189,6 @@ subscription quota reads require a readable official credentials file. A read-on
 the installed native Claude SDK distinguishes API-key ACP logins from subscription OAuth. API-key accounts show
 local monthly tokens and their authentication mode; Pro/Max quota percentages are not applicable.
 
-Cline reads local task aggregates or SDK message metrics in the standard CLI/editor stores; custom
-absolute `CLINE_DIR`, `CLINE_DATA_DIR` and `CLINE_DB_DATA_DIR` environment paths are respected. Message files referenced
-by the session database must remain inside the application's local storage roots. For account credits, it reads only
-the Cline provider's existing auth under `settings/providers.json` in the official CLI data root. The authenticated
-balance request goes solely to `https://api.cline.bot/api/v1/users/<id>/balance`. A signed micro-dollar balance is
-converted to USD, matching the installed Cline Hub's display. Cline reports this balance independently of local
-history totals and recorded costs, without inferring a fixed account limit. Unsupported/missing stores and partial
-read failures stay visible as unavailable or incomplete usage.
-The SDK session file can wrap its `messages` array in a document. The streaming reader skips system prompts and
-message content, retaining only numeric metrics. An empty or not-yet-billed recorded session is valid zero usage.
 
 Provider protocols and storage formats are checked against the installed official packages. The provider-detail
 layout uses the supplied screenshot and independently implemented Swing charts.

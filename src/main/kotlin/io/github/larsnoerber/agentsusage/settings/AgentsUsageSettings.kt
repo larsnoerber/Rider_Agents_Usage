@@ -14,7 +14,6 @@ data class AgentsUsageState(
     @Volatile var showCopilot: Boolean = true,
     @Volatile var showClaudeCode: Boolean = true,
     @Volatile var showCursor: Boolean = false,
-    @Volatile var showCline: Boolean = false,
     @Volatile var showWeeklyInsights: Boolean = true,
     @Volatile var showGames: Boolean = true,
     @Volatile var weeklyInsightsExpanded: Boolean = true,
