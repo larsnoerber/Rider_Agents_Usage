@@ -23,6 +23,11 @@ Gemini and Claude show session and weekly values; Codex keeps `OpenAi | D=<perce
 
 ## Installation / updating
 
+For Chrome Web Store submission, see [the Chrome store guide](Packaging/chrome-submission.md).
+`powershell -NoProfile -ExecutionPolicy Bypass -File browser/build-chrome-store.ps1` creates the Chrome ZIP,
+padded 128px icon, required 440×280 promotional tile, screenshots and submission documents in
+`browser/dist/chrome-store/`. It does not register/pay for an account or submit the extension.
+
 For Edge Add-ons submission, see [the prepared store guide](Packaging/edge-submission.md).
 `powershell -NoProfile -ExecutionPolicy Bypass -File browser/build-store.ps1` creates the extension ZIP, store logo,
 labelled UI demonstration screenshots and copy-ready submission documents in `browser/dist/edge-store/`.

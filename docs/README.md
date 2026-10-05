@@ -33,6 +33,8 @@ version tag or binary upload. Generated build/dist folders are not source docume
 
 ## Publishing material
 
+- [Chrome Web Store submission](../browser/Packaging/chrome-submission.md)
+
 - [Marketplace overview](MARKETPLACE.md)
 - [Visual Studio upload workflow](../visualstudio/Marketplace/README.md)
 - [Visual Studio listing copy](../visualstudio/Marketplace/overview.md)

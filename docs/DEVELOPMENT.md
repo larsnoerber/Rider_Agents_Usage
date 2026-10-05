@@ -167,6 +167,11 @@ Avoid committing machine-specific JDK paths; set `JAVA_HOME` in your local envir
 
 ## Before editing
 
+Chrome store preparation: `powershell -NoProfile -ExecutionPolicy Bypass -File .\browser\build-chrome-store.ps1`.
+It uses the same checked MV3 sources, renders the shared SVG with Chrome's recommended icon padding and a
+440×280 promotional tile, and places generated upload files under `browser/dist/chrome-store/`.
+No store submission, payment, version change or release is performed.
+
 Read [../AGENTS.md](../AGENTS.md) and [ARCHITECTURE.md](ARCHITECTURE.md).
 Keep provider details within their feature folders, and update `plugin.xml` whenever a registered class moves.
 Preserve existing user edits and the persisted settings identifiers.

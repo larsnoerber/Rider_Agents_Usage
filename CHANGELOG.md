@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Prepare Chrome Web Store submission guidance and a local Chrome package/artwork build with a padded 128px icon,
+  required 440×280 promotional tile and labelled UI screenshots. Retain version 1.1.0 and clarify transient tab-URL
+  inspection in the browser configuration, listing material and Limited Use privacy statement.
+
 - Document provider-account prerequisites and manual review steps centrally for every AgentMeter edition, including
   reviewer-account handling, privacy disclosures and current evidence limitations. Link the guide from the project
   overview, documentation index and provider matrix; shorten Edge reviewer notes for the 2,000-character form.

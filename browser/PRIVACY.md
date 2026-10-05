@@ -38,3 +38,7 @@ unavailable. Provider privacy policies continue to apply to their website sessio
 Provider quota readers process usage-page content and authentication/session information as described above.
 Local-only storage does not mean that no data is accessed: quota requests contact the selected provider using
 its existing session. Data is not sold, used for advertising, or transferred to unrelated third parties.
+
+AgentMeter's use of information obtained from Google APIs complies with the Chrome Web Store User Data Policy,
+including its Limited Use requirements. Data is used only for the disclosed quota-display function; it is not
+used for advertising, credit scoring or unrelated profiling.

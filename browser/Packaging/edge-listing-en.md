@@ -14,6 +14,7 @@ the bar and refresh in the background after you grant website access. Click a pr
 expand the details to see the reported quota categories and reset countdowns.
 
 Features:
+
 - Movable, collapsible page bar with a remembered position.
 - OpenAI session and weekly remaining quotas; Gemini session and weekly consumption.
 - GitHub included-credit and inline-suggestion consumption when reported.
@@ -33,6 +34,10 @@ Missing values show dashes, never estimated allowances. Private provider interfa
 The browser must remain running for background updates.
 
 AgentMeter is an independent project and is not affiliated with the listed providers.
+
+## Additional privacy wording for the description
+
+AgentMeter checks open-tab URLs locally to locate provider tabs. It does not save or export browsing history.
 
 ## Search terms (seven entries)
 
