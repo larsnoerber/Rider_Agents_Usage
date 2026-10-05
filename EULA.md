@@ -2,6 +2,11 @@
 
 **Effective date:** October 3, 2026
 
+Documentation scope: this agreement describes the IntelliJ Platform plugin. The separate Windows/VS Code/Visual
+Studio guides are linked in the [documentation index](docs/README.md); Windows data handling is described in its
+[privacy policy](windows/Packaging/Privacy.md). This documentation update does not change the agreement's effective
+date.
+
 This End-User License Agreement ("Agreement") governs your use of the AgentMeter IntelliJ Platform plugin (the
 "Plugin"), provided by Lars Nörber ("Developer"). By installing or using the Plugin, you agree to this Agreement.
 

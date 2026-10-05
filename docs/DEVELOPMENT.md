@@ -91,6 +91,42 @@ To compile Kotlin without packaging:
 .\gradlew.bat compileKotlin
 ```
 
+## Standalone Windows app
+
+To diagnose Gemini quota access from the published executable itself, run
+`AgentMeter.exe --diagnose-gemini`. It performs one read without opening the dashboard and writes
+`%LOCALAPPDATA%/AgentMeter/gemini-diagnostic.json`, containing quota percentages, sign-in state, update time and a safe
+notice (or exception types). It never exports credentials, raw responses or exception messages. Exit code 0 means
+quota values were reported; 1 means unavailable. Leave Gemini running to exercise locked-store access.
+
+Use Windows and .NET SDK 10. Build the portable, self-contained WPF executable explicitly:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\windows\build.ps1
+```
+
+The output is the self-contained `windows/dist/AgentMeter-<version>-win-x64/AgentMeter.exe`; no ZIP or
+runtime-dependent variant is created. Use `-OutputDirectory` for a separate output folder or `-Runtime win-arm64`
+for the ARM64 build.
+The shared version comes from `gradle.properties`. This command builds only the Windows app; Gradle's editor
+extension tasks keep their existing scope. No IDE or separately installed .NET runtime is needed to launch the
+published executable. Official signed-in agents are needed for quota data.
+See [../windows/README.md](../windows/README.md).
+For Rider's C# indexing and semantic refactoring, open `windows/AgentMeter.Windows.csproj` as a .NET project;
+opening the repository's Kotlin/Gradle project does not include these WPF sources in its project model.
+Window behavior is organized into partial files beside the original XAML; retain their namespace and event handler
+names. App/tray artwork comes from `windows/Packaging/AgentMeter.svg`; the asset renderer supports the shape and
+gradient subset used by this icon.
+Build success does not verify live authentication, quota endpoints or UI behavior. Do not run account logins
+automatically.
+
+For the Microsoft Store package, run `powershell -NoProfile -ExecutionPolicy Bypass -File .\windows\build-msix.ps1`.
+It writes `windows/dist/AgentMeter-<version>-win-x64.msix`, using the reserved identity in
+`windows/Packaging/StoreIdentity.json`. MakeAppx validates and packages the self-contained desktop app. The pinned
+Microsoft SDK BuildTools NuGet dependency supplies the packaging executable. The unsigned package is for Store
+upload; local sideloading needs a matching trusted certificate. Store submission is separate from build and local
+checks.
+
 ## Gradle build files
 
 | File                                       | Purpose                                                                                           |
@@ -189,7 +225,6 @@ subscription quota reads require a readable official credentials file. A read-on
 the installed native Claude SDK distinguishes API-key ACP logins from subscription OAuth. API-key accounts show
 local monthly tokens and their authentication mode; Pro/Max quota percentages are not applicable.
 
-
 Provider protocols and storage formats are checked against the installed official packages. The provider-detail
 layout uses the supplied screenshot and independently implemented Swing charts.
 
@@ -210,6 +245,10 @@ selection, CLI path, refresh interval, and status-bar visibility are managed thr
 
 ## Checks and delivery
 
+Standalone Windows checks are documented in [../windows/TESTING.md](../windows/TESTING.md).
+Run the smoke project only when tests are requested. It uses synthetic quota snapshots; account login, interactive
+desktop actions and packaged installation require separate manual verification.
+
 ### Visual Studio providers and status UI
 
 Copilot uses the optional installed brokered quota service via reflection against loaded contracts. Missing or
@@ -221,7 +260,15 @@ check. If the insertion point changes it does not replace the shell's normal sta
 use `AgentsUsage.imagemanifest` and stable image GUID/ID values.
 
 Use the Gradle task appropriate to the requested work and report its actual result.
-Do not add or run tests unless requested. There is currently no repository test suite.
+Do not add or run tests unless requested. The existing standalone Windows smoke project is opt-in; its historical
+results and current limitations are documented in [Windows verification](../windows/TESTING.md).
 Build success checks compilation and packaging; it does not verify live quota APIs, account state, or UI behavior in
 Rider.
 Do not publish, install, commit, or restart the user's IDE unless requested.
+
+## Source-only GitHub updates
+
+An authorized source update can commit/push code and documentation without changing `gradle.properties`, creating a
+version tag or publishing a release. Exclude generated build/dist folders, portable EXEs, MSIX files and personal IDE
+settings. Local Windows build artifacts and source commits are separate deliverables. See the
+[documentation index](README.md) and [provider matrix](PROVIDERS.md).

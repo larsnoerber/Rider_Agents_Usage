@@ -16,13 +16,13 @@ All five images are **1280 × 800 PNG**, with editable SVG counterparts. They ar
 not live account screenshots. Balances are fictional; provider cards are arranged for gallery readability.
 No account data or credentials are read when rendering these images.
 
-| File | Suggested caption |
-| --- | --- |
-| [Overview](images/agents-usage-overview.png) | AgentMeter — five providers in one usage overview (illustrated example) |
-| [Details](images/agents-usage-details.png) | Click a subscription badge for details and charts (illustrated example) |
-| [Status bar](images/agents-usage-statusbar.png) | Provider quota colors in the status bar (illustrated example) |
-| [Configuration](images/agents-usage-config.png) | Choose providers, Weekly and Games (illustrated fresh installation) |
-| [Weekly and Games](images/agents-usage-weekly-games.png) | Optional weekly boss battles and Tic-Tac-Toe (illustrated example) |
+| File                                                     | Suggested caption                                                       |
+|----------------------------------------------------------|-------------------------------------------------------------------------|
+| [Overview](images/agents-usage-overview.png)             | AgentMeter — five providers in one usage overview (illustrated example) |
+| [Details](images/agents-usage-details.png)               | Click a subscription badge for details and charts (illustrated example) |
+| [Status bar](images/agents-usage-statusbar.png)          | Provider quota colors in the status bar (illustrated example)           |
+| [Configuration](images/agents-usage-config.png)          | Choose providers, Weekly and Games (illustrated fresh installation)     |
+| [Weekly and Games](images/agents-usage-weekly-games.png) | Optional weekly boss battles and Tic-Tac-Toe (illustrated example)      |
 
 Regenerate with `python tools/render_marketplace_preview.py` (Pillow and Windows Segoe UI required).
 The existing Quota Portal logo is `images/agents-usage-logo.png`; the plugin's SVG logo stays in `META-INF`.
@@ -40,9 +40,18 @@ with the five gallery PNGs, logo, HTML description, release notes and upload ins
 4. Use **First stable release** as the release summary; the release notes introduce the available features.
 
 Creating the ZIP and GitHub release does not submit the listing to JetBrains Marketplace.
-The 1280 × 800 image format follows [JetBrains Marketplace guidance](https://plugins.jetbrains.com/docs/marketplace/jetbrains-marketplace-approval-guidelines.html).
+The 1280 × 800 image format
+follows [JetBrains Marketplace guidance](https://plugins.jetbrains.com/docs/marketplace/jetbrains-marketplace-approval-guidelines.html).
 
 ## Other editors
 
 The repository also contains separate VS Code and Visual Studio sources. This Rider release does not build their
 packages. Their preview renderers and publishing materials remain in their respective directories.
+
+## Standalone Windows Store materials
+
+The standalone Windows app is a separate product/package, with ten provider choices and its own SVG-backed icon.
+Use [Windows Store listing](../windows/Packaging/StoreListing.md), [privacy policy](../windows/Packaging/Privacy.md)
+and [Windows verification status](../windows/TESTING.md). Its provider matrix differs from the Rider listing.
+The MSIX is unsigned until a separate signing/Store process; generating it does not submit or install the app.
+Source-only GitHub updates do not change the shared version, create a release or upload EXE/MSIX artifacts.

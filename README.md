@@ -1,11 +1,28 @@
 # AgentMeter
 
+A [standalone Windows app](windows/README.md) is also available: a portable `.exe` showing quotas without a running IDE,
+with official agent sign-in buttons and configurable automatic refresh. JetBrains AI quota currently requires the IDE
+integration.
+
+The Windows app also includes OpenRouter, Kilo, Cline, OpenCode and Junie CLI, separate provider configuration pages,
+six bar layouts, five palettes, a refresh progress display and saved usage across restarts. App/window/tray icons
+share the supplied SVG. Existing selections and the shared version **1.1.0** remain unchanged.
+
+| Edition                 | Supported providers                                                                  | Guide                                   |
+|-------------------------|--------------------------------------------------------------------------------------|-----------------------------------------|
+| Rider / JetBrains       | Codex, JetBrains AI, Copilot, Claude, Cursor                                         | This README                             |
+| Windows desktop         | Codex, Copilot, Claude, Cursor, Gemini, OpenRouter, Kilo, Cline, OpenCode, Junie CLI | [Windows](windows/README.md)            |
+| Visual Studio Code      | Codex, Copilot                                                                       | [VS Code](vscode/README.md)             |
+| Visual Studio 2022/2026 | Codex, Copilot                                                                       | [Visual Studio](visualstudio/README.md) |
+
+See the [documentation index](docs/README.md) and [provider/data comparison](docs/PROVIDERS.md).
+
 <p><img src="docs/images/agents-usage-logo.png" alt="AgentMeter Quota Portal logo" width="180"/></p>
 
 AgentMeter, maintained by Lars Nörber, is available for JetBrains IDEs, including IntelliJ IDEA and Rider, and as an
 extension for Visual Studio Code. It displays Codex 5-hour and weekly usage, JetBrains AI credits, and GitHub Copilot
 quotas in JetBrains IDEs. The VS Code extension displays Codex and GitHub Copilot quota. A native Visual Studio
-2022/2026 extension also provides Codex quota in Community, Professional and Enterprise on Windows x64.
+2022/2026 extension provides Codex and Copilot quota in Community, Professional and Enterprise on Windows x64.
 The status bar displays `OpenAi | D=78% - W=42%`, `JetBrainAi | 70%`, and `Copilot | 38%` (example balances).
 OpenAI and JetBrains AI show remaining quota. Copilot shows consumed quota: 0% unused, 100% exhausted.
 Each percentage uses its quota color directly; OpenAI D and W have independent colors, without dots.
@@ -55,7 +72,8 @@ For the source layout, read [Code structure](docs/ARCHITECTURE.md). Contributors
 ### Cursor and Claude data sources (JetBrains)
 
 Cursor prefers its official Agent login store: `%APPDATA%/Cursor/auth.json` on Windows, `~/.cursor/auth.json` on macOS,
-and `$XDG_CONFIG_HOME/cursor/auth.json` or `~/.config/cursor/auth.json` on Linux. It requests Cursor's usage summary and can
+and `$XDG_CONFIG_HOME/cursor/auth.json` or `~/.config/cursor/auth.json` on Linux. It requests Cursor's usage summary and
+can
 fall back to Cursor's authenticated current-period endpoint when the web dashboard returns HTTP 403. Shared team
 pools are labeled explicitly. Missing finite limits stay unavailable. Automatic account refreshes run at least 60
 seconds apart.
@@ -67,7 +85,6 @@ credentials require renewal in Claude Code. With an ACP API-key login, the offic
 Pro/Max quota percentages do not apply. The selected, installed Claude agent remains visible. Missing local token
 records are shown as unavailable rather than zero usage. Keychain-only subscription credentials cannot currently be
 read.
-
 
 These account endpoints and local formats can change. Credentials stay in memory for provider requests, are never
 printed or copied into plugin settings/history, and are not sent to other services. Redirects are disabled. No

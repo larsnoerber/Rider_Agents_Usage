@@ -54,6 +54,10 @@ while the Usage view is visible. Quota colors follow exhaustion risk. Unlimited 
 The Visual Studio and VS Code downloads are different packages. Choose the **visualstudio** VSIX for Visual Studio;
 the **vscode** VSIX is intended for Visual Studio Code.
 
+The standalone Windows desktop app is a separate executable with additional providers, tray and floating bar.
+See the [edition comparison](https://github.com/larsnoerber/Rider_Agents_Usage/blob/main/docs/PROVIDERS.md) before
+choosing a package. The Windows-specific provider/icon changes do not add those features to this VSIX.
+
 ## Source and support
 
 - [Source code](https://github.com/larsnoerber/Rider_Agents_Usage)

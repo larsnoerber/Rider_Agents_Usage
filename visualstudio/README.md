@@ -1,5 +1,9 @@
 # AgentMeter for Visual Studio
 
+This edition supports Codex and Copilot. The standalone Windows app's extra providers and floating desktop bar
+are separate from the Visual Studio VSIX. See [edition comparison](../docs/PROVIDERS.md) and
+[documentation index](../docs/README.md). The shared source version remains 1.1.0.
+
 Native Visual Studio extension for **Visual Studio 2022 and 2026**, in Community, Professional and Enterprise on
 Windows x64. It uses stable Visual Studio 2022 SDK APIs and an open installation version range (`[17.0,)`).
 Older 32-bit Visual Studio releases are not targeted. A declared installation target is not a substitute for

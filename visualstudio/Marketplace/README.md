@@ -1,5 +1,9 @@
 # Visual Studio Marketplace upload materials
 
+These materials describe the Visual Studio Codex/Copilot extension, not the standalone Windows app or its Store
+package. See [publishing overview](../../docs/MARKETPLACE.md). A source-only GitHub update does not perform the
+publishing steps below or upload EXE/MSIX files, and does not change the shared version.
+
 The Visual Studio build copies these files, the logo, and the VSIX to a versioned `dist/marketplace-<version>/`
 directory and creates `agents-usage-visualstudio-marketplace-<version>.zip` for delivery.
 

@@ -45,3 +45,24 @@ before changing package boundaries and [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md
   requested.
 - Document structural changes in `docs/ARCHITECTURE.md` and user-facing changes in `CHANGELOG.md`.
 - Report changes, the checks actually performed, and any unresolved limitations clearly.
+
+## Standalone Windows application
+
+- `windows/` is a separate .NET 10 WPF project. Open its `.csproj` in Rider for C# indexing; the Gradle project does
+  not include these symbols. Try IDE semantic tools first and explain a source-edit fallback when indexing is absent.
+- Keep shared contracts and stable IDs in `Core/`, provider code in `Providers/<Provider>/`, orchestration in
+  `Application/`, choice persistence in `Settings/`, and WPF presentation in `UI/`. Window partial files retain their
+  existing namespace and XAML event names.
+- Full and targeted refreshes share the coordinator's background read/cache/publication path. Preserve cancellation
+  generations, selected-provider polling, complete-batch bar reveal, and UI dispatcher delivery.
+- Provider activation and bar visibility are independent. Cached numeric values retain original times and never
+  establish authentication. Official CLIs retain their own sessions.
+- The user explicitly authorized saving entered OpenRouter keys in current-user Windows Credential Manager under
+  `AgentMeter/OpenRouter`. This is the specific exception to the no-persistence rule; never put keys in settings,
+  usage cache, logs or diagnostics, and preserve the Remove saved key action.
+- App/window/tray icons share `Packaging/AgentMeter.svg` and generated ICO frames. Build changes to SVG inputs must
+  regenerate artwork. Document limitations of the supported SVG subset.
+- Windows builds are explicit: `windows/build.ps1` for the portable EXE and `windows/build-msix.ps1` for the unsigned
+  MSIX. Do not run tests without a request. Build success is not live authentication or Store certification.
+- Source-only GitHub updates keep the shared version unless a version change is requested. Exclude generated output,
+  EXE/MSIX files and personal IDE settings from commits; do not create a release or upload assets without authorization.

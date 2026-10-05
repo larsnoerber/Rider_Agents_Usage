@@ -1,0 +1,18 @@
+<Canvas xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Width="40" Height="40">
+  <!-- Quota Portal geometry from the repository's existing vector logo. -->
+  <Ellipse Canvas.Left="3.8" Canvas.Top="3.8" Width="32.4" Height="32.4" StrokeThickness="8" StrokeDashArray="10.694444 2.638889">
+    <Ellipse.Stroke><LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+      <GradientStop Color="#25E8DC" Offset="0" /><GradientStop Color="#347BFF" Offset="0.55" /><GradientStop Color="#B334F5" Offset="1" />
+    </LinearGradientBrush></Ellipse.Stroke>
+    <Ellipse.RenderTransform><RotateTransform Angle="-42" CenterX="15.2" CenterY="15.2" /></Ellipse.RenderTransform>
+  </Ellipse>
+  <Ellipse Canvas.Left="11.7" Canvas.Top="11.7" Width="16.6" Height="16.6" Stroke="#84F8FF" StrokeThickness="1.1">
+    <Ellipse.Fill><RadialGradientBrush GradientOrigin="0.2,0.15" Center="0.2,0.15" RadiusX="1.2" RadiusY="1.2">
+      <GradientStop Color="#55FFF0" Offset="0" /><GradientStop Color="#279AFF" Offset="0.55" /><GradientStop Color="#B82FFF" Offset="1" />
+    </RadialGradientBrush></Ellipse.Fill>
+  </Ellipse>
+  <Path Data="M15.39 14.08L18 7.58L20.6 14.08 M16.37 11.7H19.62 M21.57 7.58H23.52 M22.54 7.58V14.08 M21.57 14.08H23.52"
+        Stroke="White" StrokeThickness="1.7" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round">
+    <Path.RenderTransform><TransformGroup><ScaleTransform ScaleX="1.12" ScaleY="1.12" CenterX="20" CenterY="20" /><TranslateTransform X="3" Y="-5" /></TransformGroup></Path.RenderTransform>
+  </Path>
+</Canvas>

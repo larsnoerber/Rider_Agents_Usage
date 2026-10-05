@@ -20,6 +20,7 @@ namespace AgentsUsage.VisualStudio.Providers.Codex
 
         public async Task<CodexUsage> ReadAsync(string configuredPath, CancellationToken cancellationToken)
         {
+            bool? signedIn = null;
             try
             {
                 using (var deadline = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken))
@@ -65,10 +66,13 @@ namespace AgentsUsage.VisualStudio.Providers.Codex
                                 {
                                     var account = await RequestAsync(child, 2, "account/read", new JObject { ["refreshToken"] = false }, deadline.Token).ConfigureAwait(false);
                                     accountPlan = Text((account["account"] as JObject)?["planType"]);
+                                    signedIn = account["account"] is JObject;
                                 }
                                 catch (InvalidDataException) { /* Account metadata is optional; quota can still be available. */ }
                                 var result = await RequestAsync(child, 3, "account/rateLimits/read", null, deadline.Token).ConfigureAwait(false);
-                                return Parse(result, accountPlan);
+                                var usage = Parse(result, accountPlan);
+                                usage.SignedIn = signedIn ?? (usage.FiveHourLeft.HasValue || usage.WeeklyLeft.HasValue ? (bool?)true : null);
+                                return usage;
                             }
                             catch (IOException) when (deadline.IsCancellationRequested)
                             {
@@ -90,7 +94,7 @@ namespace AgentsUsage.VisualStudio.Providers.Codex
             catch (Exception error) when (error is OperationCanceledException || error is IOException || error is InvalidOperationException
                                            || error is System.ComponentModel.Win32Exception || error is JsonException || error is ArgumentException)
             {
-                return new CodexUsage { Error = error is OperationCanceledException
+                return new CodexUsage { SignedIn = signedIn, Error = error is OperationCanceledException
                     ? "Codex CLI did not respond within 45 seconds."
                     : "Codex quota is unavailable. Check the CLI path and sign in with codex login." };
             }

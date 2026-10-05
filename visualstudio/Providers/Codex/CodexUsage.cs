@@ -11,6 +11,7 @@ namespace AgentsUsage.VisualStudio.Providers.Codex
         public double? Credits { get; set; }
         public string Plan { get; set; }
         public string Error { get; set; }
+        public bool? SignedIn { get; set; }
         public DateTimeOffset UpdatedAt { get; set; } = DateTimeOffset.Now;
     }
 }

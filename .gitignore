@@ -19,6 +19,13 @@ visualstudio/.vs/
 visualstudio/dist/
 visualstudio/extension.vsixmanifest
 
+# Standalone Windows application generated files
+windows/bin/
+windows/obj/
+windows/dist/
+windows/tests/bin/
+windows/tests/obj/
+
 # IntelliJ IDEA project metadata
 .idea/
 *.iml
@@ -26,4 +33,4 @@ visualstudio/extension.vsixmanifest
 # OS files
 Thumbs.db
 .DS_Store
-docs/IDEAS.md
+*.DotSettings.user

@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net10.0-windows</TargetFramework>
+        <UseWPF>true</UseWPF>
+        <UseWindowsForms>true</UseWindowsForms>
+        <BrandingDirectory>$(MSBuildProjectDirectory)\obj\Branding</BrandingDirectory>
+        <ApplicationIcon>$(BrandingDirectory)\AgentMeter.ico</ApplicationIcon>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <AssemblyName>AgentMeter</AssemblyName>
+        <RootNamespace>AgentMeter.Windows</RootNamespace>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
+    </PropertyGroup>
+    <ItemGroup>
+        <None Update="Providers/Cline/auth-status.mjs" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest"/>
+        <Compile Remove="tests/**/*.cs"/>
+        <Using Remove="System.Windows.Forms"/>
+        <Using Remove="System.Drawing"/>
+        <EmbeddedResource Include="$(ApplicationIcon)" LogicalName="AgentMeter.Windows.Logo.ico"/>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
+        <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.12"/>
+        <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.9169" PrivateAssets="all"/>
+        <!-- These sources use only .NET, JSON and Win32; no Visual Studio SDK is included. -->
+        <Compile Include="../visualstudio/Providers/Codex/CodexUsageReader.cs" Link="Providers/Codex/Transport/CodexUsageReader.cs"/>
+        <Compile Include="../visualstudio/Providers/Codex/CodexUsage.cs" Link="Providers/Codex/Transport/CodexUsage.cs"/>
+        <Compile Include="../visualstudio/Core/Processes/ProcessJob.cs" Link="Core/Processes/ProcessJob.cs"/>
+    </ItemGroup>
+    <Target Name="RenderAgentMeterBranding" BeforeTargets="PrepareForBuild"
+            Inputs="$(MSBuildProjectDirectory)\Packaging\AgentMeter.svg;$(MSBuildProjectDirectory)\Packaging\read-icon.ps1;$(MSBuildProjectDirectory)\Packaging\render-assets.ps1"
+            Outputs="$(ApplicationIcon)">
+        <Exec Command="powershell -NoProfile -STA -ExecutionPolicy Bypass -File &quot;$(MSBuildProjectDirectory)\Packaging\render-assets.ps1&quot; -OutputDirectory &quot;$(BrandingDirectory)&quot;"/>
+    </Target>
+</Project>
