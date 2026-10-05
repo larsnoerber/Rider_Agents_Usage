@@ -23,6 +23,17 @@ Gemini and Claude show session and weekly values; Codex keeps `OpenAi | D=<perce
 
 ## Installation / updating
 
+### Repository downloads
+
+The user explicitly requested these built packages to be available directly in GitHub, without a new release:
+
+- [Edge / Chromium ZIP, version 1.1.0](downloads/AgentMeter-1.1.0-chromium.zip)
+- [Chrome ZIP, version 1.1.0](downloads/AgentMeter-1.1.0-chrome.zip)
+
+Use GitHub's Download raw file button to download a ZIP. For manual installation, extract it and select the
+extracted folder with **Load unpacked** on the browser's Extensions page after enabling Developer mode.
+These repository downloads are not evidence of store acceptance and are not refreshed automatically by a build.
+
 For Chrome Web Store submission, see [the Chrome store guide](Packaging/chrome-submission.md).
 `powershell -NoProfile -ExecutionPolicy Bypass -File browser/build-chrome-store.ps1` creates the Chrome ZIP,
 padded 128px icon, required 440×280 promotional tile, screenshots and submission documents in
