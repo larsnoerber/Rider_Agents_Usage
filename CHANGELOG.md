@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Document provider-account prerequisites and manual review steps centrally for every AgentMeter edition, including
+  reviewer-account handling, privacy disclosures and current evidence limitations. Link the guide from the project
+  overview, documentation index and provider matrix; shorten Edge reviewer notes for the 2,000-character form.
+
 - Prepare Edge Add-ons listing text, privacy/permission disclosures, reviewer notes and store submission guidance
   for the existing Partner Center entry. Add a local store build with a shared-SVG logo and actual UI screenshots
   labelled as demonstration data. Keep generated submission files outside source commits and retain version 1.1.0.

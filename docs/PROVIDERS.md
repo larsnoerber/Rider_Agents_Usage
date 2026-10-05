@@ -19,6 +19,9 @@ expired sessions or changed provider interfaces produce unavailable results. A c
 
 ## Meaning of the values
 
+Account prerequisites and manual reviewer steps across all editions are documented in
+[Accounts, authentication and review](AUTHENTICATION_AND_REVIEW.md).
+
 The separate [Chrome/Edge edition](../browser/README.md) reads selected providers after website permission is granted:
 Codex/Claude remaining quota, Copilot/Cursor consumed quota, and Gemini Apps web consumption. It uses provider website
 sessions, private quota requests and explicit DOM fallback. Background and closed provider tabs are supported via a

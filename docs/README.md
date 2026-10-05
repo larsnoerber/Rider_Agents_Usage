@@ -21,6 +21,9 @@ version tag or binary upload. Generated build/dist folders are not source docume
 
 ## Development and delivery
 
+- [Accounts, authentication and review](AUTHENTICATION_AND_REVIEW.md): prerequisites and manual review steps for
+  every edition, reviewer accounts, credential handling and evidence limitations
+
 - [Project rules](../AGENTS.md)
 - [Architecture](ARCHITECTURE.md): package boundaries and Windows partial-class responsibilities
 - [Build/development](DEVELOPMENT.md): separate editor/Windows build commands and Rider C# indexing

@@ -18,6 +18,9 @@ share the supplied SVG. Existing selections and the shared version **1.1.0** rem
 
 See the [documentation index](docs/README.md) and [provider/data comparison](docs/PROVIDERS.md).
 
+For all editions, see [accounts, authentication and review](docs/AUTHENTICATION_AND_REVIEW.md): which provider
+sessions are required, how reviewers can check quota access, and what build/demo evidence does and does not prove.
+
 <p><img src="docs/images/agents-usage-logo.png" alt="AgentMeter Quota Portal logo" width="180"/></p>
 
 AgentMeter, maintained by Lars Nörber, is available for JetBrains IDEs, including IntelliJ IDEA and Rider, and as an
