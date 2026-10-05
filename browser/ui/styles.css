@@ -1,0 +1,390 @@
+:root {
+    color-scheme: dark;
+    --bg: #0e1520;
+    --surface: #182231;
+    --border: #2b3a4e;
+    --text: #eef3fb;
+    --muted: #a4b2c6;
+    --healthy: #67dab1;
+    --warning: #f4cd6b;
+    --danger: #ff8396;
+    --accent: #a4b8ff;
+}
+
+body[data-theme="light"] {
+    color-scheme: light;
+    --bg: #f3f6fb;
+    --surface: #fff;
+    --border: #d6deea;
+    --text: #1a293b;
+    --muted: #52627a;
+    --healthy: #087451;
+    --warning: #8b5b00;
+    --danger: #b32040;
+    --accent: #3855aa;
+}
+
+@media (prefers-color-scheme: light) {
+    body[data-theme="system"] {
+        color-scheme: light;
+        --bg: #f3f6fb;
+        --surface: #fff;
+        --border: #d6deea;
+        --text: #1a293b;
+        --muted: #52627a;
+        --healthy: #087451;
+        --warning: #8b5b00;
+        --danger: #b32040;
+        --accent: #3855aa;
+    }
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 13px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+body.popup {
+    width: 380px;
+    min-height: 230px;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--border);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.brand img {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+}
+
+h1 {
+    margin: 0;
+    font-size: 18px;
+    letter-spacing: -.4px;
+}
+
+.brand p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 11px;
+}
+
+h2 {
+    margin: 0;
+    font-size: 15px;
+}
+
+h3 {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+main {
+    padding: 18px 20px;
+}
+
+.provider-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.plan {
+    padding: 3px 9px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    font-size: 11px;
+    color: var(--muted);
+}
+
+.notice, .error {
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.error {
+    color: var(--warning);
+}
+
+.quotas {
+    display: grid;
+    gap: 9px;
+}
+
+.quota {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    padding: 12px;
+}
+
+.quota-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.quota-value {
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+    flex-shrink: 0;
+}
+
+.quota strong {
+    color: var(--quota-color);
+    font-size: 21px;
+    font-variant-numeric: tabular-nums;
+}
+
+.direction, .secondary, .freshness {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.secondary {
+    margin: 6px 0 0;
+}
+
+.freshness {
+    margin: 13px 0;
+}
+
+.bar {
+    height: 5px;
+    margin-top: 8px;
+    border-radius: 9px;
+    overflow: hidden;
+    background: var(--border);
+}
+
+.bar > div {
+    height: 100%;
+    background: var(--quota-color);
+    border-radius: inherit;
+}
+
+.quotas[data-style="compact"] .quota {
+    border: 0;
+    border-bottom: 1px solid var(--border);
+    border-radius: 0;
+    padding: 8px 0;
+    background: transparent;
+}
+
+.quotas[data-style="compact"] strong {
+    font-size: 16px;
+}
+
+.quotas[data-style="circles"] {
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+}
+
+.quotas[data-style="circles"] .quota-row {
+    flex-direction: column;
+}
+
+.quotas[data-style="circles"] .quota-value {
+    width: 90px;
+    height: 90px;
+    margin-top: 10px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, var(--surface) 83%, transparent 85%), conic-gradient(var(--quota-color) var(--quota-angle), var(--border) 0);
+}
+
+.quotas[data-style="circles"] .bar {
+    display: none;
+}
+
+button, select {
+    font: inherit;
+    color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 7px 10px;
+}
+
+button {
+    cursor: pointer;
+}
+
+button:hover {
+    border-color: var(--accent);
+}
+
+button:disabled {
+    opacity: .5;
+    cursor: default;
+}
+
+button:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+
+.icon-button {
+    border: 0;
+    background: transparent;
+    font-size: 20px;
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+.actions button {
+    font-size: 12px;
+}
+
+a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.provider-links {
+    color: var(--muted);
+    margin-top: 16px;
+    font-size: 12px;
+}
+
+.provider-links > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px 13px;
+}
+
+footer {
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    padding: 12px 20px;
+    font-size: 10px;
+}
+
+.settings-page {
+    max-width: 760px;
+    margin: auto;
+    padding: 12px;
+}
+
+.settings-page main {
+    display: grid;
+    gap: 18px;
+}
+
+.settings-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.settings-card h2 {
+    margin-bottom: 10px;
+}
+
+.provider-setting {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.provider-setting label {
+    flex: 1;
+    min-width: 160px;
+}
+
+.provider-setting input {
+    margin: 0 8px 0 0;
+    accent-color: var(--healthy);
+}
+
+.provider-setting button, .provider-setting a {
+    font-size: 11px;
+}
+
+.field {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 12px 0;
+    gap: 16px;
+}
+
+.field select {
+    width: 180px;
+}
+
+.save-status {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    padding: 12px 20px;
+    margin-bottom: 18px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-size: 12px;
+}
+
+.field input[type="number"] {
+    width: 100px;
+    padding: 8px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    background: var(--surface);
+}
+
+#status[data-failed="true"] {
+    color: var(--danger);
+}
+
+#status {
+    color: var(--healthy);
+    min-height: 18px;
+    margin-bottom: 0;
+}
+
+[hidden] {
+    display: none !important;
+}

@@ -1,0 +1,30 @@
+AgentMeter shows provider-reported AI usage quotas. The product interface is English.
+
+Setup:
+1. Install the extension and open Settings. Settings also open on first installation.
+2. Select providers under Providers & page bar. A single selection controls refresh and visibility.
+3. Grant an individual provider's access or use Allow website access & show bar everywhere.
+4. Sign in on each selected provider's official website using a reviewer-controlled account.
+5. Open the extension popup and choose Refresh. Quotas depend on the provider account and subscription.
+6. Open an ordinary HTTPS page to view the bar when all-site access was granted.
+7. Use the move handle to drag the bar, or focus it and press arrow keys. Reload to observe the saved position.
+8. Open quota details for reset countdowns. Hover providers for observation time and missing-value notices.
+9. Adjust the remaining-quota warning threshold in Settings. Changes save automatically.
+10. Deselect providers to hide them and stop their reads. Clear saved usage removes cached quota observations.
+
+Account-dependent behavior:
+OpenAI Codex shows remaining session/weekly quota when reported. GitHub shows consumed quota, including Included
+credits and Inline suggestions when present. Gemini shows consumed session/weekly quota. Cursor shows consumed
+quota. Claude shows remaining reported quotas; a Free account may report no numeric allowance.
+Multiple Claude chat organizations may require selecting the organization on the website and keeping its tab open.
+Missing quotas are dashes rather than zeroes. Authentication failures and rate limiting are shown in details.
+Saved observations retain their original times and never establish current authentication.
+
+Polling needs a running browser, provider access and an active provider session. Provider interfaces are private
+and can change. Reads are throttled to at least one minute, with a 15-minute pause after HTTP 429.
+The bar cannot appear on browser-internal pages, extension stores or other protected pages.
+All-website access is optional and used to display the overlay. It does not read unrelated page content.
+All executable code is packaged. The extension has no telemetry, AgentMeter server or external-message interface.
+
+No reviewer account credentials are included in the package or repository. Use reviewer-owned provider accounts.
+Store screenshots use the actual UI with explicitly labelled demonstration data; they are not account evidence.

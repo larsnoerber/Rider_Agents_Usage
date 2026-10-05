@@ -8,12 +8,13 @@ The Windows app also includes OpenRouter, Kilo, Cline, OpenCode and Junie CLI, s
 six bar layouts, five palettes, a refresh progress display and saved usage across restarts. App/window/tray icons
 share the supplied SVG. Existing selections and the shared version **1.1.0** remain unchanged.
 
-| Edition                 | Supported providers                                                                  | Guide                                   |
-|-------------------------|--------------------------------------------------------------------------------------|-----------------------------------------|
-| Rider / JetBrains       | Codex, JetBrains AI, Copilot, Claude, Cursor                                         | This README                             |
-| Windows desktop         | Codex, Copilot, Claude, Cursor, Gemini, OpenRouter, Kilo, Cline, OpenCode, Junie CLI | [Windows](windows/README.md)            |
-| Visual Studio Code      | Codex, Copilot                                                                       | [VS Code](vscode/README.md)             |
-| Visual Studio 2022/2026 | Codex, Copilot                                                                       | [Visual Studio](visualstudio/README.md) |
+| Edition                 | Supported providers                                                                                              | Guide                                   |
+|-------------------------|------------------------------------------------------------------------------------------------------------------|-----------------------------------------|
+| Rider / JetBrains       | Codex, JetBrains AI, Copilot, Claude, Cursor                                                                     | This README                             |
+| Windows desktop         | Codex, Copilot, Claude, Cursor, Gemini, OpenRouter, Kilo, Cline, OpenCode, Junie CLI                             | [Windows](windows/README.md)            |
+| Chrome / Edge browser   | Background quota: Codex, Claude, Cursor, Copilot, Gemini Apps; optional persistent bar (live validation pending) | [Browser](browser/README.md)            |
+| Visual Studio Code      | Codex, Copilot                                                                                                   | [VS Code](vscode/README.md)             |
+| Visual Studio 2022/2026 | Codex, Copilot                                                                                                   | [Visual Studio](visualstudio/README.md) |
 
 See the [documentation index](docs/README.md) and [provider/data comparison](docs/PROVIDERS.md).
 

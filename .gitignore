@@ -19,6 +19,9 @@ visualstudio/.vs/
 visualstudio/dist/
 visualstudio/extension.vsixmanifest
 
+# Browser extension generated files
+browser/dist/
+
 # Standalone Windows application generated files
 windows/bin/
 windows/obj/

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>AgentMeter settings</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="settings-page">
+<header>
+    <div class="brand"><img src="../resources/icon.png" alt="">
+        <div><h1>AgentMeter</h1>
+            <p>Browser settings · Chrome &amp; Edge</p></div>
+    </div>
+</header>
+<div class="save-status"><span>Every change saves automatically.</span>
+    <p id="status" role="status" aria-live="polite">Ready.</p></div>
+<main>
+    <section id="page-bar-settings" class="settings-card"><h2>Providers &amp; page bar</h2>
+        <p>Select once: checked providers refresh in the background and appear in the bar after website access is
+            granted. Unchecked providers are hidden and their reads stop.</p>
+        <div id="providers"></div>
+        <label class="field">Show page bar<input id="page-bar" type="checkbox"></label>
+        <label class="field">Show bar on all websites<input id="all-sites-bar" type="checkbox"></label>
+        <label class="field">Default position<select id="bar-position">
+            <option value="bottom">Bottom</option>
+            <option value="top">Top</option>
+        </select></label>
+        <p>Drag the bar using its move handle. The position is remembered across websites.
+            Changing the default position clears your custom position.</p>
+        <button id="reset-position" class="subtle">Reset bar position</button>
+    </section>
+    <section class="settings-card"><h2>Website access</h2>
+        <p>Grant access to display the bar on ordinary websites and read selected providers when their tabs are
+            closed. Sign in on each provider's website first.</p>
+        <button id="allow-all">Allow website access &amp; show bar everywhere</button>
+        <p>For access to individual providers, use the buttons above. Manage all-websites permissions in the browser's
+            extension settings. Browser settings pages and extension stores cannot display the bar.</p>
+    </section>
+    <section class="settings-card"><h2>Appearance &amp; quota warnings</h2>
+        <label class="field">Theme<select id="theme">
+            <option value="dark">Dark</option>
+            <option value="light">Light</option>
+            <option value="system">System</option>
+        </select></label>
+        <label class="field">Popup style<select id="style">
+            <option value="cards">Cards</option>
+            <option value="compact">Compact</option>
+            <option value="circles">Circles</option>
+        </select></label>
+        <label class="field">Warn at remaining quota (%)<input id="warning" type="number" min="1" max="100"
+                                                               step="1"></label>
+        <p>Percentages turn amber at or below this threshold and red at 10% remaining or below.
+            A threshold below 10% also lowers the red threshold. GitHub displays consumed quota.</p>
+        <label class="field">Refresh interval<select id="interval">
+            <option value="60">1 minute</option>
+            <option value="300">5 minutes</option>
+            <option value="600">10 minutes</option>
+            <option value="1800">30 minutes</option>
+            <option value="3600">1 hour</option>
+        </select></label>
+        <p>Hover a provider for its last update. Open quota details for reset countdowns. Pin AgentMeter in the
+            browser's Extensions menu to see its badge beside the address bar.</p>
+    </section>
+    <section class="settings-card"><h2>Saved usage &amp; missing values</h2>
+        <p>Only numeric quota values and their observation/reset times are cached. Saved values are labelled and do
+            not prove a current login. Missing values stay as dashes; hover or open details for the reason.</p>
+        <p>Claude documents usage bars for paid subscription plans. A Free account may not report quota percentages;
+            missing data alone does not identify your plan.</p>
+        <p>Credentials, account identifiers and conversations are never stored. Provider sessions are used only for
+            requests to that provider. The bar reads no content on other websites.</p>
+        <button id="clear" class="subtle">Clear saved usage</button>
+    </section>
+</main>
+<script type="module" src="dashboard.js"></script>
+</body>
+</html>

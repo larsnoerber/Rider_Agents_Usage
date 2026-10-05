@@ -1,6 +1,92 @@
 # Code structure
 
-Scope: Rider/JetBrains, standalone Windows, VS Code and Visual Studio are separate applications in one repository.
+## Browser extension
+
+`browser/` is a separate Manifest V3 Chromium extension for Chrome and Edge. It uses the shared version but has
+independent browser settings and cache. `providers/catalog.js` composes provider presentation/allowed usage paths;
+`providers/<id>/reader.js` contains provider-specific parsing and same-origin requests. `core/page-reader.js` provides
+bounded page/network parsing in the isolated script world, `core/snapshots.js` validates the minimal result contract
+and numeric cache. `core/quota-display.js` shares warning levels, observation times and countdowns between classic
+content scripts and module UIs through `core/format.js`. Core imports no provider, UI or settings modules.
+`settings/` normalizes and persists choices. `application/coordinator.js` owns selected-provider reads, serialization,
+cancellation generations, numeric fallback, rate-limit pauses and badge publication. `application/background.js`
+wires browser lifecycle/alarms and accepts privileged commands only from extension UI documents. `ui/` composes
+popup/settings and the page bar. `application/page-bars.js` owns optional-permission dynamic content-script
+registration, existing-tab display synchronization and publication of sanitized state. It does not read providers.
+`ui/page-bar.js` renders a singleton closed-shadow-root overlay with collapse/expand, details, refresh and a fixed
+usage link. It reads no page content and disposes timers/listeners/DOM on removal. BFCache restores its timer/state;
+SPA navigation checks only location, not page content. Bar visibility/position are persisted browser choices.
+`selected` now controls both polling and bar display as explicitly requested. The existing `barProviders` identifier
+is retained and normalized to the same selection; former independent hidden choices no longer suppress activated
+providers. An empty selection stays empty. Display still requires granted host access. All configuration controls
+save automatically through serialized, merged settings patches; there is no Save button. Only selection changes
+invalidate provider reads. Position/theme/warning changes publish display state without reinjecting the bar.
+`ui/bar-position.js` owns trusted pointer/keyboard movement, viewport clamping and resize/listener disposal.
+The persisted `barAnchor` contains normalized x/y coordinates; changing top/bottom or resetting clears it.
+The bar updates reset countdowns and per-provider observation tooltips every 15 seconds without provider requests.
+`warningPercent` applies to remaining quota in all browser displays, including consumed-quota providers.
+
+One open tab per provider supplies an isolated reader, including ordinary chat pages and background tabs.
+Prefer the provider's configured Usage page, then other supported Usage pages, then ordinary provider pages;
+the active tab wins ties. Copilot's primary Usage page is `/settings/copilot/features`. A live Usage tab may
+supply already-rendered quotas unavailable in the initial fetched HTML. Its readings also update the badge on
+other active tabs belonging to that provider.
+When no usable provider tab is open, `application/background-reader.js` creates the bundled offscreen document
+with the `DOM_PARSER` reason. `application/offscreen.js` reuses the same registered provider reader functions,
+uses browser-managed sessions to contact only that provider, and returns a sanitized snapshot. It never opens
+hidden provider tabs. OpenAI's website session token is held only for its own read-only `/backend-api/wham/usage`
+request. Claude's selected organization cookie is used only in a provider page; background reads require a single
+unambiguous chat-capable organization; Console organizations are excluded. Gemini bootstrap fields stay inside the
+reader. Request bodies are bounded to 2 MiB;
+redirects are rejected. Reads are throttled to at least 60 seconds; HTTP 429 pauses that provider for 15 minutes.
+
+The display-only bar registers on permitted provider origins, or on ordinary HTTP/HTTPS websites after the user
+explicitly grants optional all-site host access and enables `allSitesBar`. The initial install opens Settings;
+permission requests require a user click. All-site access also covers the selected providers' usage requests.
+There is no `cookies`, broad `tabs`, `webRequest`, native messaging or external-message interface. Main-frame
+isolated bar senders are checked against the current display permission, tab and origin. They can request sanitized
+overview state, refresh, or fixed provider/usage links. Their only writable setting is a finite, clamped display
+position; they cannot submit readings, other settings or credentials.
+The bar shows all permitted selected providers. Native hyperlinks use fixed catalog website URLs in a new tab,
+with `noopener noreferrer`; clicking does not replace the link before browser activation or require a worker message.
+The bar's settings button opens the fixed extension configuration URL at its Page bar section; it cannot supply
+an arbitrary URL or change settings. The separate details control
+shows quotas and the next-provider control cycles detail views. It reads no content on other websites.
+Browser internal pages and protected sites refuse injection. DOM adapters require explicit quota direction and one
+unambiguous percent near a recognized label. Machine-readable reset times/public plan labels are optional.
+Numeric caches exclude raw text/responses, plans, account IDs and authentication. Session storage contains only
+sanitized readings, fixed diagnostic stages/HTTP status codes and polling metadata. Document URL and settings/access
+generation checks reject obsolete readings. Tab/focus changes preserve other providers' background reads.
+Copilot also accepts explicit consumed/allowance count pairs and embedded quota snapshots on fixed billing pages;
+billing costs and inferred plan allowances are never converted into quota percentages.
+The GitHub Features DOM adapter recognizes Included credits and Inline suggestions as distinct consumed quotas.
+Included credits precede premium/chat/inline quotas so the compact bar represents credits instead of suggestions.
+The shared quota contract permits both titles; page parsing includes bold/table/description label elements and
+reads explicit public plan labels from detached HTML as well as live Usage pages.
+Copilot follows up to four distinct quota-related `include-fragment[src]` references supplied by GitHub's fixed
+billing pages. Only same-origin personal billing/Copilot quota paths are accepted; arbitrary URLs are rejected.
+`core/page-reader.js` removes executable scripts, preload/stylesheet links, styles and resource tags before
+parsing into detached template contents. Only inert application/json script blocks are retained. GitHub fragment
+URLs become passive `data-agentmeter-src` attributes, read only through the provider's bounded same-origin
+requests. Parsed nodes never enter a live document; the extension CSP is unchanged. Claude negotiates JSON,
+recognizes authentication error envelopes and explicit numeric utilization
+strings, and falls back to the fixed Usage page. Null quota fields remain unavailable, with a distinct fixed notice
+from unsupported field formats. Claude's no-quota notice explains paid-plan usage bars and possible Free-plan
+limitations without inferring a plan from missing data. Both paths also run in the offscreen reader without a provider
+tab.
+
+Packaging checks JS syntax/local imports/assets, copies a fixed source directory list and creates an unpacked
+directory plus ZIP. Browser icon PNGs originate from the Windows SVG's supported-subset renderer.
+`browser/Packaging/` owns copy-ready Edge listing/privacy/certification text and deterministic presentation
+fixtures. `build-store.ps1` composes the browser build, shared SVG logo rendering and headless UI screenshots
+under ignored `browser/dist/`. Demo fixtures use the actual bar/settings scripts with in-memory sample state;
+they are clearly labelled and are excluded from extension packaging. No account data or personal browser profile
+is used. The unused activeTab permission is removed; quota reads and display use explicitly granted host access.
+It does not install or publish, run tests, or validate signed-in providers. See
+[browser guide](../browser/README.md) and [privacy](../browser/PRIVACY.md).
+
+Scope: Rider/JetBrains, standalone Windows, Chrome/Edge, VS Code and Visual Studio are separate applications in one
+repository.
 See the [documentation index](README.md) and [provider matrix](PROVIDERS.md) for edition availability. The shared
 version and persisted identifiers remain unchanged by the Windows source refactoring.
 

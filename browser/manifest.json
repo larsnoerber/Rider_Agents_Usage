@@ -1,0 +1,44 @@
+{
+  "manifest_version": 3,
+  "name": "AgentMeter",
+  "version": "1.1.0",
+  "description": "Track AI usage quotas in a movable browser bar, with reset countdowns and configurable quota warnings.",
+  "homepage_url": "https://github.com/larsnoerber/Rider_Agents_Usage/tree/main/browser",
+  "minimum_chrome_version": "120",
+  "permissions": [
+    "storage",
+    "alarms",
+    "scripting",
+    "offscreen"
+  ],
+  "optional_host_permissions": [
+    "https://chatgpt.com/*",
+    "https://claude.ai/*",
+    "https://cursor.com/*",
+    "https://github.com/*",
+    "https://gemini.google.com/*",
+    "https://*/*",
+    "http://*/*"
+  ],
+  "background": {
+    "service_worker": "application/background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "AgentMeter",
+    "default_popup": "ui/popup.html"
+  },
+  "options_ui": {
+    "page": "ui/dashboard.html",
+    "open_in_tab": true
+  },
+  "icons": {
+    "16": "resources/icon16.png",
+    "32": "resources/icon32.png",
+    "48": "resources/icon48.png",
+    "128": "resources/icon.png"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'none'"
+  }
+}

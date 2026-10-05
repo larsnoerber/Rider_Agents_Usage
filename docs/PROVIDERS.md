@@ -19,6 +19,12 @@ expired sessions or changed provider interfaces produce unavailable results. A c
 
 ## Meaning of the values
 
+The separate [Chrome/Edge edition](../browser/README.md) reads selected providers after website permission is granted:
+Codex/Claude remaining quota, Copilot/Cursor consumed quota, and Gemini Apps web consumption. It uses provider website
+sessions, private quota requests and explicit DOM fallback. Background and closed provider tabs are supported via a
+bundled offscreen reader. Live signed-in account validation remains pending. It does not reuse local CLI credentials,
+Windows settings, desktop cache or local agent statistics. An optional overlay displays providers on ordinary websites.
+
 - Remaining percentages shrink with consumption; Copilot/Cursor consumption grows toward exhaustion.
 - Costs/tokens from local agent records are usage estimates, not remaining subscription allowance.
 - OpenRouter reports the connected key's budget/spending, potentially shared across clients. No limit means no

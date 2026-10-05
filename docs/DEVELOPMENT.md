@@ -1,5 +1,26 @@
 # Local development
 
+## Chrome / Edge browser extension
+
+Use Node.js 22+ and Windows PowerShell. Build only the explicitly requested browser edition:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\browser\build.ps1
+```
+
+The script reads `pluginVersion` from `gradle.properties`, checks JavaScript syntax and module/asset references,
+then creates `browser/dist/unpacked/` and `browser/dist/AgentMeter-<version>-chromium.zip`. Load the unpacked directory
+manually through Chrome/Edge's Extensions page in Developer mode. It does not install/publish the extension or build
+Windows/editor packages. Live signed-in page/API reads and popup UI are not established by successful packaging.
+See [browser setup and limitations](../browser/README.md). Tests remain opt-in.
+
+Prepare the Edge Add-ons submission files with `powershell -NoProfile -ExecutionPolicy Bypass -File
+.\browser\build-store.ps1`. It builds only the browser package, renders a 300×300 logo from the shared SVG using
+the existing supported-subset WPF renderer, and captures the actual UI with explicitly labelled demo data using
+a separately profiled headless Edge/Chrome. The generated fixtures and screenshots never enter the extension ZIP.
+The output is `browser/dist/edge-store/`; code/listing/privacy sources are versioned, generated files are ignored.
+This is store artwork rendering, not a provider authentication check or test run.
+
 Use JDK 25. The JetBrains Runtime bundled with a compatible IDE can provide it.
 The project targets IntelliJ IDEA 2026.1.2 and produces Java 21 bytecode. Plugin verification also checks Rider
 2026.2.3.1.

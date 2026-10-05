@@ -2,6 +2,98 @@
 
 ## Unreleased
 
+- Prepare Edge Add-ons listing text, privacy/permission disclosures, reviewer notes and store submission guidance
+  for the existing Partner Center entry. Add a local store build with a shared-SVG logo and actual UI screenshots
+  labelled as demonstration data. Keep generated submission files outside source commits and retain version 1.1.0.
+- Clarify browser privacy for transient provider-page URL inspection, session authentication and saved display
+  position. Add a homepage URL and remove the unused activeTab permission from the browser manifest.
+
+- Unify browser provider activation and bar visibility into one selection, as requested. Retain the persisted
+  barProviders identifier synchronized with selected providers. Replace the Save button with automatic saves for
+  every configuration control, a visible status and serialized merged patches; simplify the configuration sections.
+- Add per-provider observation/cache/error tooltips, live reset countdowns and an adjustable remaining-quota
+  warning threshold shared by the browser bar, popup and toolbar badge. Due resets never invent new values.
+- Add a draggable, keyboard-accessible bar handle with a remembered relative position, viewport clamping and
+  a reset-position action. Permit isolated bars to update only validated display coordinates.
+- Explain Claude's missing numeric quotas and possible Free-plan limitations without inferring the account plan.
+
+- Save browser provider activation immediately and select newly enabled providers for the page bar. Show a
+  "Hidden in page bar" link beside enabled providers omitted by the independent bar visibility selection.
+
+- Save browser Page bar visibility, position and provider selections immediately on change. Serialize settings
+  writes and apply the bar before confirming a save; quota requests continue without delaying the settings reply.
+
+- Read GitHub Features' Included credits and Inline suggestions quotas, matching the supplied Free-plan page.
+  Show consumed included credits as the bar's primary quota and keep inline suggestions as a separate detail row.
+  Accept quota labels in bold/table/description elements and read explicit plan badges in detached usage HTML.
+
+- Name the browser provider GitHub in the bar, popup, Settings and diagnostic labels. Retain its persisted
+  provider ID and quota interpretation.
+
+- Prevent offscreen quota HTML from loading provider scripts, module preloads, stylesheets or font resources.
+  Remove executable/resource markup before parsing into detached template contents; retain inert JSON quota
+  data and passive GitHub fragment references. Keep the existing extension CSP unchanged.
+
+- Use GitHub Copilot Features as the primary browser usage link and first request. Prefer open provider Usage
+  tabs over unrelated tabs on the same domain, including inactive Usage tabs, and read their quota fragments.
+  Keep the active provider's badge synchronized when a different tab supplies its quota.
+
+- Remove the trailing generic unavailable/saved label from the browser bar. Keep missing values as dashes and
+  report provider-specific availability/cache state in link tooltips and quota details. Action errors open details.
+
+- Extend Claude browser reads with explicit JSON negotiation, numeric quota-string parsing, authentication-error
+  envelope detection and a fixed Usage-page fallback even when that page is closed. Distinguish null/unreported
+  allowances from an unsupported response schema. Read quota-related GitHub include-fragment references from
+  billing pages with same-origin/path restrictions and a four-fragment bound; retain inert HTML resource blocking.
+  Signed-in validation of Claude and Copilot is still pending.
+
+- Add independent provider visibility checkboxes under Page bar in browser Settings. Hidden providers continue
+  refreshing when enabled under Providers. Persist the bar selection, preserve all providers for existing profiles,
+  and allow an empty visibility selection without resetting it to defaults.
+
+- Group browser bar visibility, all-site display and position under Page bar on the configuration page.
+  Add a gear button on the bar that opens this section directly, and distinguish popup style from bar appearance.
+
+- Open provider links in the browser bar with native hyperlinks in a new tab. Keep the clicked element in place
+  during navigation, support middle-click/context-menu opening, and use fixed catalog destinations without a
+  background-message dependency.
+
+- Resolve Claude chat organizations separately from Anthropic Console organizations in browser quota reads.
+  Route Codex requests with the account bound to its website session when available. Read Copilot's explicit
+  consumed/allowance count pairs and embedded quota snapshots on fixed billing pages. Keep background reads
+  across tab/focus changes and expose fixed read stages/HTTP status codes. Live account validation is pending.
+
+- Add first-install website access setup and an optional persistent AgentMeter overlay on ordinary websites.
+  Show selected providers together; clicking a provider opens its website, with separate quota details controls.
+  Read selected providers from open/background tabs or a bundled offscreen reader when provider tabs are closed.
+  Add OpenAI Codex quota and Claude organization usage requests using the browser session, retain Gemini weekly
+  values, throttle reads and keep credentials/raw responses out of storage. Live account validation is pending.
+
+- Read Copilot's personal billing overview and Features page in the browser edition, recognize GitHub AI Credits
+  headings, and use the documented billing overview for the usage link. Reconcile page-bar scripts on worker reload
+  and distinguish missing sections, percentages and quota direction using fixed notices without exporting page text.
+
+- Show Gemini Apps 5-hour and weekly consumption together in the browser page bar and toolbar tooltip, including
+  an explicit dash for any unreported period.
+
+- Add an automatic collapsible AgentMeter bar inside granted provider websites, with colored session/weekly
+  percentages, expandable quota bars/plans/reset times, refresh and usage-page actions. Support top/bottom placement,
+  theme and an off switch. Use the existing measurements/cache, label saved/unavailable data, remove the bar on
+  provider deselection/access revocation, and isolate it from page styles and privileged extension commands.
+
+- Keep the browser toolbar percentage visible on a provider's ordinary pages after a usage read. Show both
+  Codex session/weekly values and the observation time in the icon's hover title. Color percentage text directly,
+  distinguish saved values in gray, and document pinning the extension beside the address bar.
+
+- Recognize German Codex usage-limit headings and Unicode quota direction words in the browser edition. Read
+  through deeper bounded card wrappers, queue a new active-page read after an interrupted tab switch, and show
+  an explicit notice when no reading was published. Live OpenAI page validation remains pending.
+
+- Add a separate Manifest V3 Chrome/Edge edition showing usage for the active provider page. Include optional
+  per-provider access, Codex/Claude/Copilot page adapters, Cursor/Gemini same-origin web readers, colored quota bars,
+  compact/circle views, theme/refresh settings and numeric saved-value fallbacks. Package locally without installing
+  or publishing. Signed-in provider reads and browser UI still require manual validation.
+
 - Refresh repository/edition guides, provider comparison, architecture, build instructions, privacy and publishing
   drafts for the current Windows code. Distinguish historical smoke reports from current build evidence. Keep shared
   version 1.1.0; source-only GitHub updates exclude generated EXE/MSIX artifacts and personal IDE settings.

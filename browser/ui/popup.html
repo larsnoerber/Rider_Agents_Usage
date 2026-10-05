@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>AgentMeter</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="popup">
+<header>
+    <div class="brand"><img src="../resources/icon.png" alt="">
+        <div><h1>AgentMeter</h1>
+            <p>Usage of your current page</p></div>
+    </div>
+    <button id="settings" class="icon-button" title="Settings" aria-label="Open settings">⚙</button>
+</header>
+<main>
+    <div class="provider-heading"><h2 id="provider-name">Current page</h2><span id="plan" class="plan" hidden></span>
+    </div>
+    <p id="context" class="notice" role="status"></p>
+    <div id="quotas" class="quotas"></div>
+    <p id="freshness" class="freshness"></p>
+    <div class="actions">
+        <button id="refresh">Refresh</button>
+        <button id="allow" hidden>Allow access</button>
+        <button id="open" hidden>Open usage page ↗</button>
+    </div>
+    <p id="error" class="error" role="alert" hidden></p>
+    <div id="provider-links" class="provider-links" hidden><p>Open a provider's usage page to get started.</p>
+        <div id="links"></div>
+    </div>
+</main>
+<footer>Read-only · Website sessions stay in your browser</footer>
+<script type="module" src="popup.js"></script>
+</body>
+</html>

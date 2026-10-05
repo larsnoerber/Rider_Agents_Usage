@@ -5,6 +5,12 @@ version tag or binary upload. Generated build/dist folders are not source docume
 
 ## User guides
 
+- [Chrome / Edge browser extension](../browser/README.md): background quotas, persistent page bar, website access and
+  local setup
+- [Browser privacy](../browser/PRIVACY.md)
+- [Edge Add-ons submission](../browser/Packaging/edge-submission.md): package, store assets, copy-ready fields and
+  existing Partner Center product identity
+
 - [Repository overview and Rider setup](../README.md)
 - [Standalone Windows app](../windows/README.md): ten providers, connections, saved usage, bar layouts and tray
 - [Provider/data comparison](PROVIDERS.md): edition availability and quota versus recorded usage
